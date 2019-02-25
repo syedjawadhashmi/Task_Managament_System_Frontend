@@ -42,7 +42,7 @@ class Register extends React.Component {
   }
   
   handleRegister = () => {
-    const {user_name, password} = this.state
+    const {user_name, password, first_name, last_name} = this.state
     console.log('login pressed', user_name, password)
     debugger
     axios.post(
@@ -88,7 +88,9 @@ class Register extends React.Component {
                 Your Name
               </label>
               <input
+                value={this.state.user_name}
                 type="name"
+                onChange={this.handleEmailChange}
                 id="defaultFormNameEx"
                 className="form-control"
               />
@@ -97,10 +99,12 @@ class Register extends React.Component {
                 htmlFor="defaultFormEmailEx"
                 className="grey-text font-weight-light"
               >
-                Your Email
+                Your First Name
               </label>
               <input
-                type="email"
+                type="text"
+                value={this.state.first_name}
+                onChange={this.handleFirstNameChange}
                 id="defaultFormEmailEx"
                 className="form-control"
               />
@@ -108,10 +112,12 @@ class Register extends React.Component {
                 htmlFor="defaultFormPasswordEx"
                 className="grey-text font-weight-light"
               >
-                Your password
+                Your Last Name
               </label>
               <input
-                type="password"
+                type="text"
+                value={this.state.last_name}
+                onChange={this.handleLastNameChange}
                 id="defaultFormPasswordEx"
                 className="form-control"
               />
@@ -119,15 +125,19 @@ class Register extends React.Component {
                 htmlFor="defaultFormConfirmPasswordEx"
                 className="grey-text font-weight-light"
               >
-                Confirm Your password
+                Your password
               </label>
               <input
                 type="password"
+                onChange={this.handlePassChange}
+                value={this.state.password}
                 id="defaultFormConfirmPasswordEx"
                 className="form-control"
               />
               <div className="text-center mt-4">
-                <MDBBtn style={{backgroundColor: '#dc3500', boxShadow: '0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15)', color: '#ffff', marginTop: 10}} className="mb-3" type="submit">
+                <MDBBtn 
+                  onClick={this.handleRegister}
+                  style={{backgroundColor: '#dc3500', boxShadow: '0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15)', color: '#ffff', marginTop: 10}} className="mb-3" type="submit">
                   Register
                 </MDBBtn>
               </div>
