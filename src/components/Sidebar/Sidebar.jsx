@@ -468,7 +468,7 @@ class Sidebar extends React.Component {
           <img src={logo} alt="logo" className={classes.img} />
         </a>
         <a className={logoNormal}>
-          SysBrilliance
+          SysProjects
         </a>
         {/* <a href="https://www.creative-tim.com" className={logoNormal}>
           {logoText}

@@ -99,6 +99,7 @@ class LoginPage extends React.Component {
                   color="rose"
                 >
                   <h4 className={classes.cardTitle}>Log in</h4>
+                  <h5 className={classes.cardTitle}>SysProjects</h5>
                   <div className={classes.socialLine}>
                     {/* {[
                       "fab fa-facebook-square",

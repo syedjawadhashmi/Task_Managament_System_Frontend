@@ -78,7 +78,7 @@ class Pages extends React.Component {
     const { classes, ...rest } = this.props;
     return (
       <div>
-        <AuthNavbar brandText={this.getActiveRoute(routes)} {...rest} />
+        {/* <AuthNavbar brandText={this.getActiveRoute(routes)} {...rest} /> */}
         <div className={classes.wrapper} ref="wrapper">
           <div
             className={classes.fullPage}
