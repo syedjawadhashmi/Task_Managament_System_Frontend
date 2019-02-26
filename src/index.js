@@ -1,23 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { createBrowserHistory } from "history";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 
-import { HashRouter, Route, Switch } from "react-router-dom";
+import AuthLayout from "layouts/Auth.jsx";
+import RtlLayout from "layouts/RTL.jsx";
+import AdminLayout from "layouts/Admin.jsx";
 
-import indexRoutes from "routes/index.jsx";
+import "assets/scss/material-dashboard-pro-react.scss?v=1.5.0";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./assets/css/animate.min.css";
-import "./assets/sass/light-bootstrap-dashboard.css?v=1.2.0";
-import "./assets/css/demo.css";
-import "./assets/css/pe-icon-7-stroke.css";
+const hist = createBrowserHistory();
 
 ReactDOM.render(
-  <HashRouter>
+  <Router history={hist}>
     <Switch>
-      {indexRoutes.map((prop, key) => {
-        return <Route to={prop.path} component={prop.component} key={key} />;
-      })}
+      <Route path="/rtl" component={RtlLayout} />
+      <Route path="/auth" component={AuthLayout} />
+      <Route path="/admin" component={AdminLayout} />
+      <Redirect from="/" to="/admin/dashboard" />
     </Switch>
-  </HashRouter>,
+  </Router>,
   document.getElementById("root")
 );

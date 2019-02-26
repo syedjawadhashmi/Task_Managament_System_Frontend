@@ -1,35 +1,77 @@
-import React, { Component } from "react";
+import React from "react";
+// nodejs library that concatenates classes
+import classNames from "classnames";
+// nodejs library to set properties for components
+import PropTypes from "prop-types";
+// @material-ui/core components
+import withStyles from "@material-ui/core/styles/withStyles";
+// @material-ui/icons
 
-export class Card extends Component {
-  render() {
-    return (
-      <div className={"card" + (this.props.plain ? " card-plain" : "")}>
-        <div className={"header" + (this.props.hCenter ? " text-center" : "")}>
-          <h4 className="title">{this.props.title}</h4>
-          <p className="category">{this.props.category}</p>
-        </div>
-        <div
-          className={
-            "content" +
-            (this.props.ctAllIcons ? " all-icons" : "") +
-            (this.props.ctTableFullWidth ? " table-full-width" : "") +
-            (this.props.ctTableResponsive ? " table-responsive" : "") +
-            (this.props.ctTableUpgrade ? " table-upgrade" : "")
-          }
-        >
-          {this.props.content}
+// core components
+import cardStyle from "assets/jss/material-dashboard-pro-react/components/cardStyle.jsx";
 
-          <div className="footer">
-            {this.props.legend}
-            {this.props.stats != null ? <hr /> : ""}
-            <div className="stats">
-              <i className={this.props.statsIcon} /> {this.props.stats}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+function Card({ ...props }) {
+  const {
+    classes,
+    className,
+    children,
+    plain,
+    profile,
+    blog,
+    raised,
+    background,
+    pricing,
+    color,
+    product,
+    testimonial,
+    chart,
+    login,
+    ...rest
+  } = props;
+  const cardClasses = classNames({
+    [classes.card]: true,
+    [classes.cardPlain]: plain,
+    [classes.cardProfile]: profile || testimonial,
+    [classes.cardBlog]: blog,
+    [classes.cardRaised]: raised,
+    [classes.cardBackground]: background,
+    [classes.cardPricingColor]:
+      (pricing && color !== undefined) || (pricing && background !== undefined),
+    [classes[color]]: color,
+    [classes.cardPricing]: pricing,
+    [classes.cardProduct]: product,
+    [classes.cardChart]: chart,
+    [classes.cardLogin]: login,
+    [className]: className !== undefined
+  });
+  return (
+    <div className={cardClasses} {...rest}>
+      {children}
+    </div>
+  );
 }
 
-export default Card;
+Card.propTypes = {
+  classes: PropTypes.object.isRequired,
+  className: PropTypes.string,
+  plain: PropTypes.bool,
+  profile: PropTypes.bool,
+  blog: PropTypes.bool,
+  raised: PropTypes.bool,
+  background: PropTypes.bool,
+  pricing: PropTypes.bool,
+  testimonial: PropTypes.bool,
+  color: PropTypes.oneOf([
+    "primary",
+    "info",
+    "success",
+    "warning",
+    "danger",
+    "rose"
+  ]),
+  product: PropTypes.bool,
+  chart: PropTypes.bool,
+  login: PropTypes.bool
+};
+
+export default withStyles(cardStyle)(Card);
