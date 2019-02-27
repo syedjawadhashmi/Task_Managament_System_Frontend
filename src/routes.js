@@ -13,6 +13,7 @@ import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 import LoginPage from "views/Pages/LoginPage.jsx";
 import CustomerPage from "views/Pages/CustomerPage.jsx";
 import CustomerForm from "views/Pages/CustomerForm.jsx";
+import CustomerList from "views/Pages/CustomerList.jsx";
 import Notifications from "views/Components/Notifications.jsx";
 import Panels from "views/Components/Panels.jsx";
 import PricingPage from "views/Pages/PricingPage.jsx";
@@ -80,6 +81,15 @@ var dashRoutes = [
                 mini: "CP",
                 rtlMini: "ب",
                 component: CustomerPage,
+                layout: "/admin"
+              },
+              {
+                path: "/customer-list",
+                name: "Customer List",
+                rtlName: "وصفت",
+                mini: "CL",
+                rtlMini: "ب",
+                component: CustomerList,
                 layout: "/admin"
               }
         ]
