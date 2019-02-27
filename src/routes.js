@@ -12,6 +12,7 @@ import Icons from "views/Components/Icons.jsx";
 import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 import LoginPage from "views/Pages/LoginPage.jsx";
 import CustomerPage from "views/Pages/CustomerPage.jsx";
+import CustomerForm from "views/Pages/CustomerForm.jsx";
 import Notifications from "views/Components/Notifications.jsx";
 import Panels from "views/Components/Panels.jsx";
 import PricingPage from "views/Pages/PricingPage.jsx";
@@ -55,6 +56,35 @@ var dashRoutes = [
     icon: Image,
     state: "pageCollapse",
     views: [
+      {
+        collapse: true,
+        name: "Customer Page",
+        rtlName: "المكونات",
+        mini: "CP",
+        icon: Apps,
+        state: "componentsCollapse",
+        views: [
+              {
+                path: "/customer-form",
+                name: "Customer Form",
+                rtlName: "وصفت",
+                mini: "CF",
+                rtlMini: "ب",
+                component: CustomerForm,
+                layout: "/admin"
+              },
+              {
+                path: "/customer-page",
+                name: "Customer Page",
+                rtlName: "وصفت",
+                mini: "CP",
+                rtlMini: "ب",
+                component: CustomerPage,
+                layout: "/admin"
+              }
+        ]
+      },
+      
       // {
       //   path: "/pricing-page",
       //   name: "Pricing Page",
@@ -80,15 +110,6 @@ var dashRoutes = [
         mini: "DP",
         rtlMini: "تي",
         component: TimelinePage,
-        layout: "/admin"
-      },
-      {
-        path: "/customer-page",
-        name: "Customer Page",
-        // rtlName: "هعذاتسجيل الدخول",
-        mini: "CP",
-        rtlMini: "هعذا",
-        component: CustomerPage,
         layout: "/admin"
       },
       {
@@ -164,6 +185,8 @@ var dashRoutes = [
   //         }
   //       ]
   //     },
+  //   ]
+  // }
   //     {
   //       path: "/buttons",
   //       name: "Buttons",
