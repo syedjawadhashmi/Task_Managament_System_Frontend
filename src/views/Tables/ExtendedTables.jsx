@@ -67,7 +67,7 @@ class ExtendedTables extends React.Component {
       );
     });
     const simpleButtons = [
-      { color: "info", icon: Person },
+      // { color: "info", icon: Person },
       { color: "success", icon: Edit },
       { color: "danger", icon: Close }
     ].map((prop, key) => {
@@ -102,20 +102,20 @@ class ExtendedTables extends React.Component {
       <GridContainer>
         <GridItem xs={12}>
           <Card>
-            <CardHeader color="rose" icon>
+            {/* <CardHeader color="rose" icon>
               <CardIcon color="rose">
                 <Assignment />
               </CardIcon>
               <h4 className={classes.cardIconTitle}>Simple Table</h4>
-            </CardHeader>
+            </CardHeader> */}
             <CardBody>
               <Table
                 tableHead={[
                   "#",
                   "Name",
-                  "Job Position",
-                  "Since",
-                  "Salary",
+                  "Email",
+                  "Phone",
+                  // "Salary",
                   "Actions"
                 ]}
                 tableData={[
@@ -124,16 +124,21 @@ class ExtendedTables extends React.Component {
                     "Andrew Mike",
                     "Develop",
                     "2013",
-                    "€ 99,225",
-                    fillButtons
+                    // "€ 99,225",
+                    simpleButtons
+                    // fillButtons
                   ],
-                  ["2", "John Doe", "Design", "2012", "€ 89,241", roundButtons],
+                  ["2", "John Doe", "Design", "2012", 
+                  // "€ 89,241",
+                  simpleButtons
+                  //  roundButtons
+                  ],
                   [
                     "3",
                     "Alex Mike",
                     "Design",
                     "2010",
-                    "€ 92,144",
+                    // "€ 92,144",
                     simpleButtons
                   ],
                   [
@@ -141,16 +146,18 @@ class ExtendedTables extends React.Component {
                     "Mike Monday",
                     "Marketing",
                     "2013",
-                    "€ 49,990",
-                    roundButtons
+                    // "€ 49,990",
+                    simpleButtons
+                    // roundButtons
                   ],
                   [
                     "5",
                     "Paul Dickens",
                     "Communication",
                     "2015",
-                    "€ 69,201",
-                    fillButtons
+                    // "€ 69,201",
+                    simpleButtons
+                    // fillButtons
                   ]
                 ]}
                 customCellClasses={[
@@ -169,7 +176,7 @@ class ExtendedTables extends React.Component {
             </CardBody>
           </Card>
         </GridItem>
-        <GridItem xs={12}>
+        {/* <GridItem xs={12}>
           <Card>
             <CardHeader color="rose" icon>
               <CardIcon color="rose">
@@ -505,7 +512,7 @@ class ExtendedTables extends React.Component {
               />
             </CardBody>
           </Card>
-        </GridItem>
+        </GridItem> */}
       </GridContainer>
     );
   }

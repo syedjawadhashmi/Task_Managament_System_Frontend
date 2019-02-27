@@ -76,7 +76,7 @@ var dashRoutes = [
               },
               {
                 path: "/customer-page",
-                name: "Customer Page",
+                name: "Customers",
                 rtlName: "وصفت",
                 mini: "CP",
                 rtlMini: "ب",
@@ -149,15 +149,16 @@ var dashRoutes = [
       //   component: LockScreenPage,
       //   layout: "/auth"
       // },
-      {
-        path: "/user-page",
-        name: "User Profile",
-        rtlName: "ملف تعريفي للمستخدم",
-        mini: "UP",
-        rtlMini: "شع",
-        component: UserProfile,
-        layout: "/admin"
-      },
+      
+      // {
+      //   path: "/user-page",
+      //   name: "User Profile",
+      //   rtlName: "ملف تعريفي للمستخدم",
+      //   mini: "UP",
+      //   rtlMini: "شع",
+      //   component: UserProfile,
+      //   layout: "/admin"
+      // },
       {
         path: "/project-page",
         name: "Project Page",
