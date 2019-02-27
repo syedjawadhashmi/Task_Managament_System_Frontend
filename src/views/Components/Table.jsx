@@ -95,16 +95,16 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  { id: 'name', numeric: false, disablePadding: true, label: 'Project' },
+  { id: 'calories', numeric: true, disablePadding: false, label: 'Category' },
+  { id: 'fat', numeric: true, disablePadding: false, label: 'Total Summary' },
+  { id: 'carbs', numeric: true, disablePadding: false, label: 'Status' },
+  { id: 'protein', numeric: true, disablePadding: false, label: 'Last Updated' },
+  { id: 'protein', numeric: true, disablePadding: false, label: 'Assigned' },
+  { id: 'fat', numeric: true, disablePadding: false, label: 'Priority' },
+  { id: 'fat', numeric: true, disablePadding: false, label: 'Deadline' },
+  { id: 'carbs', numeric: true, disablePadding: false, label: 'Customer' },
+  // { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
 ];
 
 class EnhancedTableHead extends React.Component {

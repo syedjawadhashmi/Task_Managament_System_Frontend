@@ -6,6 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
+import GridItem from "components/Grid/GridItem.jsx";
 import Table from '../Components/Table';
 const drawerWidth = 240;
 
@@ -47,7 +48,7 @@ class CustomerPage extends Component {
         return (
             <div >
                 <GridContainer>
-                    {/* <GridItem xs={12} sm={6} md={3}> */}
+                    <GridItem xs={12} sm={12} md={12}>
                     <CssBaseline />
                     {/* <AppBar position="fixed" className={classes.appBar}>
                         <Toolbar>
@@ -65,10 +66,11 @@ class CustomerPage extends Component {
                         </Toolbar>
                     </AppBar> */}
                     {/* <Main_Drawer /> */}
-                    <main className={classes.content}>
+                    {/* <main className={classes.content}> */}
                         <div className={classes.toolbar} />
                         <Table />
-                    </main>
+                    {/* </main> */}
+                    </GridItem>
                 </GridContainer>
             </div>
         );
