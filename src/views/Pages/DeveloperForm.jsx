@@ -21,7 +21,7 @@ import { Grid } from '@material-ui/core';
 
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
 
-class CustomerForm extends React.Component {
+class DeveloperForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -296,4 +296,4 @@ class CustomerForm extends React.Component {
   }
 }
 
-export default withStyles(regularFormsStyle)(CustomerForm);
+export default withStyles(regularFormsStyle)(DeveloperForm);

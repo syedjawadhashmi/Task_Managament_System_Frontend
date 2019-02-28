@@ -1,10 +1,4 @@
 import React from 'react';
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import Card from "components/Card/Card.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import Button from "components/CustomButtons/Button.jsx";
-import extendedTablesStyle from "assets/jss/material-dashboard-pro-react/views/extendedTablesStyle.jsx";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -12,9 +6,18 @@ import Edit from "@material-ui/icons/Edit";
 import Close from "@material-ui/icons/Close";
 import Fab from '@material-ui/core/Fab';
 
-
-
+// core components
+import GridContainer from "components/Grid/GridContainer.jsx";
+import GridItem from "components/Grid/GridItem.jsx";
+import Card from "components/Card/Card.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+import Button from "components/CustomButtons/Button.jsx";
+import extendedTablesStyle from "assets/jss/material-dashboard-pro-react/views/extendedTablesStyle.jsx";
 import ExtendedTables from "../Tables/ExtendedTables";
+
+// import link for routing
+import { Link } from 'react-router-dom';
+
 
 class CustomerList extends React.Component {
     render(){
@@ -87,17 +90,19 @@ class CustomerList extends React.Component {
                                     <h4>Customer</h4>
                                 </GridItem>
                                 <GridItem xs={3} sm={3} md={3}>
-                                    <Fab
-                                    variant="extended"
-                                    size="medium"
-                                    color="primary"
-                                    aria-label="Add"
-                                    style={{fontSize: 10, textTransform: 'capitalize'}}
-                                    // className={classes.margin}
-                                    >
-                                    {/* <NavigationIcon className={classes.extendedIcon} /> */}
-                                    Add a Customer
-                                    </Fab>
+                                    <Link to='customer-form'>
+                                        <Fab
+                                        variant="extended"
+                                        size="medium"
+                                        color="primary"
+                                        aria-label="Add"
+                                        style={{fontSize: 10, textTransform: 'capitalize'}}
+                                        // className={classes.margin}
+                                        >
+                                        {/* <NavigationIcon className={classes.extendedIcon} /> */}
+                                        Add a Customer
+                                        </Fab>
+                                    </Link>
                                 </GridItem>
                                 <ExtendedTables tableHead={tableHead} tableData={tableData}/>
                             </GridContainer>                        

@@ -1,6 +1,7 @@
 import Dashboard from "views/Dashboard/Dashboard.jsx";
 import ProjectPage from "views/Pages/ProjectPage.jsx";
 import CustomerList from "views/Pages/CustomerList.jsx";
+import CustomerForm from "views/Pages/CustomerForm.jsx";
 
 // @material-ui/icons
 import Apps from "@material-ui/icons/Apps";
@@ -27,6 +28,13 @@ var dashRoutes = [
     name: "Project",
     icon: Image,
     component: ProjectPage,
+    layout: "/admin"
+  },
+  {
+    path: "/customer-form",
+    // name: "Project",
+    // icon: Image,
+    component: CustomerForm,
     layout: "/admin"
   },
  ];
