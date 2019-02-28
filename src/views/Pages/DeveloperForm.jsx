@@ -62,28 +62,48 @@ class DeveloperForm extends React.Component {
           <Card>
             <CardHeader text>
               {/* <CardText> */}
-                <h4 className={classes.cardTitle}>Edit a Customer</h4>
+                <h4 className={classes.cardTitle}>Edit a Developer</h4>
               {/* </CardText> */}
             </CardHeader>
             <CardBody>
               <form>
-                <GridContainer>
-                  <GridItem xs={12} sm={2}>
-                    <FormLabel className={classes.labelHorizontal}>
-                      Customer 
-                    </FormLabel>
-                  </GridItem>
-                  <GridItem xs={12} sm={10}>
-                    <CustomInput
-                      id="help-text"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        type: "text"
-                      }}
-                    />
-                  </GridItem>
+              <GridContainer>
+                    <GridItem xs={6} sm={2}>
+                        <FormLabel className={classes.labelHorizontal}>
+                        First Name
+                        </FormLabel>
+                    </GridItem>
+                    <GridItem xs={6} sm={4}>
+                        <CustomInput
+                        //   id="disabled"
+                        formControlProps={{
+                            fullWidth: true
+                        }}
+                        inputProps={{
+                            type: "text"
+                            // placeholder: "Disabled",
+                            // disabled: true
+                        }}
+                        />
+                    </GridItem>
+                    <GridItem xs={6} sm={2}>
+                        <FormLabel className={classes.labelHorizontal}>
+                            Last Name
+                        </FormLabel>
+                    </GridItem>
+                    <GridItem xs={6} sm={4}>
+                        <CustomInput
+                        //   id="disabled"
+                        formControlProps={{
+                            fullWidth: true
+                        }}
+                        inputProps={{
+                            type: "text"
+                            // placeholder: "Disabled",
+                            // disabled: true
+                        }}
+                        />
+                    </GridItem>
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={2}>
@@ -106,37 +126,17 @@ class DeveloperForm extends React.Component {
                 <GridContainer>
                   <GridItem xs={12} sm={2}>
                     <FormLabel className={classes.labelHorizontal}>
-                      Phone
+                      Password
                     </FormLabel>
                   </GridItem>
                   <GridItem xs={12} sm={10}>
                     <CustomInput
-                      id="phone"
+                      id="pass"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
-                        type: "Phone"
-                      }}
-                    />
-                  </GridItem>
-                </GridContainer>
-                <GridContainer>
-                  <GridItem xs={12} sm={2}>
-                    <FormLabel className={classes.labelHorizontal}>
-                      Contact
-                    </FormLabel>
-                  </GridItem>
-                  <GridItem xs={12} sm={10}>
-                    <CustomInput
-                    //   id="disabled"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        type: "Phone"
-                        // placeholder: "Disabled",
-                        // disabled: true
+                        type: "password"
                       }}
                     />
                   </GridItem>
@@ -144,7 +144,7 @@ class DeveloperForm extends React.Component {
                 <GridContainer>
                     <GridItem xs={6} sm={2}>
                         <FormLabel className={classes.labelHorizontal}>
-                        Address Line 1
+                            Status
                         </FormLabel>
                     </GridItem>
                     <GridItem xs={6} sm={4}>
@@ -162,7 +162,7 @@ class DeveloperForm extends React.Component {
                     </GridItem>
                     <GridItem xs={6} sm={2}>
                         <FormLabel className={classes.labelHorizontal}>
-                            City
+                            Rate
                         </FormLabel>
                     </GridItem>
                     <GridItem xs={6} sm={4}>
@@ -182,7 +182,7 @@ class DeveloperForm extends React.Component {
                 <GridContainer>
                     <GridItem xs={6} sm={2}>
                         <FormLabel className={classes.labelHorizontal}>
-                        Postal / Zip
+                            Rate Unit
                         </FormLabel>
                     </GridItem>
                     <GridItem xs={6} sm={4}>
@@ -199,6 +199,9 @@ class DeveloperForm extends React.Component {
                         />
                     </GridItem>
                     <GridItem xs={6} sm={2}>
+                        <FormLabel className={classes.labelHorizontal}>
+                            Currency
+                        </FormLabel>
                     </GridItem>
                     <GridItem xs={6} sm={4}>
                         <CustomInput
@@ -213,78 +216,14 @@ class DeveloperForm extends React.Component {
                         }}
                         />
                     </GridItem>
-                    <Grid style={{display: 'flex', marginLeft: 60}} spacing={8}>
-                            <GridItem xs={3} sm={3} md={3} style={{marginTop: '25px'}}>
-                                <label style={{fontSize: 12}}>Currency</label>
-                            </GridItem>
-                            <GridItem xs={6} sm={6} md={6}>
-                                                    <FormControl style={{minWidth: 300,}} variant="outlined" >
-                                <InputLabel
-                                    ref={ref => {
-                                    this.InputLabelRef = ref;
-                                    }}
-                                    htmlFor="outlined-age-simple"
-                                >
-                                    USD- US. dollar
-                                </InputLabel>
-                                <Select
-                                    value={this.state.age}
-                                    onChange={this.handleChange}
-                                    input={
-                                    <OutlinedInput
-                                        labelWidth={this.state.labelWidth}
-                                        name="USD- US. dollar"
-                                        id="outlined-age-simple"
-                                    />
-                                    }
-                                >
-                                    <MenuItem value="">
-                                    <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </GridItem>
-                        <GridItem xs={3} sm={3} md={3} style={{marginTop: '25px'}}>
-                            <label style={{fontSize: 12}}>Country</label>
-                        </GridItem>
-                            
-                        <GridItem xs={6} sm={6} md={6}>
-                            <FormControl style={{minWidth: 300,}} variant="outlined" >
-                                <InputLabel
-                                    ref={ref => {
-                                    this.InputLabelRef = ref;
-                                    }}
-                                    htmlFor="outlined-age-simple"
-                                >
-                                    Country
-                                </InputLabel>
-                                <Select
-                                    value={this.state.age}
-                                    onChange={this.handleChange}
-                                    input={
-                                    <OutlinedInput
-                                        labelWidth={this.state.labelWidth}
-                                        name="Country"
-                                        id="outlined-age-simple"
-                                    />
-                                    }
-                                >
-                                    <MenuItem value="">
-                                    <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </GridItem>
-                    </Grid> 
-                    <Button style={{textAlign: 'center', backgroundColor: 'green'}}>
-                        Add
-                    </Button>
+                    <GridItem xs={6} sm={5}>
+                    </GridItem>
+
+                    <GridItem xs={6} sm={4}>
+                        <Button style={{textAlign: 'center', backgroundColor: 'green'}}>
+                            Add
+                        </Button>
+                    </GridItem>
 
                 </GridContainer>
                 </form>

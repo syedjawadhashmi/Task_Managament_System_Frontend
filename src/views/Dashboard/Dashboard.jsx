@@ -1,10 +1,13 @@
 import React from 'react';
+
+// @material-ui/core components
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import extendedTablesStyle from "assets/jss/material-dashboard-pro-react/views/extendedTablesStyle.jsx";
+import ExtendedTables from "../Tables/ExtendedTables";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -12,9 +15,10 @@ import Edit from "@material-ui/icons/Edit";
 import Close from "@material-ui/icons/Close";
 import Fab from '@material-ui/core/Fab';
 
+// import link for routing
+import { Link } from 'react-router-dom';
 
 
-import ExtendedTables from "../Tables/ExtendedTables";
 
 class DeveloperLis extends React.Component {
     render(){
@@ -121,17 +125,19 @@ class DeveloperLis extends React.Component {
                                     <h4>Developer</h4>
                                 </GridItem>
                                 <GridItem xs={3} sm={3} md={3}>
-                                <Fab
-                                  variant="extended"
-                                  size="medium"
-                                  color="primary"
-                                  aria-label="Add"
-                                  style={{fontSize: 10, textTransform: 'capitalize'}}
-                                  // className={classes.margin}
-                                >
-                                  {/* <NavigationIcon className={classes.extendedIcon} /> */}
-                                  Add a Developer
-                                </Fab>
+                                <Link to='developer-form'>
+                                  <Fab
+                                    variant="extended"
+                                    size="medium"
+                                    color="primary"
+                                    aria-label="Add"
+                                    style={{fontSize: 10, textTransform: 'capitalize'}}
+                                    // className={classes.margin}
+                                    >
+                                    {/* <NavigationIcon className={classes.extendedIcon} /> */}
+                                    Add a developer
+                                  </Fab>
+                                  </Link>
                                 </GridItem>
                                 <ExtendedTables tableHead={tableHead} tableData={tableData}/>
                             </GridContainer>                        
