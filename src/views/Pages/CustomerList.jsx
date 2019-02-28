@@ -10,6 +10,7 @@ import extendedTablesStyle from "assets/jss/material-dashboard-pro-react/views/e
 import withStyles from "@material-ui/core/styles/withStyles";
 import Edit from "@material-ui/icons/Edit";
 import Close from "@material-ui/icons/Close";
+import Fab from '@material-ui/core/Fab';
 
 
 
@@ -86,6 +87,17 @@ class CustomerList extends React.Component {
                                     <h4>Customer</h4>
                                 </GridItem>
                                 <GridItem xs={3} sm={3} md={3}>
+                                    <Fab
+                                    variant="extended"
+                                    size="medium"
+                                    color="primary"
+                                    aria-label="Add"
+                                    style={{fontSize: 10, textTransform: 'capitalize'}}
+                                    // className={classes.margin}
+                                    >
+                                    {/* <NavigationIcon className={classes.extendedIcon} /> */}
+                                    Add a Customer
+                                    </Fab>
                                 </GridItem>
                                 <ExtendedTables tableHead={tableHead} tableData={tableData}/>
                             </GridContainer>                        
