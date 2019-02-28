@@ -4,8 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = theme => ({
     
   });
-
-
 class Comments extends React.Component {
 
     render(){
