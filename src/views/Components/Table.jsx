@@ -24,6 +24,14 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
+import Icon from '@material-ui/core/Icon';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputBase from '@material-ui/core/InputBase';
+import InputLabel from '@material-ui/core/InputLabel';
+import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
+import profile from '../../assets/img/faces/avatar.jpg'
 const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -148,7 +156,7 @@ class EnhancedTableHead extends React.Component {
                 </Tooltip>
               </TableCell>
             ),
-            this,
+            this
           )}
         </TableRow>
       </TableHead>
@@ -172,13 +180,13 @@ const toolbarStyles = theme => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark,
+      },
   spacer: {
     flex: '1 1 100%',
   },
@@ -191,7 +199,7 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-  const { numSelected, classes,handleClickOpen } = props;
+  const { numSelected, classes, handleClickOpen } = props;
 
   return (
     <Toolbar
@@ -205,13 +213,13 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-          <Button variant="contained" onClick={()=> handleClickOpen} style={{backgroundColor:'green',color:'#fff'}} id="tableTitle" className={classes.button}>
-        add
+            <Button variant="contained" onClick={handleClickOpen} style={{ backgroundColor: 'green', color: '#fff' }} id="tableTitle" className={classes.button}>
+              add
       </Button>
-          // <Typography variant="h6" id="tableTitle">
-          //   Nutrition
-          // </Typography>
-        )}
+            // <Typography variant="h6" id="tableTitle">
+            //   Nutrition
+            // </Typography>
+          )}
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
@@ -222,12 +230,12 @@ let EnhancedTableToolbar = props => {
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
+            <Tooltip title="Filter list">
+              <IconButton aria-label="Filter list">
+                <FilterListIcon />
+              </IconButton>
+            </Tooltip>
+          )}
       </div>
     </Toolbar>
   );
@@ -252,28 +260,64 @@ const styles = theme => ({
   tableWrapper: {
     overflowX: 'auto',
   },
+  bootstrapInput: {
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.common.white,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    width: '500px',
+    height: '50px',
+    padding: '10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:focus': {
+      borderRadius: 4,
+      borderColor: '#80bdff',
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+    },
+  },
+  bootstrapFormLabel: {
+    fontSize: 18,
+  },
+  avatar: {
+    margin: 10,
+    marginTop: 25
+  },
 });
 
 class Tables extends React.Component {
   state = {
     order: 'asc',
     orderBy: 'calories',
-    open:false,
+    open: false,
     selected: [],
     data: [
-      createData('Cupcake',<span style={{color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2}}>agent created</span>, 3.7, 67, 4.3,305, 3.7, 67, 4.3),
-      createData('Donut', <span style={{color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2}}>agent created</span>, 25.0, 51, 4.9),
-      createData('Eclair', <span style={{color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2}}>agent created</span>, 16.0, 24, 6.0),
-      createData('Frozen yoghurt', <span style={{color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2}}>agent created</span>, 6.0, 24, 4.0),
-      createData('Gingerbread', <span style={{color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2}}>agent created</span>, 16.0, 49, 3.9),
-      createData('Honeycomb', <span style={{color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2}}>agent created</span>, 3.2, 87, 6.5),
-      createData('Ice cream sandwich', <span style={{color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2}}>agent created</span>, 9.0, 37, 4.3),
-      createData('Jelly Bean', <span style={{color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2}}>agent created</span>, 0.0, 94, 0.0),
-      createData('KitKat', <span style={{color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2}}>agent created</span>, 26.0, 65, 7.0),
+      createData('Cupcake', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 3.7, 67, 4.3, 305, 3.7, 67, 4.3),
+      createData('Donut', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 25.0, 51, 4.9),
+      createData('Eclair', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 16.0, 24, 6.0),
+      createData('Frozen yoghurt', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 6.0, 24, 4.0),
+      createData('Gingerbread', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 16.0, 49, 3.9),
+      createData('Honeycomb', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 3.2, 87, 6.5),
+      createData('Ice cream sandwich', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 9.0, 37, 4.3),
+      createData('Jelly Bean', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 0.0, 94, 0.0),
+      createData('KitKat', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 26.0, 65, 7.0),
       createData('Lollipop', 392, <div><span>mandal</span><span>agent created</span></div>, 98, 0.0),
-      createData('Marshmallow', <span style={{color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2}}>agent created</span>, 0, 81, 2.0),
-      createData('Nougat', <span style={{color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2}}>agent created</span>, 19.0, 9, 37.0),
-      createData('Oreo', <span style={{color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2}}>agent created</span>, 18.0, 63, 4.0),
+      createData('Marshmallow', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 0, 81, 2.0),
+      createData('Nougat', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 19.0, 9, 37.0),
+      createData('Oreo', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 18.0, 63, 4.0),
     ],
     page: 0,
     rowsPerPage: 5,
@@ -331,7 +375,7 @@ class Tables extends React.Component {
 
   handleClickOpen = () => {
     this.setState({
-      open: true,
+      open: true
     });
   };
 
@@ -364,7 +408,7 @@ class Tables extends React.Component {
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, n.id)}
+                      // onClick={event => this.handleClick(event, n.id)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
@@ -418,27 +462,74 @@ class Tables extends React.Component {
           open={this.state.open}
         >
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
-            Modal title
+            <Icon style={{ paddingTop: 5 }}>comment</Icon>Comments
+            <p style={{fontSize:'x-small'}}>Hawaji Tourism</p>
           </DialogTitle>
           <DialogContent>
-            <Typography gutterBottom>
-              Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac
-              facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum
-              at eros.
-            </Typography>
-            <Typography gutterBottom>
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-              lacus vel augue laoreet rutrum faucibus dolor auctor.
-            </Typography>
-            <Typography gutterBottom>
-              Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-              scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-              auctor fringilla.
-            </Typography>
+            <FormControl className={classes.margin}>
+              <InputBase
+                id="bootstrap-input"
+                placeholder={"Enter your comments here, and @mention people to grab their attention."}
+                defaultValue=""
+                classes={{
+                  root: classes.bootstrapRoot,
+                  input: classes.bootstrapInput,
+                }}
+              />
+              <div style={{ backgroundColor: '#eee', color: 'rgb(180, 182, 187)', padding: 5, width: 120, textAlign: 'center', marginTop: 5, marginLeft: '77%' }}>Post Comment</div>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+              }}>
+                <Avatar alt="Remy Sharp" src={profile} className={classes.avatar} />
+                <Paper className={classes.root} elevation={1}>
+                  <Typography style={{ margin: 10 }} variant="h6" component="h4">
+                    Nikhil Gaekward <span style={{ fontSize: 12 }}> Now</span>
+                  </Typography>
+                  <Typography style={{ margin: 10 }} component="p">
+                    why is there a drop in visitors going to the island?
+                   <p style={{ color: 'rgb(0, 0, 255)' }}>@Alan Wright</p>
+                  </Typography>
+                  <Button><Icon>reply</Icon>reply</Button>
+                </Paper>
+              </div>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+              }}>
+                <Avatar alt="Remy Sharp" src={profile} className={classes.avatar} />
+                <Paper className={classes.root} elevation={1}>
+                  <Typography style={{ margin: 10 }} variant="h6" component="h4">
+                    Nikhil Gaekward <span style={{ fontSize: 12 }}> 0 min ago</span>
+                  </Typography>
+                  <Typography style={{ margin: 10 }} component="p">
+                    why is there a drop in visitors going to the island?
+                   <p style={{ color: 'rgb(0, 0, 255)' }}>@Alan Wright</p>
+                  </Typography>
+                  <Button><Icon>reply</Icon>reply</Button>
+                </Paper>
+              </div>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+              }}>
+                <Avatar alt="Remy Sharp" src={profile} className={classes.avatar} />
+                <Paper className={classes.root} elevation={1}>
+                  <Typography style={{ margin: 10 }} variant="h6" component="h4">
+                    Nikhil Gaekward <span style={{ fontSize: 12 }}> 2 days ago</span>
+                  </Typography>
+                  <Typography style={{ margin: 10 }} component="p">
+                    why is there a drop in visitors going to the island?
+                   <p style={{ color: 'rgb(0, 0, 255)' }}>@Alan Wright</p>
+                  </Typography>
+                  <Button><Icon>reply</Icon>reply</Button>
+                </Paper>
+              </div>
+            </FormControl>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
-              Save changes
+              Cancel
             </Button>
           </DialogActions>
         </Dialog>
@@ -448,7 +539,7 @@ class Tables extends React.Component {
 }
 
 Tables.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Tables);
