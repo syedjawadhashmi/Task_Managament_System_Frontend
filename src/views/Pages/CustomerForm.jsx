@@ -62,7 +62,7 @@ class CustomerForm extends React.Component {
           <Card>
             <CardHeader text>
               {/* <CardText> */}
-                <h4 className={classes.cardTitle}>Edit a Customer</h4>
+              <h4 className={classes.cardTitle}>Edit a Customer</h4>
               {/* </CardText> */}
             </CardHeader>
             <CardBody>
@@ -70,7 +70,7 @@ class CustomerForm extends React.Component {
                 <GridContainer>
                   <GridItem xs={12} sm={2}>
                     <FormLabel className={classes.labelHorizontal}>
-                      Customer 
+                      Customer
                     </FormLabel>
                   </GridItem>
                   <GridItem xs={12} sm={10}>
@@ -129,7 +129,7 @@ class CustomerForm extends React.Component {
                   </GridItem>
                   <GridItem xs={12} sm={10}>
                     <CustomInput
-                    //   id="disabled"
+                      //   id="disabled"
                       formControlProps={{
                         fullWidth: true
                       }}
@@ -142,156 +142,368 @@ class CustomerForm extends React.Component {
                   </GridItem>
                 </GridContainer>
                 <GridContainer>
-                    <GridItem xs={6} sm={2}>
-                        <FormLabel className={classes.labelHorizontal}>
-                        Address Line 1
+                  <GridItem xs={6} sm={2}>
+                    <FormLabel className={classes.labelHorizontal}>
+                      Address Line 1
                         </FormLabel>
-                    </GridItem>
-                    <GridItem xs={6} sm={4}>
-                        <CustomInput
-                        //   id="disabled"
-                        formControlProps={{
-                            fullWidth: true
-                        }}
-                        inputProps={{
-                            type: "text"
-                            // placeholder: "Disabled",
-                            // disabled: true
-                        }}
-                        />
-                    </GridItem>
-                    <GridItem xs={6} sm={2}>
-                        <FormLabel className={classes.labelHorizontal}>
-                            City
+                  </GridItem>
+                  <GridItem xs={6} sm={4}>
+                    <CustomInput
+                      //   id="disabled"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "text"
+                        // placeholder: "Disabled",
+                        // disabled: true
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={6} sm={2}>
+                    <FormLabel className={classes.labelHorizontal}>
+                      City
                         </FormLabel>
-                    </GridItem>
-                    <GridItem xs={6} sm={4}>
-                        <CustomInput
-                        //   id="disabled"
-                        formControlProps={{
-                            fullWidth: true
-                        }}
-                        inputProps={{
-                            type: "text"
-                            // placeholder: "Disabled",
-                            // disabled: true
-                        }}
-                        />
-                    </GridItem>
+                  </GridItem>
+                  <GridItem xs={6} sm={4}>
+                    <CustomInput
+                      //   id="disabled"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "text"
+                        // placeholder: "Disabled",
+                        // disabled: true
+                      }}
+                    />
+                  </GridItem>
                 </GridContainer>
                 <GridContainer>
-                    <GridItem xs={6} sm={2}>
-                        <FormLabel className={classes.labelHorizontal}>
-                        Postal / Zip
+                  <GridItem xs={6} sm={2}>
+                    <FormLabel className={classes.labelHorizontal}>
+                      Postal / Zip
                         </FormLabel>
+                  </GridItem>
+                  <GridItem xs={6} sm={4}>
+                    <CustomInput
+                      //   id="disabled"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "text"
+                        // placeholder: "Disabled",
+                        // disabled: true
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={6} sm={2}>
+                  </GridItem>
+                  <GridItem xs={6} sm={4}>
+                    <CustomInput
+                      //   id="disabled"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "text"
+                        // placeholder: "Disabled",
+                        // disabled: true
+                      }}
+                    />
+                  </GridItem>
+                  <Grid style={{ display: 'flex', marginLeft: 60 }} spacing={8}>
+                    <GridItem xs={3} sm={3} md={3} style={{ marginTop: '25px' }}>
+                      <label style={{ fontSize: 12 }}>Currency</label>
+                    </GridItem>
+                    <GridItem xs={6} sm={6} md={6}>
+                      <FormControl style={{ minWidth: 300, }} variant="outlined" >
+                        <InputLabel
+                          ref={ref => {
+                            this.InputLabelRef = ref;
+                          }}
+                          htmlFor="outlined-age-simple"
+                        >
+                          USD- US. dollar
+                                </InputLabel>
+                        <Select
+                          value={this.state.age}
+                          onChange={this.handleChange}
+                          input={
+                            <OutlinedInput
+                              labelWidth={this.state.labelWidth}
+                              name="USD- US. dollar"
+                              id="outlined-age-simple"
+                            />
+                          }
+                        >
+                          <MenuItem value="">
+                            <em>None</em>
+                          </MenuItem>
+                          <MenuItem value={10}>Ten</MenuItem>
+                          <MenuItem value={20}>Twenty</MenuItem>
+                          <MenuItem value={30}>Thirty</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </GridItem>
+                    <GridItem xs={3} sm={3} md={3} style={{ marginTop: '25px' }}>
+                      <label style={{ fontSize: 12 }}>Country</label>
+                    </GridItem>
+                    <GridItem xs={6} sm={6} md={6}>
+                      <FormControl style={{ minWidth: 300, }} variant="outlined" >
+                        <InputLabel
+                          ref={ref => {
+                            this.InputLabelRef = ref;
+                          }}
+                          htmlFor="outlined-age-simple"
+                        >
+                          Country
+                                  </InputLabel>
+                        <Select
+                          value={this.state.age}
+                          onChange={this.handleChange}
+                          input={
+                            <OutlinedInput
+                              labelWidth={this.state.labelWidth}
+                              name="Country"
+                              id="outlined-age-simple"
+                            />
+                          }
+                        >
+                          <MenuItem value="">
+                            <em>None</em>
+                          </MenuItem>
+                          <MenuItem value={10}>Ten</MenuItem>
+                          <MenuItem value={20}>Twenty</MenuItem>
+                          <MenuItem value={30}>Thirty</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </GridItem>
+                </Grid>
+                <Grid style={{ display: 'flex', marginLeft: 60, marginTop: 20 }} spacing={8}>
+                <GridItem xs={3} sm={3} md={3} style={{marginTop: '20px'}}>
+                      <label style={{fontSize: 10}}>Consultants</label>
+                    </GridItem>
+                    <GridItem xs={6} sm={6} md={6}>
+                      <FormControl style={{minWidth: 250,}} variant="outlined" >
+                        <InputLabel
+                            ref={ref => {
+                            this.InputLabelRef = ref;
+                            }}
+                            htmlFor="outlined-age-simple"
+                        >
+                            Consultants
+                        </InputLabel>
+                        <Select
+                            style={{marginRight: -10}}
+                            value={this.state.age}
+                            onChange={this.handleChange}
+                            input={
+                            <OutlinedInput
+                                labelWidth={this.state.labelWidth}
+                                name="Consultants"
+                                id="outlined-age-simple"
+                            />
+                            }
+                        >
+                            <MenuItem value="">
+                            <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                        </Select>
+                    </FormControl>
+                  </GridItem>
+                  <GridItem xs={3} sm={3} md={3} style={{marginTop: '12px'}}>
+                      <label style={{fontSize: 10}}>Product Owners</label>
+                  </GridItem>
+                  <GridItem xs={6} sm={6} md={6}>
+                      <FormControl style={{minWidth: 300,}} variant="outlined" >
+                          <InputLabel
+                              style={{fontSize: 10}}
+                              ref={ref => {
+                              this.InputLabelRef = ref;
+                              }}
+                              htmlFor="outlined-age-simple"
+                          >
+                              Product Owners
+                          </InputLabel>
+                          <Select
+                              value={this.state.age}
+                              onChange={this.handleChange}
+                              input={
+                              <OutlinedInput
+                                  labelWidth={this.state.labelWidth}
+                                  name="Product Owners"
+                                  id="outlined-age-simple"
+                              />
+                              }
+                          >
+                              <MenuItem value="">
+                              <em>None</em>
+                              </MenuItem>
+                              <MenuItem value={10}>Ten</MenuItem>
+                              <MenuItem value={20}>Twenty</MenuItem>
+                              <MenuItem value={30}>Thirty</MenuItem>
+                          </Select>
+                      </FormControl>
+                  </GridItem>
+                  </Grid>
+                </GridContainer>
+                <GridContainer>
+                  <GridItem xs={6} sm={2}>
+                      <FormLabel className={classes.labelHorizontal}>
+                        First Name
+                              </FormLabel>
                     </GridItem>
                     <GridItem xs={6} sm={4}>
-                        <CustomInput
+                      <CustomInput
                         //   id="disabled"
                         formControlProps={{
-                            fullWidth: true
+                          fullWidth: true
                         }}
                         inputProps={{
-                            type: "text"
-                            // placeholder: "Disabled",
-                            // disabled: true
+                          type: "text"
+                          // placeholder: "Disabled",
+                          // disabled: true
                         }}
-                        />
+                      />
                     </GridItem>
                     <GridItem xs={6} sm={2}>
+                      <FormLabel className={classes.labelHorizontal}>
+                        Last Name
+                              </FormLabel>
                     </GridItem>
                     <GridItem xs={6} sm={4}>
-                        <CustomInput
+                      <CustomInput
                         //   id="disabled"
                         formControlProps={{
-                            fullWidth: true
+                          fullWidth: true
                         }}
                         inputProps={{
-                            type: "text"
-                            // placeholder: "Disabled",
-                            // disabled: true
+                          type: "text"
+                          // placeholder: "Disabled",
+                          // disabled: true
                         }}
-                        />
+                      />
                     </GridItem>
-                    <Grid style={{display: 'flex', marginLeft: 60}} spacing={8}>
-                            <GridItem xs={3} sm={3} md={3} style={{marginTop: '25px'}}>
-                                <label style={{fontSize: 12}}>Currency</label>
-                            </GridItem>
-                            <GridItem xs={6} sm={6} md={6}>
-                                                    <FormControl style={{minWidth: 300,}} variant="outlined" >
-                                <InputLabel
-                                    ref={ref => {
-                                    this.InputLabelRef = ref;
-                                    }}
-                                    htmlFor="outlined-age-simple"
-                                >
-                                    USD- US. dollar
-                                </InputLabel>
-                                <Select
-                                    value={this.state.age}
-                                    onChange={this.handleChange}
-                                    input={
-                                    <OutlinedInput
-                                        labelWidth={this.state.labelWidth}
-                                        name="USD- US. dollar"
-                                        id="outlined-age-simple"
-                                    />
-                                    }
-                                >
-                                    <MenuItem value="">
-                                    <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </GridItem>
-                        <GridItem xs={3} sm={3} md={3} style={{marginTop: '25px'}}>
-                            <label style={{fontSize: 12}}>Country</label>
-                        </GridItem>
-                            
-                        <GridItem xs={6} sm={6} md={6}>
-                            <FormControl style={{minWidth: 300,}} variant="outlined" >
-                                <InputLabel
-                                    ref={ref => {
-                                    this.InputLabelRef = ref;
-                                    }}
-                                    htmlFor="outlined-age-simple"
-                                >
-                                    Country
-                                </InputLabel>
-                                <Select
-                                    value={this.state.age}
-                                    onChange={this.handleChange}
-                                    input={
-                                    <OutlinedInput
-                                        labelWidth={this.state.labelWidth}
-                                        name="Country"
-                                        id="outlined-age-simple"
-                                    />
-                                    }
-                                >
-                                    <MenuItem value="">
-                                    <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </GridItem>
-                    </Grid> 
-                    <Button style={{textAlign: 'center', backgroundColor: 'green'}}>
-                        Add
+                    <GridItem xs={6} sm={2}>
+                    <FormLabel className={classes.labelHorizontal}>
+                      Email
+                            </FormLabel>
+                  </GridItem>
+                  <GridItem xs={6} sm={4}>
+                    <CustomInput
+                      //   id="disabled"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "Email"
+                        // placeholder: "Disabled",
+                        // disabled: true
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={6} sm={2}>
+                    <FormLabel className={classes.labelHorizontal}>
+                      Password
+                            </FormLabel>
+                  </GridItem>
+                  <GridItem xs={6} sm={4}>
+                    <CustomInput
+                      //   id="disabled"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "Password"
+                        // placeholder: "Disabled",
+                        // disabled: true
+                      }}
+                    />
+                  </GridItem>
+                  <Grid style={{ display: 'flex', marginLeft: 60, marginTop: 20 }} spacing={8}>
+                <GridItem xs={3} sm={3} md={3} style={{marginTop: '20px'}}>
+                      <label style={{fontSize: 10}}>Consultants</label>
+                    </GridItem>
+                    <GridItem xs={6} sm={6} md={6}>
+                      <FormControl style={{minWidth: 250,}} variant="outlined" >
+                        <InputLabel
+                            ref={ref => {
+                            this.InputLabelRef = ref;
+                            }}
+                            htmlFor="outlined-age-simple"
+                        >
+                            Type
+                        </InputLabel>
+                        <Select
+                            style={{marginRight: -10}}
+                            value={this.state.age}
+                            onChange={this.handleChange}
+                            input={
+                            <OutlinedInput
+                                labelWidth={this.state.labelWidth}
+                                name="Consultants"
+                                id="outlined-age-simple"
+                            />
+                            }
+                        >
+                            <MenuItem value="">
+                            <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Consultant</MenuItem>
+                            <MenuItem value={20}>Product Overview</MenuItem>
+                        </Select>
+                    </FormControl>
+                  </GridItem>
+                  <GridItem xs={3} sm={3} md={3} style={{marginTop: '12px'}}>
+                      <label style={{fontSize: 10}}>Product Owners</label>
+                  </GridItem>
+                  <GridItem xs={6} sm={6} md={6}>
+                      <FormControl style={{minWidth: 300,}} variant="outlined" >
+                          <InputLabel
+                              style={{fontSize: 10}}
+                              ref={ref => {
+                              this.InputLabelRef = ref;
+                              }}
+                              htmlFor="outlined-age-simple"
+                          >
+                              Status
+                          </InputLabel>
+                          <Select
+                              value={this.state.age}
+                              onChange={this.handleChange}
+                              input={
+                              <OutlinedInput
+                                  labelWidth={this.state.labelWidth}
+                                  name="Product Owners"
+                                  id="outlined-age-simple"
+                              />
+                              }
+                          >
+                              <MenuItem value="">
+                              <em>None</em>
+                              </MenuItem>
+                              <MenuItem value={10}>Active</MenuItem>
+                              <MenuItem value={20}>Suspended</MenuItem>
+                              {/* <MenuItem value={30}>Thirty</MenuItem> */}
+                          </Select>
+                      </FormControl>
+                  </GridItem>
+                  </Grid>
+                  <Button style={{ textAlign: 'center', backgroundColor: 'green' }}>
+                    Add
                     </Button>
 
                 </GridContainer>
-                </form>
+              </form>
             </CardBody>
           </Card>
         </GridItem>
-        </GridContainer>
+      </GridContainer>
     );
   }
 }
