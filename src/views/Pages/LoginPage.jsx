@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
+import { withRouter } from "react-router-dom";
 
 // @material-ui/icons
 import Face from "@material-ui/icons/Face";
@@ -62,8 +63,15 @@ class LoginPage extends React.Component {
       },
   )
       .then((res) => {
-          console.log("success repsonse", res)
-          alert('successfull login')    
+          console.log("success repsonse", res.data)
+          var user = res.data
+          // alert('successfull login')    
+          
+          this.props.history.push('/admin/developer');
+          localStorage.setItem('user', user.username);
+          localStorage.setItem('token', user.token);
+
+
 })
       .catch((err) => {
           console.log("error", err);
