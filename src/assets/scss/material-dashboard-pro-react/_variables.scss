@@ -52,7 +52,9 @@ $font-weight-ultra-bold: 900 !default;
 
 $body-bg: #eeeeee !default;
 //---
-
+.RegularButton-primary-178{
+  background-color: #303f9f !important
+}
 // import bs variables for sass, first declared wins.
 $bootstrap-sass-asset-helper: false !default;
 //

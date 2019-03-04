@@ -107,8 +107,8 @@ const rows = [
   { id: 'protein', numeric: true, disablePadding: false, label: 'Last Updated' },
   { id: 'protein', numeric: true, disablePadding: false, label: 'Assigned' },
   { id: 'fat', numeric: true, disablePadding: false, label: 'Priority' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Deadline' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Customer' },
+  // { id: 'fat', numeric: true, disablePadding: false, label: 'Deadline' },
+  // { id: 'carbs', numeric: true, disablePadding: false, label: 'Customer' },
   // { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
 ];
 
@@ -210,7 +210,7 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-            <Button variant="contained" onClick={handleClickOpen} style={{ backgroundColor: 'green', color: '#fff' }} id="tableTitle" className={classes.button}>
+            <Button variant="contained" onClick={handleClickOpen} color="primary" id="tableTitle" className={classes.button}>
               add
       </Button>
             // <Typography variant="h6" id="tableTitle">
@@ -423,9 +423,9 @@ class Tables extends React.Component {
                       <TableCell align="right">{n.carbs}</TableCell>
                       <TableCell align="right">{n.carbs}</TableCell>
                       <TableCell align="right">{n.carbs}</TableCell>
+                      {/* <TableCell align="right">{n.carbs}</TableCell>
                       <TableCell align="right">{n.carbs}</TableCell>
-                      <TableCell align="right">{n.carbs}</TableCell>
-                      <TableCell align="right">{n.carbs}</TableCell>
+                      <TableCell align="right">{n.carbs}</TableCell> */}
                       <TableCell align="right">{n.protein}</TableCell>
                     </TableRow>
                   );
@@ -460,7 +460,7 @@ class Tables extends React.Component {
         >
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
             <Icon style={{ paddingTop: 5 }}>comment</Icon>Comments
-            <p style={{fontSize:'x-small'}}>Hawaji Tourism</p>
+            <p style={{ fontSize: 'x-small' }}>Hawaji Tourism</p>
           </DialogTitle>
           <DialogContent>
             <FormControl className={classes.margin}>

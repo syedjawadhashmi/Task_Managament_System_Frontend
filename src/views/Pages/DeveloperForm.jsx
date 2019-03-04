@@ -14,6 +14,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Button from "components/CustomButtons/Button.jsx";
+import CardIcon from "components/Card/CardIcon.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
@@ -60,59 +61,45 @@ class DeveloperForm extends React.Component {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader text>
-              {/* <CardText> */}
-                <h4 className={classes.cardTitle}>Edit a Developer</h4>
-              {/* </CardText> */}
+            <CardHeader color="rose" icon>
+              <CardIcon color="rose">
+                <h4>Developer</h4>
+              </CardIcon>
+              {/* <h4 className={classes.cardIconTitle}>Edit a Customer</h4> */}
             </CardHeader>
             <CardBody>
               <form>
-              <GridContainer>
-                    <GridItem xs={6} sm={2}>
-                        <FormLabel className={classes.labelHorizontal}>
-                        First Name
-                        </FormLabel>
-                    </GridItem>
-                    <GridItem xs={6} sm={4}>
-                        <CustomInput
-                        //   id="disabled"
-                        formControlProps={{
-                            fullWidth: true
-                        }}
-                        inputProps={{
-                            type: "text"
-                            // placeholder: "Disabled",
-                            // disabled: true
-                        }}
-                        />
-                    </GridItem>
-                    <GridItem xs={6} sm={2}>
-                        <FormLabel className={classes.labelHorizontal}>
-                            Last Name
-                        </FormLabel>
-                    </GridItem>
-                    <GridItem xs={6} sm={4}>
-                        <CustomInput
-                        //   id="disabled"
-                        formControlProps={{
-                            fullWidth: true
-                        }}
-                        inputProps={{
-                            type: "text"
-                            // placeholder: "Disabled",
-                            // disabled: true
-                        }}
-                        />
-                    </GridItem>
+                <GridContainer>
+                  <GridItem xs={6} sm={6} lg={6}>
+                    <CustomInput
+                      labelText="First Name"
+                      id="registerpassword"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "text"
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={6} sm={6} lg={6}>
+                    <CustomInput
+                      labelText="Last Name"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "text"
+                        // placeholder: "Disabled",
+                        // disabled: true
+                      }}
+                    />
+                  </GridItem>
                 </GridContainer>
                 <GridContainer>
-                  <GridItem xs={12} sm={2}>
-                    <FormLabel className={classes.labelHorizontal}>
-                      Email
-                    </FormLabel>
-                  </GridItem>
-                  <GridItem xs={12} sm={10}>
+                  <GridItem xs={12} sm={12} lg={12}>
                     <CustomInput
+                      labelText="E-Mail"
                       id="email"
                       formControlProps={{
                         fullWidth: true
@@ -124,14 +111,10 @@ class DeveloperForm extends React.Component {
                   </GridItem>
                 </GridContainer>
                 <GridContainer>
-                  <GridItem xs={12} sm={2}>
-                    <FormLabel className={classes.labelHorizontal}>
-                      Password
-                    </FormLabel>
-                  </GridItem>
-                  <GridItem xs={12} sm={10}>
+                  <GridItem xs={12} sm={12} lg={12}>
                     <CustomInput
                       id="pass"
+                      labelText="Password"
                       formControlProps={{
                         fullWidth: true
                       }}
@@ -142,95 +125,72 @@ class DeveloperForm extends React.Component {
                   </GridItem>
                 </GridContainer>
                 <GridContainer>
-                    <GridItem xs={6} sm={2}>
-                        <FormLabel className={classes.labelHorizontal}>
-                            Status
-                        </FormLabel>
-                    </GridItem>
-                    <GridItem xs={6} sm={4}>
-                        <CustomInput
-                        //   id="disabled"
-                        formControlProps={{
-                            fullWidth: true
-                        }}
-                        inputProps={{
-                            type: "text"
-                            // placeholder: "Disabled",
-                            // disabled: true
-                        }}
-                        />
-                    </GridItem>
-                    <GridItem xs={6} sm={2}>
-                        <FormLabel className={classes.labelHorizontal}>
-                            Rate
-                        </FormLabel>
-                    </GridItem>
-                    <GridItem xs={6} sm={4}>
-                        <CustomInput
-                        //   id="disabled"
-                        formControlProps={{
-                            fullWidth: true
-                        }}
-                        inputProps={{
-                            type: "text"
-                            // placeholder: "Disabled",
-                            // disabled: true
-                        }}
-                        />
-                    </GridItem>
+                  <GridItem xs={6} sm={6} lg={6}>
+                    <CustomInput
+                      labelText="Status"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "text"
+                        // placeholder: "Disabled",
+                        // disabled: true
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={6} sm={6} lg={6}>
+                    <CustomInput
+                      //   id="disabled"
+                      labelText="Rate"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "text"
+                        // placeholder: "Disabled",
+                        // disabled: true
+                      }}
+                    />
+                  </GridItem>
                 </GridContainer>
                 <GridContainer>
-                    <GridItem xs={6} sm={2}>
-                        <FormLabel className={classes.labelHorizontal}>
-                            Rate Unit
-                        </FormLabel>
-                    </GridItem>
-                    <GridItem xs={6} sm={4}>
-                        <CustomInput
-                        //   id="disabled"
-                        formControlProps={{
-                            fullWidth: true
-                        }}
-                        inputProps={{
-                            type: "text"
-                            // placeholder: "Disabled",
-                            // disabled: true
-                        }}
-                        />
-                    </GridItem>
-                    <GridItem xs={6} sm={2}>
-                        <FormLabel className={classes.labelHorizontal}>
-                            Currency
-                        </FormLabel>
-                    </GridItem>
-                    <GridItem xs={6} sm={4}>
-                        <CustomInput
-                        //   id="disabled"
-                        formControlProps={{
-                            fullWidth: true
-                        }}
-                        inputProps={{
-                            type: "text"
-                            // placeholder: "Disabled",
-                            // disabled: true
-                        }}
-                        />
-                    </GridItem>
-                    <GridItem xs={6} sm={5}>
-                    </GridItem>
-
-                    <GridItem xs={6} sm={4}>
-                        <Button style={{textAlign: 'center', backgroundColor: 'green'}}>
-                            Add
-                        </Button>
-                    </GridItem>
-
+                  <GridItem xs={6} sm={6} lg={6}>
+                    <CustomInput
+                      //   id="disabled"
+                      labelText="Rate Unit"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "text"
+                        // placeholder: "Disabled",
+                        // disabled: true
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={6} sm={6} lg={6}>
+                    <CustomInput
+                      //   id="disabled"
+                      labelText="Currency"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "text"
+                        // placeholder: "Disabled",
+                        // disabled: true
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={6} sm={4}>
+                    <Button color={"rose"}>Add</Button>
+                  </GridItem>
                 </GridContainer>
-                </form>
+              </form>
             </CardBody>
           </Card>
         </GridItem>
-        </GridContainer>
+      </GridContainer>
     );
   }
 }
