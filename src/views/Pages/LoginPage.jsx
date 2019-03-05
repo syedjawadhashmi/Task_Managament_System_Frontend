@@ -21,9 +21,9 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
-import axios from 'axios';
-import { baseUrl, _login } from '../../constant/api/api';
-
+// import axios from 'axios';
+// import { baseUrl, _login } from '../../constant/api/api';
+import firebase from "../../constant/api/firebase";
 import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
 
 class LoginPage extends React.Component {
@@ -50,33 +50,54 @@ class LoginPage extends React.Component {
     const {user_name, password} = this.state
     console.log('login pressed', user_name, password)
     debugger
-    axios.post(
-      `${baseUrl}${_login}`,
-      {
-        username: user_name,
-        password: password
-      }, 
-      {
-          headers: {
-              'Content-Type': 'application/json', 
-          }
-      },
-  )
-      .then((res) => {
-          console.log("success repsonse", res.data)
-          var user = res.data
-          // alert('successfull login')    
+    firebase.auth().signInWithEmailAndPassword(user_name, password)
+      .then(res => {
+          const user = res.user.toJSON();
+          var token = '';
+          firebase.auth().onAuthStateChanged(function(user) {
+              if (user) {
+                user.getIdToken().then(function(idToken) {
+                token = idToken
+                localStorage.setItem('user', user_name);
+                localStorage.setItem('token', token);      
+                this.props.history.push('/admin/developer');
+                console.log('idToken', token);
+              });
+              }
+          });        
+          alert('login success')
+          return user;
+      })
+      .catch(error => {
+          console.log('error', error)
+    });
+//     axios.post(
+//       `${baseUrl}${_login}`,
+//       {
+//         username: user_name,
+//         password: password
+//       }, 
+//       {
+//           headers: {
+//               'Content-Type': 'application/json', 
+//           }
+//       },
+//   )
+//       .then((res) => {
+//           console.log("success repsonse", res.data)
+//           var user = res.data
+//           // alert('successfull login')    
           
-          this.props.history.push('/admin/developer');
-          localStorage.setItem('user', user.username);
-          localStorage.setItem('token', user.token);
+          // this.props.history.push('/admin/developer');
+          // localStorage.setItem('user', user.username);
+          // localStorage.setItem('token', user.token);
 
 
-})
-      .catch((err) => {
-          console.log("error", err);
-          alert('error login')
-    })
+// })
+//       .catch((err) => {
+//           console.log("error", err);
+//           alert('error login')
+//     })
   }
 
 
@@ -109,22 +130,6 @@ class LoginPage extends React.Component {
                   <h4 className={classes.cardTitle}>Log in</h4>
                   <h5 className={classes.cardTitle}>SysProjects</h5>
                   <div className={classes.socialLine}>
-                    {/* {[
-                      "fab fa-facebook-square",
-                      "fab fa-twitter",
-                      "fab fa-google-plus"
-                    ].map((prop, key) => {
-                      return (
-                        <Button
-                          color="transparent"
-                          justIcon
-                          key={key}
-                          className={classes.customButtonClass}
-                        >
-                          <i className={prop} />
-                        </Button>
-                      );
-                    })} */}
                   </div>
                 </CardHeader>
                 <CardBody>
@@ -144,20 +149,6 @@ class LoginPage extends React.Component {
                       )
                     }}
                   />
-                  {/* <CustomInput
-                    labelText="Email..."
-                    id="email"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Email className={classes.inputAdornmentIcon} />
-                        </InputAdornment>
-                      )
-                    }}
-                  /> */}
                   <CustomInput
                     labelText="Password"
                     id="password"
