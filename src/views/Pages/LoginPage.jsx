@@ -52,7 +52,7 @@ class LoginPage extends React.Component {
     debugger
     firebase.auth().signInWithEmailAndPassword(user_name, password)
       .then(res => {
-          const user = res.user.toJSON();
+          const user = res.user;
           var token = '';
           firebase.auth().onAuthStateChanged(function(user) {
               if (user) {
@@ -60,13 +60,12 @@ class LoginPage extends React.Component {
                 token = idToken
                 localStorage.setItem('user', user_name);
                 localStorage.setItem('token', token);      
-                this.props.history.push('/admin/developer');
                 console.log('idToken', token);
               });
               }
           });        
+          this.props.history.push('/admin/developer');
           alert('login success')
-          return user;
       })
       .catch(error => {
           console.log('error', error)
