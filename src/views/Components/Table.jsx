@@ -210,7 +210,7 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-            <Button variant="contained" onClick={handleClickOpen} color="primary" id="tableTitle" className={classes.button}>
+            <Button variant="contained" color="primary" id="tableTitle" className={classes.button}>
               add
       </Button>
             // <Typography variant="h6" id="tableTitle">
@@ -405,6 +405,7 @@ class Tables extends React.Component {
                   return (
                     <TableRow
                       hover
+                      onClick={this.handleClickOpen}
                       // onClick={event => this.handleClick(event, n.id)}
                       role="checkbox"
                       aria-checked={isSelected}
