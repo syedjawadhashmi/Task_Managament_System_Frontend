@@ -94,11 +94,11 @@ class DeveloperForm extends React.Component {
     debugger
     e.preventDefault();
     const {firstName, lastName, email, password, status, currency, rate, rate_unit } = this.state
-    const customer = {
+    const developer = {
       firstName, lastName, email, password, status, currency, rate, rate_unit
     }
-    console.log('user', customer)
-    firebase.auth().createUserWithEmailAndPassword(customer.email, customer.password)
+    console.log('user', developer)
+    firebase.auth().createUserWithEmailAndPassword(developer.email, developer.password)
       .then(send => {
         var userId = firebase.auth().currentUser.uid;
         var user = firebase.auth().currentUser;
@@ -107,12 +107,12 @@ class DeveloperForm extends React.Component {
                   ref.set(
                     {
                       uid: userId,
-                      name: customer.firstName + customer.lastName,
-                      email: customer.email,
+                      name: developer.firstName + developer.lastName,
+                      email: developer.email,
                       role: "Developer",
-                      rate: customer.rate,
-                      rate_unit: customer.rate_unit,
-                      status: customer.status
+                      rate: developer.rate,
+                      rate_unit: developer.rate_unit,
+                      status: developer.status
                     }
               ).catch((error) => {
                 console.log("Error during user creating on firebase", error);
