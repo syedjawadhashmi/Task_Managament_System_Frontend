@@ -70,33 +70,6 @@ class LoginPage extends React.Component {
       .catch(error => {
           console.log('error', error)
     });
-//     axios.post(
-//       `${baseUrl}${_login}`,
-//       {
-//         username: user_name,
-//         password: password
-//       }, 
-//       {
-//           headers: {
-//               'Content-Type': 'application/json', 
-//           }
-//       },
-//   )
-//       .then((res) => {
-//           console.log("success repsonse", res.data)
-//           var user = res.data
-//           // alert('successfull login')    
-          
-          // this.props.history.push('/admin/developer');
-          // localStorage.setItem('user', user.username);
-          // localStorage.setItem('token', user.token);
-
-
-// })
-//       .catch((err) => {
-//           console.log("error", err);
-//           alert('error login')
-//     })
   }
 
 

@@ -16,6 +16,6 @@ const firebaseApp = firebase.initializeApp(config);
 //export firebase
 export default firebaseApp;
 
-// export const database = firebaseApp.firestore();
+export const database = firebaseApp.firestore();
 // export const messages = firebase.database().ref('/messages');
 // export const classifieds = firebase.database().ref('/classifieds');
