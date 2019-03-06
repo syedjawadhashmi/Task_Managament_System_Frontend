@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 // @material-ui/core components
-import withStyles from "@material-ui/core/styles/withStyles";
 import firebase from "../../constant/api/firebase";
 
 import FormLabel from "@material-ui/core/FormLabel";
@@ -28,10 +27,25 @@ import MailOutline from "@material-ui/icons/MailOutline";
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
 import Close from "@material-ui/icons/Close";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import { withStyles } from '@material-ui/core/styles';
 
 import { Grid } from '@material-ui/core';
 
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
+
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 150,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2,
+  },
+});
 
 class CustomerForm extends React.Component {
   constructor(props) {
@@ -91,6 +105,10 @@ class CustomerForm extends React.Component {
     this.setState({ email : e.target.value})
   }
 
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
   addCustomer = (e) => {
       debugger
       e.preventDefault();
@@ -100,30 +118,33 @@ class CustomerForm extends React.Component {
         firstName, lastName, email, password, customer, phone, contact, address, city, zip_code, 
       }
       console.log('user', customer_data)
-      // firebase.auth().createUserWithEmailAndPassword(customer.email, customer.password)
-      //   .then(send => {
-      //     var userId = firebase.auth().currentUser.uid;
-      //     var user = firebase.auth().currentUser;
-      //       console.log('user', user) 
-      //       const ref = firebase.database().ref("Developer/" + userId);
-      //               ref.set(
-      //                 {
-      //                   uid: userId,
-      //                   name: customer.firstName + customer.lastName,
-      //                   email: customer.email,
-      //                   role: "Developer",
-      //                   rate: customer.rate,
-      //                   rate_unit: customer.rate_unit,
-      //                   status: customer.status
-      //                 }
-      //           ).catch((error) => {
-      //             console.log("Error during user creating on firebase", error);
-      //           });
-      //           alert('Developer registered successfully');  
-      //         })
-      // .catch(error => {
-      //   alert (error)
-      // });
+      firebase.auth().createUserWithEmailAndPassword(customer_data.email, customer_data.password)
+        .then(send => {
+          var userId = firebase.auth().currentUser.uid;
+          var user = firebase.auth().currentUser;
+            console.log('user', user) 
+            const ref = firebase.database().ref("Customer/" + userId);
+                    ref.set(
+                      {
+                        uid: userId,
+                        name: firstName + lastName,
+                        email: email,
+                        role: "Customer",
+                        customer: customer,
+                        phone: phone,
+                        zip_code: zip_code,
+                        contact: contact,
+                        address: address,
+                        city: city
+                      }
+                ).catch((error) => {
+                  console.log("Error during user creating on firebase", error);
+                });
+                alert('Customer Registered Successfully');  
+              })
+      .catch(error => {
+        alert (error)
+      });
       this.setState({
         firstName: '', lastName: '', email: '', password: '', customer: '', phone: '', contact: '', address: '', city: '', zip_code: ''
       })    
@@ -214,8 +235,35 @@ class CustomerForm extends React.Component {
                 />
                 <Grid style={{ display: 'flex', flexWrap: "wrap" }} spacing={8}>
                   <GridItem xs={6} sm={6} md={4}>
-                    <FormControl
-                      style={{ minWidth: 150 }}
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel
+                      ref={ref => {
+                        this.InputLabelRef = ref;
+                      }}
+                      htmlFor="outlined-age-simple"
+                    >
+                      USD - US. dollar
+                    </InputLabel>
+                    <Select
+                      value={this.state.age}
+                      onChange={this.handleChange}
+                      input={
+                        <OutlinedInput
+                          labelWidth={this.state.labelWidth}
+                          name="age"
+                          id="outlined-age-simple"
+                        />
+                      }
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={10}>Ten</MenuItem>
+                      <MenuItem value={20}>Twenty</MenuItem>
+                      <MenuItem value={30}>Thirty</MenuItem>
+                    </Select>
+                  </FormControl>
+                    {/* <FormControl
                       variant="outlined"
                       className={classes.formControl}
                     >
@@ -229,7 +277,7 @@ class CustomerForm extends React.Component {
                         USD- US. dollar
                       </InputLabel>
                       <Select
-                        value={this.state.age}
+                        value={this.state.currency}
                         onChange={this.handleChange}
                         input={
                           <OutlinedInput
@@ -244,10 +292,10 @@ class CustomerForm extends React.Component {
                         <MenuItem value={20}>Twenty</MenuItem>
                         <MenuItem value={30}>Thirty</MenuItem>
                       </Select>
-                    </FormControl>
+                    </FormControl> */}
                   </GridItem>
                   <GridItem xs={6} sm={6} md={4}>
-                    <FormControl style={{ minWidth: 150 }} variant="outlined">
+                    <FormControl className={classes.formControl} variant="outlined">
                       <InputLabel
                         style={{ fontSize: 10 }}
                         ref={ref => {
@@ -282,7 +330,7 @@ class CustomerForm extends React.Component {
                 </Grid>
                 <Grid style={{ marginTop: 10, display: 'flex', flexWrap: "wrap" }} spacing={8}>
                   <GridItem xs={6} sm={6} md={4}>
-                    <FormControl style={{ minWidth: 150 }} variant="outlined">
+                    <FormControl className={classes.formControl} variant="outlined">
                       <InputLabel
                         style={{ fontSize: 10 }}
                         ref={ref => {
@@ -293,7 +341,6 @@ class CustomerForm extends React.Component {
                         Consultants
                       </InputLabel>
                       <Select
-                        // style={{ marginRight: -10 }}
                         value={this.state.age}
                         onChange={this.handleChange}
                         input={
@@ -314,7 +361,7 @@ class CustomerForm extends React.Component {
                     </FormControl>
                   </GridItem>
                   <GridItem xs={6} sm={6} md={6}>
-                    <FormControl style={{ minWidth: 150 }} variant="outlined">
+                    <FormControl className={classes.formControl} variant="outlined">
                       <InputLabel
                         style={{ fontSize: 10 }}
                         ref={ref => {
@@ -411,4 +458,4 @@ class CustomerForm extends React.Component {
   }
 }
 
-export default withStyles(regularFormsStyle)(CustomerForm);
+export default withStyles(styles)(CustomerForm);
