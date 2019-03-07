@@ -89,7 +89,7 @@ function CustomTable({ ...props }) {
               [classes[rowColor + "Row"]]: rowColored,
               [classes.tableStripedRow]: striped && key % 2 === 0
             });
-            // if (prop.total) {
+            if (prop.role === "Developer") {
               return (
                 <TableRow key={key} hover={hover} className={tableRowClasses}>
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{key}</TableCell>
@@ -103,8 +103,25 @@ function CustomTable({ ...props }) {
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{simpleButtons}</TableCell>
                 </TableRow>
               )
+            }else if (prop.role === "Customer"){
+              return (
+                <TableRow key={key} hover={hover} className={tableRowClasses}>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{key}</TableCell>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.name}</TableCell>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.email}</TableCell>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.customer}</TableCell>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.phone}</TableCell>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.city}</TableCell>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.address}</TableCell>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.contact}</TableCell>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.zip_code}</TableCell>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{simpleButtons}</TableCell>
+                </TableRow>
+              )
+            }
           })
         }
+        {}
         </TableBody>
       </Table>
     </div>

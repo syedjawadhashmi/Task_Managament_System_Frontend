@@ -49,9 +49,7 @@ class DeveloperLis extends React.Component {
     const { developers } = this.state
     console.log('dev', developers)
     const tableData = developers;
-    const { classes } = this.props;
-
-
+    
     const tableHead = [
       "#",
       "First Name",

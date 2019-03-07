@@ -20,9 +20,37 @@ import CardIcon from "components/Card/CardIcon.jsx";
 // import link for routing
 import { Link } from 'react-router-dom';
 
+import firebase from "../../constant/api/firebase";
+
 
 class CustomerList extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      customers : ''
+    }
+  }
+
+  componentDidMount() {
+    let arrdata = [];
+    let dataabase = firebase.database().ref("/Customer/");
+    dataabase.on("value", object => {
+      let data = object.val();
+      for (var x in data) arrdata.push(data[x]);
+      this.setState({
+        customers : arrdata
+      })
+      console.log("fetched data", arrdata);
+    });
+  }
+
+
   render() {
+
+    const { customers } = this.state
+    console.log('customer', customers)
+    const tableData = customers;
+
     const { classes } = this.props;
     const simpleButtons = [
       { color: "success", icon: Edit },
@@ -44,42 +72,47 @@ class CustomerList extends React.Component {
       "#",
       "Name",
       "Email",
+      "Customer",
       "Phone",
+      "City",
+      "Address",
+      "Contact",
+      "Zip Code",
       "Actions"
     ]
-    const tableData = [
-      [
-        "1",
-        "Andrew Mike",
-        "Andrew@Mike.com",
-        "+920231231",
-        simpleButtons
-      ],
-      ["2", "John Doe", "John@doe.com", "+920231231",
-        simpleButtons
-      ],
-      [
-        "3",
-        "Alex Mike",
-        "Alex@Mike.com",
-        "+2443324234",
-        simpleButtons
-      ],
-      [
-        "4",
-        "Mike Monday",
-        "Mike@Monday",
-        "+324263464",
-        simpleButtons
-      ],
-      [
-        "5",
-        "Paul Dickens",
-        "Paul@Dickens.com",
-        "+4537534215",
-        simpleButtons
-      ]
-    ]
+    // const tableData = [
+    //   [
+    //     "1",
+    //     "Andrew Mike",
+    //     "Andrew@Mike.com",
+    //     "+920231231",
+    //     simpleButtons
+    //   ],
+    //   ["2", "John Doe", "John@doe.com", "+920231231",
+    //     simpleButtons
+    //   ],
+    //   [
+    //     "3",
+    //     "Alex Mike",
+    //     "Alex@Mike.com",
+    //     "+2443324234",
+    //     simpleButtons
+    //   ],
+    //   [
+    //     "4",
+    //     "Mike Monday",
+    //     "Mike@Monday",
+    //     "+324263464",
+    //     simpleButtons
+    //   ],
+    //   [
+    //     "5",
+    //     "Paul Dickens",
+    //     "Paul@Dickens.com",
+    //     "+4537534215",
+    //     simpleButtons
+    //   ]
+    // ]
     console.log('data', tableData)
 
     return (
