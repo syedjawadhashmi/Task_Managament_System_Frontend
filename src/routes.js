@@ -10,13 +10,13 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import Image from "@material-ui/icons/Image";
 
 var dashRoutes = [
-  // {
-  //   path: "/developer",
-  //   name: "Developer",
-  //   icon: DashboardIcon,
-  //   component: Dashboard,
-  //   layout: "/admin"
-  // },
+  {
+    path: "/developer",
+    name: "Developer",
+    icon: DashboardIcon,
+    component: Dashboard,
+    layout: "/admin"
+  },
   {
     path: "/customer-page",
     name: "Customer",

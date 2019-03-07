@@ -20,101 +20,113 @@ import Fab from '@material-ui/core/Fab';
 // import link for routing
 import { Link } from 'react-router-dom';
 
+import firebase from "../../constant/api/firebase";
+
 
 
 class DeveloperLis extends React.Component {
-  render() {
-    const { classes } = this.props;
-    const simpleButtons = [
-      { color: "success", icon: Edit },
-      { color: "danger", icon: Close }
-    ].map((prop, key) => {
-      return (
-        <Button
-          color={prop.color}
-          simple
-          className={classes.actionButton}
-          key={key}
-        >
-          <prop.icon className={classes.icon} />
-        </Button>
-      );
+  constructor(){
+    super();
+    this.state = {
+      developers : ''
+    }
+  }
+
+  componentDidMount() {
+    let arrdata = [];
+    let dataabase = firebase.database().ref("/Developer/");
+    dataabase.on("value", object => {
+      let data = object.val();
+      for (var x in data) arrdata.push(data[x]);
+      this.setState({
+        developers : arrdata
+      })
+      console.log("fetched data", arrdata);
     });
+  }
+
+  render() {
+    const { developers } = this.state
+    console.log('dev', developers)
+    const tableData = developers;
+    const { classes } = this.props;
+
 
     const tableHead = [
       "#",
       "First Name",
       "Last Name",
       "Email",
-      "Password ",
+      // "Password ",
       "Status  ",
       "Rate ",
       "Rate Unit",
       "Currency",
       "Actions"
     ]
-    const tableData = [
-      [
-        "1",
-        "Andrew",
-        "Mike",
-        "Andrew@Mike.com",
-        "*******",
-        "Active",
-        "$50",
-        "Hourly",
-        "$",
-        simpleButtons
-      ],
-      [
-        "2",
-        "John",
-        "Doe",
-        "John@doe.com",
-        "*******",
-        "Active",
-        "$80",
-        "Hourly",
-        "$",
-        simpleButtons
-      ],
-      [
-        "3",
-        "Mike ",
-        "Monday",
-        "Monday@doe.com",
-        "*******",
-        "Suspended",
-        "$20",
-        "Man Day",
-        "$",
-        simpleButtons
-      ],
-      [
-        "4",
-        "Alex",
-        "Mike",
-        "Mike@Mike.com",
-        "*******",
-        "Active",
-        "$100",
-        "Man Day",
-        "$",
-        simpleButtons
-      ],
-      [
-        "4",
-        "Paul",
-        "Dones",
-        "Dones@Paul.com",
-        "*******",
-        "Suspend",
-        "N/A",
-        "Man Day",
-        "$",
-        simpleButtons
-      ],
-    ]
+
+    // const tableData = [
+    //   {
+    //     num :  "1",
+    //     firstName:  "Andrew",
+    //     lastName:   "Mike",
+    //     Email:   "Andrew@Mike.com",
+    //     Password:  "*******",
+    //     Status:  "Active",
+    //     rate:  "$50",
+    //     Rate_Unit:  "Hourly",
+    //     Currency:  "$",
+    //     Actions:  simpleButtons
+    //   },
+    //   // [
+    //   //   "2",
+    //   //   "John",
+    //   //   "Doe",
+    //   //   "John@doe.com",
+    //   //   "*******",
+    //   //   "Active",
+    //   //   "$80",
+    //   //   "Hourly",
+    //   //   "$",
+    //   //   simpleButtons
+    //   // ],
+    //   // [
+    //   //   "3",
+    //   //   "Mike ",
+    //   //   "Monday",
+    //   //   "Monday@doe.com",
+    //   //   "*******",
+    //   //   "Suspended",
+    //   //   "$20",
+    //   //   "Man Day",
+    //   //   "$",
+    //   //   simpleButtons
+    //   // ],
+    //   // [
+    //   //   "4",
+    //   //   "Alex",
+    //   //   "Mike",
+    //   //   "Mike@Mike.com",
+    //   //   "*******",
+    //   //   "Active",
+    //   //   "$100",
+    //   //   "Man Day",
+    //   //   "$",
+    //   //   simpleButtons
+    //   // ],
+    //   // [
+    //   //   "4",
+    //   //   "Paul",
+    //   //   "Dones",
+    //   //   "Dones@Paul.com",
+    //   //   "*******",
+    //   //   "Suspend",
+    //   //   "N/A",
+    //   //   "Man Day",
+    //   //   "$",
+    //   //   simpleButtons
+    //   // ],
+    // ]
     // console.log('data', tableData)
 
     return (

@@ -108,10 +108,13 @@ class DeveloperForm extends React.Component {
                     {
                       uid: userId,
                       name: developer.firstName + developer.lastName,
+                      firstName: firstName,
+                      lastName: lastName,
                       email: developer.email,
                       role: "Developer",
                       rate: developer.rate,
                       rate_unit: developer.rate_unit,
+                      currency: developer.currency,
                       status: developer.status
                     }
               ).catch((error) => {

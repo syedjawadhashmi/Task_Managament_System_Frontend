@@ -105,7 +105,7 @@ class CustomerList extends React.Component {
                     >
                       {/* <NavigationIcon className={classes.extendedIcon} /> */}
                       Add a Customer
-                                        </Button>
+                    </Button>
                   </Link>
                 </GridItem>
                 <ExtendedTables tableHead={tableHead} tableData={tableData} />
