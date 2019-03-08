@@ -236,46 +236,21 @@ class CustomerForm extends React.Component {
   };
   addCustomer = e => {
     e.preventDefault();
-    const { customer, phone, contact, password, address, city, zip_code, firstName, lastName, email, USD, Country, Consultant, ProductOwner } = this.state
+    const { email, customer, phone, contact, address, city, zip_code, USD, Country, Consultant, ProductOwner } = this.state
 
     const customer_data = {
-      firstName, lastName, email, password, customer, phone, contact, address, city, zip_code, USD, Country, Consultant, ProductOwner
+      email, customer, phone, contact, address, city, zip_code, USD, Country, Consultant, ProductOwner, role: "Customer"
     };
     console.log('user', customer_data)
-    firebase.auth().createUserWithEmailAndPassword(customer_data.email, customer_data.password)
-      .then(send => {
-        var userId = firebase.auth().currentUser.uid;
-        var user = firebase.auth().currentUser;
-        console.log('user', user)
-        const ref = firebase.database().ref("Customer/" + userId);
-        ref.set(
-          {
-            uid: userId,
-            name: firstName + lastName,
-            email: email,
-            type: "Customer",
-            customer: customer,
-            phone: phone,
-            zip_code: zip_code,
-            contact: contact,
-            address: address,
-            city: city,
-            USD: USD,
-            Country: Country,
-            Consultant: Consultant,
-            ProductOwner: ProductOwner
-          })
-          .catch(error => {
-            console.log("Error during user creating on firebase", error);
-          });
-        alert("Customer Registered Successfully");
-      })
-      .catch(error => {
-        alert(error);
-      });
+      const ref = firebase.database().ref("Customer");
+      ref.push(customer_data)
+        .catch(error => {
+          console.log("Error during user add on firebase", error);
+        });
+      alert("Customer Registered Successfully");
     this.setState({ firstName: "", lastName: "", email: "", password: "", customer: "", phone: "", contact: "", address: "", city: "", zip_code: "", USD: "", Country: "", Consultant: "", ProductOwner: "" });
   };
-
+  
   render() {
     const { classes } = this.props;
     const { customer, phone, contact, address, city, zip_code, firstName, lastName, email, password, ProductOwnerfirstName, ProductOwnerlastName, ProductOwneremail, ProductOwnerpassword,ConsultantfirstName, ConsultantlastName, Consultantemail, Consultantpassword } = this.state
@@ -300,6 +275,18 @@ class CustomerForm extends React.Component {
                   value={customer}
                   inputProps={{
                     type: 'text'
+                  }}
+                />
+                 <CustomInput
+                  labelText="Email Address *"
+                  id="registeremail"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  onChange={this.handleEmailChange}
+                  value={email}
+                  inputProps={{
+                    type: "email"
                   }}
                 />
                 <CustomInput
@@ -477,8 +464,7 @@ class CustomerForm extends React.Component {
                     </FormControl>
                   </GridItem>
                 </Grid>
-                {/* </GridContainer> */}
-                {/* <GridContainer> */}
+                {/* </GridContainer>
                 <CustomInput
                   labelText="First Name *"
                   formControlProps={{
@@ -524,7 +510,7 @@ class CustomerForm extends React.Component {
                   inputProps={{
                     type: "password"
                   }}
-                />
+                /> */}
                 <Button
                   color="rose"
                   onClick={this.addCustomer}

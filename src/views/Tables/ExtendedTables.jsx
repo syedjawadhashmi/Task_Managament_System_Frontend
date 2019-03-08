@@ -39,7 +39,7 @@ class ExtendedTables extends React.Component {
     });
   }
   render() {
-    const { classes, tableHead, tableData } = this.props;
+    const { classes, tableHead, tableData, deleteUser } = this.props;
     return (
       <GridContainer>
         <GridItem xs={12}>
@@ -48,6 +48,7 @@ class ExtendedTables extends React.Component {
               <Table
                 tableHead={tableHead}
                 tableData={tableData}
+                deleteUser={deleteUser}
                 customCellClasses={[
                   classes.center,
                   classes.right,

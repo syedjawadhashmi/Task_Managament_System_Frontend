@@ -27,11 +27,17 @@ class CustomerList extends React.Component {
   constructor(){
     super();
     this.state = {
-      customers : ''
+      customers : []
     }
+    this.deleteCustomer = this.deleteCustomer.bind(this);
   }
 
   componentDidMount() {
+    this.show_user();
+  }
+
+
+  show_user = () => {
     let arrdata = [];
     let dataabase = firebase.database().ref("/Customer/");
     dataabase.on("value", object => {
@@ -42,6 +48,19 @@ class CustomerList extends React.Component {
       })
       console.log("fetched data", arrdata);
     });
+  }
+
+  deleteCustomer (key) {
+    console.log('key',key)
+    // let fetchpost = this.state.customers;
+    // console.log('delete', fetchpost)
+    // firebase.database().ref("Customer").child(key).remove().then(() => {
+    //     fetchpost.splice(v , 1);
+    //     this.setState({
+    //         customers : fetchpost
+    //     });
+    //     this.show_user();
+    // })
   }
 
 
@@ -72,7 +91,6 @@ class CustomerList extends React.Component {
       "#",
       "Name",
       "Email",
-      "Customer",
       "Phone",
       "City",
       "Address",
@@ -141,7 +159,7 @@ class CustomerList extends React.Component {
                     </Button>
                   </Link>
                 </GridItem>
-                <ExtendedTables tableHead={tableHead} tableData={tableData} />
+                <ExtendedTables tableHead={tableHead} tableData={tableData} deleteUser={this.deleteCustomer} />
               </GridContainer>
             </CardBody>
           </Card>

@@ -21,6 +21,7 @@ function CustomTable({ ...props }) {
     tableData,
     tableHeaderColor,
     hover,
+    deleteUser,
     colorsColls,
     coloredColls,
     customCellClasses,
@@ -31,21 +32,26 @@ function CustomTable({ ...props }) {
     customHeadClassesForCells
   } = props;
 
-  const simpleButtons = [
-    { color: "success", icon: Edit },
-    { color: "danger", icon: Close }
-  ].map((prop, key) => {
-    return (
-      <Button
-        color={prop.color}
-        simple
-        className={classes.actionButton}
-        key={key}
-      >
-        <prop.icon className={classes.icon} />
-      </Button>
-    );
-  });
+
+  // var editButton = index =>
+  //   (<Button 
+  //       simple
+  //       className={classes.actionButton}
+  //       color="success"  onClick={() => console.log("editButton")}>
+  //     {/* <Edit color="secondary" /> */}
+  //     edit
+  //   </Button>
+  // );
+
+  // var deleteButton = index =>
+  //   (<Button color="danger"
+  //     simple
+  //     className={classes.actionButton}
+  //     onClick={() => console.log("delete")}>
+  //     {/* <Close color="danger" /> */}
+  //     delete
+  //   </Button>
+  // );
 
   return (
     <div className={classes.tableResponsive}>
@@ -84,6 +90,7 @@ function CustomTable({ ...props }) {
               rowColored = true;
               prop = prop.data;
             }
+            console.log('Keyy', key)
             const tableRowClasses = cx({
               [classes.tableRowHover]: hover,
               [classes[rowColor + "Row"]]: rowColored,
@@ -100,32 +107,65 @@ function CustomTable({ ...props }) {
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.rate}</TableCell>
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.rate_unit}</TableCell>
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.currency}</TableCell>
-                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{simpleButtons}</TableCell>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>
+                    <EditButton/>
+                    <DeleteButton deleteUser={deleteUser}/>
+                    {/* {editButton}{deleteButton} */}
+                   </TableCell>
                 </TableRow>
               )
             } else if (prop.role === "Customer") {
               return (
                 <TableRow key={key} hover={hover} className={tableRowClasses}>
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{key}</TableCell>
-                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.name}</TableCell>
-                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.email}</TableCell>
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.customer}</TableCell>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.email}</TableCell>
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.phone}</TableCell>
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.city}</TableCell>
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.address}</TableCell>
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.contact}</TableCell>
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{prop.zip_code}</TableCell>
-                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>{simpleButtons}</TableCell>
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan}>
+                    {/* {editButton}{deleteButton} */}
+                    <EditButton/>
+                    <DeleteButton key={key} deleteUser={deleteUser}/>
+                  </TableCell>
                 </TableRow>
               )
             }
           })
           }
-          {}
         </TableBody>
       </Table>
     </div>
   );
+}
+
+class EditButton extends React.Component {
+  render(){
+    return(
+      <Button color="success"
+        simple
+          onClick={() => console.log("delete")}>
+        <Edit color="success" />
+      </Button>
+    )
+  }
+}
+
+class DeleteButton extends React.Component {
+  render(){
+    const { key } = this.props;
+    console.log('key', key)
+    return(
+      <Button color="danger"
+        simple
+        onClick={() => this.props.deleteUser(key)}>
+        <Close color="danger" />
+        {/* delete */}
+      </Button>
+    )
+  }
 }
 
 CustomTable.defaultProps = {
