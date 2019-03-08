@@ -67,6 +67,12 @@ $body-bg: #eeeeee !default;
 .Sidebar-collapseItemLink-800.Sidebar-blue-812.active{
   display: none !important;
 }
+.dropdowngrid{
+  display: flex;
+}
+.form-control{
+  min-width: 100% !important;
+}
 // import bs variables for sass, first declared wins.
 $bootstrap-sass-asset-helper: false !default;
 //

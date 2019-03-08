@@ -103,7 +103,7 @@ function CustomTable({ ...props }) {
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{simpleButtons}</TableCell>
                 </TableRow>
               )
-            }else if (prop.role === "Customer"){
+            } else if (prop.role === "Customer") {
               return (
                 <TableRow key={key} hover={hover} className={tableRowClasses}>
                   <TableCell className={classes.tableCell} colSpan={prop.colspan}>{key}</TableCell>
@@ -120,8 +120,8 @@ function CustomTable({ ...props }) {
               )
             }
           })
-        }
-        {}
+          }
+          {}
         </TableBody>
       </Table>
     </div>

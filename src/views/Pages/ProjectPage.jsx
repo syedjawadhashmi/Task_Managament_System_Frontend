@@ -1,18 +1,24 @@
-import React, { Component } from 'react';
+// eslint-disable-next-line no-unused-vars
+import React, { Component } from "react";
 // @material-ui/core
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+// eslint-disable-next-line no-unused-vars
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 // core components
+// eslint-disable-next-line no-unused-vars
 import GridContainer from "components/Grid/GridContainer.jsx";
+// eslint-disable-next-line no-unused-vars
 import GridItem from "components/Grid/GridItem.jsx";
-import Table from '../Components/Table';
+// eslint-disable-next-line no-unused-vars
+import Table from "../Components/Table";
+
 const drawerWidth = 240;
 
 const styles = theme => ({
     root: {
-        display: 'flex',
+        display: "flex",
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
@@ -26,14 +32,14 @@ const styles = theme => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
+        padding: theme.spacing.unit * 3
     },
-    toolbar: theme.mixins.toolbar,
+    toolbar: theme.mixins.toolbar
 });
 
 class ProjectPage extends Component {
     state = {
-        open: false,
+        open: false
     };
 
     handleDrawerOpen = () => {
@@ -50,7 +56,7 @@ class ProjectPage extends Component {
             <div >
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
-                    <CssBaseline />
+                        <CssBaseline />
                         <div className={classes.toolbar} />
                         <Table />
                     </GridItem>
@@ -60,6 +66,6 @@ class ProjectPage extends Component {
     }
 }
 ProjectPage.propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired
 };
 export default withStyles(styles)(ProjectPage);

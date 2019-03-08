@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from "firebase";
 
 // Initialize Firebase
 var config = {
@@ -11,11 +11,8 @@ var config = {
 };
 
 const firebaseApp = firebase.initializeApp(config);
-
-
 //export firebase
 export default firebaseApp;
-
 export const database = firebaseApp.firestore();
 // export const messages = firebase.database().ref('/messages');
 // export const classifieds = firebase.database().ref('/classifieds');

@@ -11,6 +11,11 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 import firebase from "../../constant/api/firebase";
 
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
@@ -22,7 +27,7 @@ class DeveloperForm extends React.Component {
       checked: [24, 22],
       selectedValue: null,
       selectedEnabled: "b",
-      
+
       firstName: "",
       lastName: "",
       email: "",
@@ -30,7 +35,7 @@ class DeveloperForm extends React.Component {
       status: "",
       rate: "",
       rate_unit: "",
-      currency: "",
+      currency: ""
 
     };
     this.handleChange = this.handleChange.bind(this);
@@ -59,41 +64,41 @@ class DeveloperForm extends React.Component {
   }
 
   handleFirstNameChange = (e) => {
-    this.setState({ firstName : e.target.value})
+    this.setState({ firstName: e.target.value });
   }
 
   handleLastNameChange = (e) => {
-    this.setState({ lastName : e.target.value})
+    this.setState({ lastName: e.target.value });
   }
-  
+
   handleEmailChange = (e) => {
-    this.setState({ email : e.target.value})
+    this.setState({ email: e.target.value });
   }
 
   handlePassChange = (e) => {
-    this.setState({ password : e.target.value})
+    this.setState({ password: e.target.value });
   }
-  
+
   handleStatusChange = (e) => {
-    this.setState({ status : e.target.value})
+    this.setState({ status: e.target.value });
   }
 
   handleRateChange = (e) => {
-    this.setState({ rate : e.target.value})
+    this.setState({ rate: e.target.value });
   }
 
   handleRateUnitChange = (e) => {
-    this.setState({ rate_unit : e.target.value})
+    this.setState({ rate_unit: e.target.value });
   }
 
   handleCurrencyChange = (e) => {
-    this.setState({ currency : e.target.value})
+    this.setState({ currency: e.target.value });
   }
 
   addDeveloper = (e) => {
     debugger
     e.preventDefault();
-    const {firstName, lastName, email, password, status, currency, rate, rate_unit } = this.state
+    const { firstName, lastName, email, password, status, currency, rate, rate_unit } = this.state
     const developer = {
       firstName, lastName, email, password, status, currency, rate, rate_unit
     }
@@ -102,34 +107,32 @@ class DeveloperForm extends React.Component {
       .then(send => {
         var userId = firebase.auth().currentUser.uid;
         var user = firebase.auth().currentUser;
-          console.log('user', user) 
-          const ref = firebase.database().ref("Developer/" + userId);
-                  ref.set(
-                    {
-                      uid: userId,
-                      name: developer.firstName + developer.lastName,
-                      firstName: firstName,
-                      lastName: lastName,
-                      email: developer.email,
-                      role: "Developer",
-                      rate: developer.rate,
-                      rate_unit: developer.rate_unit,
-                      currency: developer.currency,
-                      status: developer.status
-                    }
-              ).catch((error) => {
-                console.log("Error during user creating on firebase", error);
-              });
-              alert('Developer registered successfully');  
-            })
-    .catch(error => {
-      alert (error)
-    });
+        console.log('user', user)
+        const ref = firebase.database().ref("Developer/" + userId);
+        ref.set(
+          {
+            uid: userId,
+            name: developer.firstName + developer.lastName,
+            firstName: firstName,
+            lastName: lastName,
+            email: developer.email,
+            role: "Developer",
+            rate: developer.rate,
+            rate_unit: developer.rate_unit,
+            currency: developer.currency,
+            status: developer.status
+          }
+        ).catch((error) => {console.log("Error during user creating on firebase", error);});
+        alert("Developer registered successfully");
+      })
+      .catch(error => {
+        alert(error);
+      });
     this.setState({
       firstName: '', lastName: '', email: '', password: '', status: '', currency: '', rate: '', rate_unit: ''
-    })
-  }
-    
+    });
+  };
+
   render() {
     const { classes } = this.props;
     const { firstName, lastName, email, password, status, rate, rate_unit, currency } = this.state;
@@ -159,7 +162,6 @@ class DeveloperForm extends React.Component {
                       }}
                       onChange={this.handleFirstNameChange}
                       value={firstName}
-                      
                     />
                   </GridItem>
                   <GridItem xs={6} sm={6} lg={6}>
@@ -204,7 +206,6 @@ class DeveloperForm extends React.Component {
                       }}
                       onChange={this.handlePassChange}
                       value={password}
-                      
                       inputProps={{
                         type: "password"
                       }}
@@ -213,18 +214,29 @@ class DeveloperForm extends React.Component {
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={6} sm={6} lg={6}>
-                    <CustomInput
-                      labelText="Status"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        type: "text"
-                      }}
-                      onChange={this.handleStatusChange}
-                      value={status}
-                      
-                    />
+                  <FormControl style={{marginTop:10}} className={[classes.formControl, 'form-control']} variant="outlined">
+                      <InputLabel
+                        style={{ fontSize: 10 }}
+                        ref={ref => {
+                          this.InputLabelRef = ref;
+                        }}
+                        htmlFor="outlined-age-simple"
+                      >
+                        Status
+                      </InputLabel>
+                      <Select
+                        value={this.state.status}
+                        onChange={this.handleStatusChange}
+                        // displayEmpty
+                        inputProps={{
+                          name: 'age',
+                          id: 'age-simple',
+                        }}
+                      >
+                        <MenuItem value={10}>Active</MenuItem>
+                        <MenuItem value={20}>Deactive</MenuItem>
+                      </Select>
+                    </FormControl>
                   </GridItem>
                   <GridItem xs={6} sm={6} lg={6}>
                     <CustomInput
@@ -240,7 +252,7 @@ class DeveloperForm extends React.Component {
                       }}
                       onChange={this.handleRateChange}
                       value={rate}
-                      
+
                     />
                   </GridItem>
                 </GridContainer>

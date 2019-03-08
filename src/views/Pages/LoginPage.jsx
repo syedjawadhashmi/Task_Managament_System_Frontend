@@ -64,7 +64,7 @@ class LoginPage extends React.Component {
             });
           }
         });
-        this.props.history.push('/admin/developer');
+        this.props.history.push('/admin/customer-page');
         alert('login success')
       })
       .catch(error => {

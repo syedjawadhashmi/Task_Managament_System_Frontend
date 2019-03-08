@@ -1,34 +1,41 @@
-import React from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import CloseIcon from '@material-ui/icons/Close';
-import Icon from '@material-ui/core/Icon';
-import FormControl from '@material-ui/core/FormControl';
-import InputBase from '@material-ui/core/InputBase';
-import Avatar from '@material-ui/core/Avatar';
-import profile from '../../assets/img/faces/avatar.jpg'
+import React from "react";
+import classNames from "classnames";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Checkbox from "@material-ui/core/Checkbox";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
+import DeleteIcon from "@material-ui/icons/Delete";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import { lighten } from "@material-ui/core/styles/colorManipulator";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import CloseIcon from "@material-ui/icons/Close";
+import CustomInput from "components/CustomInput/CustomInput.jsx";
+import Icon from "@material-ui/core/Icon";
+import FormControl from "@material-ui/core/FormControl";
+import InputBase from "@material-ui/core/InputBase";
+import Select from '@material-ui/core/Select';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import Avatar from "@material-ui/core/Avatar";
+import profile from "../../assets/img/faces/avatar.jpg";
+import firebase from "../../constant/api/firebase";
+
 const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -36,10 +43,10 @@ const DialogTitle = withStyles(theme => ({
     padding: theme.spacing.unit * 2,
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     right: theme.spacing.unit,
     top: theme.spacing.unit,
-    color: theme.palette.grey[500],
+    color: theme.palette.grey[500]
   },
 }))(props => {
   const { children, classes, onClose } = props;
@@ -96,20 +103,20 @@ function stableSort(array, cmp) {
 }
 
 function getSorting(order, orderBy) {
-  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+  return order === "desc" ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
 }
 
 const rows = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Project' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Category' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Total Summary' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Status' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Last Updated' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Assigned' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Priority' },
-  // { id: 'fat', numeric: true, disablePadding: false, label: 'Deadline' },
-  // { id: 'carbs', numeric: true, disablePadding: false, label: 'Customer' },
-  // { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  { id: "name", numeric: false, disablePadding: true, label: "Project" },
+  { id: "calories", numeric: true, disablePadding: false, label: "Category" },
+  { id: "fat", numeric: true, disablePadding: false, label: "Total Summary" },
+  { id: "carbs", numeric: true, disablePadding: false, label: "Status" },
+  { id: "protein", numeric: true, disablePadding: false, label: "Last Updated" },
+  { id: "protein", numeric: true, disablePadding: false, label: "Assigned" },
+  { id: "fat", numeric: true, disablePadding: false, label: "Priority" },
+  // { id: "fat", numeric: true, disablePadding: false, label: "Deadline" },
+  // { id: "carbs", numeric: true, disablePadding: false, label: "Customer" },
+  // { id: "protein", numeric: true, disablePadding: false, label: "Protein (g)" },
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -134,13 +141,13 @@ class EnhancedTableHead extends React.Component {
             row => (
               <TableCell
                 key={row.id}
-                align={row.numeric ? 'right' : 'left'}
-                padding={row.disablePadding ? 'none' : 'default'}
+                align={row.numeric ? "right" : "left"}
+                padding={row.disablePadding ? "none" : "default"}
                 sortDirection={orderBy === row.id ? order : false}
               >
                 <Tooltip
                   title="Sort"
-                  placement={row.numeric ? 'bottom-end' : 'bottom-start'}
+                  placement={row.numeric ? "bottom-end" : "bottom-start"}
                   enterDelay={300}
                 >
                   <TableSortLabel
@@ -175,7 +182,7 @@ const toolbarStyles = theme => ({
     paddingRight: theme.spacing.unit,
   },
   highlight:
-    theme.palette.type === 'light'
+    theme.palette.type === "light"
       ? {
         color: theme.palette.secondary.main,
         backgroundColor: lighten(theme.palette.secondary.light, 0.85),
@@ -185,18 +192,18 @@ const toolbarStyles = theme => ({
         backgroundColor: theme.palette.secondary.dark,
       },
   spacer: {
-    flex: '1 1 100%',
+    flex: "1 1 100%",
   },
   actions: {
     color: theme.palette.text.secondary,
   },
   title: {
-    flex: '0 0 auto',
+    flex: "0 0 auto",
   },
 });
 
 let EnhancedTableToolbar = props => {
-  const { numSelected, classes, handleClickOpen } = props;
+  const { numSelected, classes, projecthandleClickOpen } = props;
 
   return (
     <Toolbar
@@ -210,9 +217,9 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-            <Button variant="contained" color="primary" id="tableTitle" className={classes.button}>
+            <Button variant="contained" onClick={projecthandleClickOpen} color="primary" id="tableTitle" className={classes.button}>
               add
-      </Button>
+          </Button>
             // <Typography variant="h6" id="tableTitle">
             //   Nutrition
             // </Typography>
@@ -248,42 +255,42 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: "100%",
     marginTop: theme.spacing.unit * 3,
   },
   table: {
     minWidth: 1020,
   },
   tableWrapper: {
-    overflowX: 'auto',
+    overflowX: "auto",
   },
   bootstrapInput: {
     borderRadius: 4,
-    position: 'relative',
+    position: "relative",
     backgroundColor: theme.palette.common.white,
-    border: '1px solid #ced4da',
+    border: "1px solid #ced4da",
     fontSize: 16,
-    width: '500px',
-    height: '50px',
-    padding: '10px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    width: "500px",
+    height: "50px",
+    padding: "10px 12px",
+    transition: theme.transitions.create(["border-color", "box-shadow"]),
     // Use the system font instead of the default Roboto font.
     fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-    '&:focus': {
+      "-apple-system",
+      "BlinkMacSystemFont",
+      "'Segoe UI'",
+      "Roboto",
+      "'Helvetica Neue'",
+      "Arial",
+      "sans-serif",
+      "'Apple Color Emoji'",
+      "'Segoe UI Emoji'",
+      "'Segoe UI Symbol'",
+    ].join(","),
+    "&:focus": {
       borderRadius: 4,
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+      borderColor: "#80bdff",
+      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
     },
   },
   bootstrapFormLabel: {
@@ -297,35 +304,41 @@ const styles = theme => ({
 
 class Tables extends React.Component {
   state = {
-    order: 'asc',
-    orderBy: 'calories',
+    order: "asc",
+    orderBy: "calories",
+    newProjectName: "",
+    Consultants: "",
+    ProductOwner: "",
     open: false,
+    projectopen: false,
     selected: [],
     data: [
-      createData('Cupcake', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 3.7, 67, 4.3, 305, 3.7, 67, 4.3),
-      createData('Donut', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 25.0, 51, 4.9),
-      createData('Eclair', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 16.0, 24, 6.0),
-      createData('Frozen yoghurt', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 6.0, 24, 4.0),
-      createData('Gingerbread', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 16.0, 49, 3.9),
-      createData('Honeycomb', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 3.2, 87, 6.5),
-      createData('Ice cream sandwich', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 9.0, 37, 4.3),
-      createData('Jelly Bean', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 0.0, 94, 0.0),
-      createData('KitKat', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 26.0, 65, 7.0),
-      createData('Lollipop', 392, <div><span>mandal</span><span>agent created</span></div>, 98, 0.0),
-      createData('Marshmallow', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 0, 81, 2.0),
-      createData('Nougat', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 19.0, 9, 37.0),
-      createData('Oreo', <span style={{ color: 'white', fontSize: 10, backgroundColor: 'grey', padding: 2 }}>agent created</span>, 18.0, 63, 4.0),
+      createData("Cupcake", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 3.7, 67, 4.3, 305, 3.7, 67, 4.3),
+      createData("Donut", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 25.0, 51, 4.9),
+      createData("Eclair", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 16.0, 24, 6.0),
+      createData("Frozen yoghurt", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 6.0, 24, 4.0),
+      createData("Gingerbread", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 16.0, 49, 3.9),
+      createData("Honeycomb", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 3.2, 87, 6.5),
+      createData("Ice cream sandwich", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 9.0, 37, 4.3),
+      createData("Jelly Bean", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 0.0, 94, 0.0),
+      createData("KitKat", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 26.0, 65, 7.0),
+      createData("Lollipop", 392, <div><span>mandal</span><span>agent created</span></div>, 98, 0.0),
+      createData("Marshmallow", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 0, 81, 2.0),
+      createData("Nougat", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 19.0, 9, 37.0),
+      createData("Oreo", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 18.0, 63, 4.0),
     ],
     page: 0,
-    rowsPerPage: 5,
+    rowsPerPage: 5
   };
-
+  handleProjectNameChange = e => {
+    this.setState({ newProjectName: e.target.value });
+  };
   handleRequestSort = (event, property) => {
     const orderBy = property;
-    let order = 'desc';
+    let order = "desc";
 
-    if (this.state.orderBy === property && this.state.order === 'desc') {
-      order = 'asc';
+    if (this.state.orderBy === property && this.state.order === "desc") {
+      order = "asc";
     }
 
     this.setState({ order, orderBy });
@@ -353,7 +366,7 @@ class Tables extends React.Component {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
 
@@ -367,6 +380,12 @@ class Tables extends React.Component {
   handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
   };
+  handleChangeConsultants = e => {
+    this.setState({ Consultants: e.target.value });
+  };
+  handleChangeProductOwner = e => {
+    this.setState({ ProductOwner: e.target.value });
+  };
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
@@ -375,18 +394,48 @@ class Tables extends React.Component {
       open: true
     });
   };
+  projecthandleClickOpen = () => {
+    this.setState({
+      projectopen: true
+    });
+  };
 
   handleClose = () => {
     this.setState({ open: false });
   };
+  projecthandleClose = () => {
+    this.setState({ projectopen: false });
+  };
+  addNewProject = e => {
+    e.preventDefault();
+    const { newProjectName, Consultants, ProductOwner } = this.state;
+    var userId = firebase.auth().currentUser.uid;
+    const ref = firebase.database().ref("Projects/" + userId);
+    ref.push({
+        uid: userId,
+        newProjectName: newProjectName,
+        Consultant: Consultants,
+        ProductOwner: ProductOwner
+      })
+      .catch(error => {
+        console.log("Error during user creating on firebase", error);
+      });
+    alert("Project Add Successfully");
+    this.setState({
+      newProjectName: "",
+      ProductOwner: "",
+      Consultants: "",
+      projectopen: false
+    });
+  };
   render() {
     const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const { data, order, orderBy, selected, rowsPerPage, page, newProjectName } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
       <Paper className={classes.root}>
-        <EnhancedTableToolbar handleClickOpen={this.handleClickOpen} numSelected={selected.length} />
+        <EnhancedTableToolbar projecthandleClickOpen={this.projecthandleClickOpen} numSelected={selected.length} />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -446,10 +495,10 @@ class Tables extends React.Component {
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
-            'aria-label': 'Previous Page',
+            "aria-label": "Previous Page",
           }}
           nextIconButtonProps={{
-            'aria-label': 'Next Page',
+            "aria-label": "Next Page",
           }}
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
@@ -461,7 +510,7 @@ class Tables extends React.Component {
         >
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
             <Icon style={{ paddingTop: 5 }}>comment</Icon>Comments
-            <p style={{ fontSize: 'x-small' }}>Hawaji Tourism</p>
+            <p style={{ fontSize: "x-small" }}>Hawaji Tourism</p>
           </DialogTitle>
           <DialogContent>
             <FormControl className={classes.margin}>
@@ -474,27 +523,61 @@ class Tables extends React.Component {
                   input: classes.bootstrapInput,
                 }}
               />
-              <div style={{ backgroundColor: '#eee', color: 'rgb(180, 182, 187)', padding: 5, width: 120, textAlign: 'center', marginTop: 5, marginLeft: '77%' }}>Post Comment</div>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-              }}>
-                <Avatar alt="Remy Sharp" src={profile} className={classes.avatar} />
+              <div
+                style={{
+                  backgroundColor: "#eee",
+                  color: "rgb(180, 182, 187)",
+                  padding: 5,
+                  width: 120,
+                  textAlign: "center",
+                  marginTop: 5,
+                  marginLeft: "77%"
+                }}
+              >
+                Post Comment
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row"
+                }}
+              >
+                <Avatar
+                  alt="Remy Sharp"
+                  src={profile}
+                  className={classes.avatar}
+                />
                 <Paper className={classes.root} elevation={1}>
-                  <Typography style={{ margin: 10 }} variant="h6" component="h4">
+                  <Typography
+                    style={{
+                      margin: 10
+                    }}
+                    variant="h6"
+                    component="h4"
+                  >
                     Nikhil Gaekward <span style={{ fontSize: 12 }}> Now</span>
                   </Typography>
                   <Typography style={{ margin: 10 }} component="p">
                     why is there a drop in visitors going to the island?
-                   <p style={{ color: 'rgb(0, 0, 255)' }}>@Alan Wright</p>
+                    <p
+                      style={{
+                        color: "rgb(0, 0, 255)"
+                      }}
+                    >
+                      @Alan Wright
+                    </p>
                   </Typography>
-                  <Button><Icon>reply</Icon>reply</Button>
+                  <Button>
+                    <Icon>reply</Icon>reply
+                  </Button>
                 </Paper>
               </div>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-              }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row"
+                }}
+              >
                 <Avatar alt="Remy Sharp" src={profile} className={classes.avatar} />
                 <Paper className={classes.root} elevation={1}>
                   <Typography style={{ margin: 10 }} variant="h6" component="h4">
@@ -502,14 +585,14 @@ class Tables extends React.Component {
                   </Typography>
                   <Typography style={{ margin: 10 }} component="p">
                     why is there a drop in visitors going to the island?
-                   <p style={{ color: 'rgb(0, 0, 255)' }}>@Alan Wright</p>
+                   <p style={{ color: "rgb(0, 0, 255)" }}>@Alan Wright</p>
                   </Typography>
                   <Button><Icon>reply</Icon>reply</Button>
                 </Paper>
               </div>
               <div style={{
-                display: 'flex',
-                flexDirection: 'row',
+                display: "flex",
+                flexDirection: "row",
               }}>
                 <Avatar alt="Remy Sharp" src={profile} className={classes.avatar} />
                 <Paper className={classes.root} elevation={1}>
@@ -518,7 +601,7 @@ class Tables extends React.Component {
                   </Typography>
                   <Typography style={{ margin: 10 }} component="p">
                     why is there a drop in visitors going to the island?
-                   <p style={{ color: 'rgb(0, 0, 255)' }}>@Alan Wright</p>
+                   <p style={{ color: "rgb(0, 0, 255)" }}>@Alan Wright</p>
                   </Typography>
                   <Button><Icon>reply</Icon>reply</Button>
                 </Paper>
@@ -527,6 +610,90 @@ class Tables extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          onClose={this.projecthandleClose}
+          aria-labelledby="customized-dialog-title"
+          open={this.state.projectopen}
+        >
+          {/* add a project model */}
+          <DialogTitle id="customized-dialog-title" onClose={this.projecthandleClose}>
+            Add Project
+          </DialogTitle>
+          <DialogContent>
+            <FormControl className={classes.margin}>
+              <CustomInput
+                id="required"
+                labelText="Project Name"
+                formControlProps={{
+                  fullWidth: true
+                }}
+                onChange={this.handleProjectNameChange}
+                value={newProjectName}
+                inputProps={{
+                  type: "text"
+                }}
+              />
+            </FormControl>
+            <FormControl variant="outlined" className={[classes.formControl, 'form-control']}>
+              <InputLabel
+                style={{ fontSize: 10 }}
+                ref={ref => {
+                  this.InputLabelRef = ref;
+                }}
+              >
+                Consultants
+              </InputLabel>
+              <Select
+                value={this.state.Consultants}
+                onChange={this.handleChangeConsultants}
+                input={
+                  <OutlinedInput
+                    labelWidth={60}
+                    name="age"
+                    id="outlined-age-simple"
+                  />
+                }
+              >
+                <MenuItem value={"Consultant1"}>Consultant1</MenuItem>
+                <MenuItem value={"Consultant2"}>Consultant2</MenuItem>
+                <MenuItem value={"Consultant3"}>Consultant3</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl variant="outlined" className={[classes.formControl, 'form-control']}>
+              <InputLabel
+                style={{ fontSize: 10 }}
+                ref={ref => {
+                  this.InputLabelRef = ref;
+                }}
+              >
+                Product Owner
+              </InputLabel>
+              <Select
+                value={this.state.ProductOwner}
+                onChange={this.handleChangeProductOwner}
+                input={
+                  <OutlinedInput
+                    labelWidth={80}
+                    name="age"
+                    id="outlined-age-simple"
+                  />
+                }
+              >
+                <MenuItem value={"ProductOwner1"}>ProductOwner1</MenuItem>
+                <MenuItem value={"ProductOwner2"}>ProductOwner2</MenuItem>
+                <MenuItem value={"ProductOwner3"}>ProductOwner3</MenuItem>
+              </Select>
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.addNewProject} color="primary">
+              Add Project
+            </Button>
+            <Button onClick={this.projecthandleClose} color="primary">
               Cancel
             </Button>
           </DialogActions>
