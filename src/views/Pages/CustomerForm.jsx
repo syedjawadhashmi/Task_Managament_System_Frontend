@@ -1,20 +1,17 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 import React from "react";
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 // @material-ui/core components
 import firebase from "../../constant/api/firebase";
 
-import FormLabel from "@material-ui/core/FormLabel";
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-
-// core components
-import Check from "@material-ui/icons/Check";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-
+// eslint-disable-next-line no-unused-vars
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
@@ -23,20 +20,13 @@ import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
-import MailOutline from "@material-ui/icons/MailOutline";
-import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
-import Close from "@material-ui/icons/Close";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import { withStyles } from '@material-ui/core/styles';
-
-import { Grid } from '@material-ui/core';
-
-import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
+import { withStyles } from "@material-ui/core/styles";
+import { Grid } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    flexWrap: 'wrap'
+    display: "flex",
+    flexWrap: "wrap"
   },
   formControl: {
     margin: theme.spacing.unit,
@@ -75,7 +65,8 @@ class CustomerForm extends React.Component {
       ConsultantlastName: "",
       Consultantemail: "",
       Consultantpassword: "",
-      Consultantstatus: ""
+      Consultantstatus: "",
+      edit: false
     };
   }
   componentDidMount() {
@@ -166,10 +157,10 @@ class CustomerForm extends React.Component {
       ProductOwnerstatus
     } = this.state;
     firebase.auth().createUserWithEmailAndPassword(ProductOwneremail, ProductOwnerpassword)
-      .then(send => {
+      .then(() => {
         var userId = firebase.auth().currentUser.uid;
         var user = firebase.auth().currentUser;
-        console.log('user', user)
+        console.log("user", user)
         const ref = firebase.database().ref("ProductOwners/" + userId);
         ref.set(
           {
@@ -205,10 +196,10 @@ class CustomerForm extends React.Component {
       Consultantstatus
     } = this.state;
     firebase.auth().createUserWithEmailAndPassword(Consultantemail, Consultantpassword)
-      .then(send => {
+      .then(() => {
         var userId = firebase.auth().currentUser.uid;
         var user = firebase.auth().currentUser;
-        console.log('user', user)
+        console.log("user", user)
         const ref = firebase.database().ref("Consultants/" + userId);
         ref.set(
           {
@@ -236,24 +227,78 @@ class CustomerForm extends React.Component {
   };
   addCustomer = e => {
     e.preventDefault();
-    const { email, customer, phone, contact, address, city, zip_code, USD, Country, Consultant, ProductOwner } = this.state
-
+    const {
+      email,
+      customer,
+      phone,
+      contact,
+      address,
+      city,
+      zip_code,
+      USD,
+      Country,
+      Consultant,
+      ProductOwner
+    } = this.state
     const customer_data = {
-      email, customer, phone, contact, address, city, zip_code, USD, Country, Consultant, ProductOwner, role: "Customer"
+      email,
+      customer,
+      phone,
+      contact,
+      address,
+      city,
+      zip_code,
+      USD,
+      Country,
+      Consultant,
+      ProductOwner,
+      role: "Customer",
+      // key: key
     };
-    console.log('user', customer_data)
-      const ref = firebase.database().ref("Customer");
-      ref.push(customer_data)
-        .catch(error => {
-          console.log("Error during user add on firebase", error);
-        });
-      alert("Customer Registered Successfully");
-    this.setState({ firstName: "", lastName: "", email: "", password: "", customer: "", phone: "", contact: "", address: "", city: "", zip_code: "", USD: "", Country: "", Consultant: "", ProductOwner: "" });
+    console.log("user", customer_data)
+    const ref = firebase.database().ref("Customer");
+    ref.push(customer_data)
+      .catch(error => {
+        console.log("Error during user add on firebase", error);
+      });
+    alert("Customer Registered Successfully");
+    this.setState({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      customer: "",
+      phone: "", contact: "",
+      address: "",
+      city: "",
+      zip_code: "",
+      USD: "",
+      Country: "",
+      Consultant: "",
+      ProductOwner: ""
+    });
   };
-  
+
   render() {
     const { classes } = this.props;
-    const { customer, phone, contact, address, city, zip_code, firstName, lastName, email, password, ProductOwnerfirstName, ProductOwnerlastName, ProductOwneremail, ProductOwnerpassword,ConsultantfirstName, ConsultantlastName, Consultantemail, Consultantpassword } = this.state
+    const {
+      customer,
+      phone,
+      contact,
+      address,
+      city,
+      zip_code,
+      email,
+      ProductOwnerfirstName,
+      ProductOwnerlastName,
+      ProductOwneremail,
+      ProductOwnerpassword,
+      ConsultantfirstName,
+      ConsultantlastName,
+      Consultantemail,
+      Consultantpassword
+    } = this.state;
+
     return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
@@ -274,10 +319,10 @@ class CustomerForm extends React.Component {
                   onChange={this.handleCustomerChange}
                   value={customer}
                   inputProps={{
-                    type: 'text'
+                    type: "text"
                   }}
                 />
-                 <CustomInput
+                <CustomInput
                   labelText="Email Address *"
                   id="registeremail"
                   formControlProps={{
@@ -323,7 +368,6 @@ class CustomerForm extends React.Component {
                   }}
                 />
                 <CustomInput
-
                   labelText="City *"
                   formControlProps={{
                     fullWidth: true
@@ -335,7 +379,6 @@ class CustomerForm extends React.Component {
                   }}
                 />
                 <CustomInput
-
                   labelText="Postal / Zip *"
                   formControlProps={{
                     fullWidth: true
@@ -348,16 +391,18 @@ class CustomerForm extends React.Component {
                 />
                 <Grid className="dropdowngrid" spacing={8}>
                   <GridItem xs={6} sm={6} md={4}>
-                    <FormControl variant="outlined" className={[classes.formControl, 'form-control']}>
+                    <FormControl
+                      variant="outlined"
+                      className={[classes.formControl, "form-control"]}
+                    >
                       <InputLabel
                         style={{ fontSize: 10 }}
                         ref={ref => {
                           this.InputLabelRef = ref;
                         }}
-                      // htmlFor="outlined-age-simple"
                       >
                         USD - US. dollar
-                    </InputLabel>
+                      </InputLabel>
                       <Select
                         value={this.state.USD}
                         onChange={this.handleChange1}
@@ -376,7 +421,10 @@ class CustomerForm extends React.Component {
                     </FormControl>
                   </GridItem>
                   <GridItem xs={6} sm={6} md={4}>
-                    <FormControl className={[classes.formControl, 'form-control']} variant="outlined">
+                    <FormControl
+                      className={[classes.formControl, "form-control"]}
+                      variant="outlined"
+                    >
                       <InputLabel
                         style={{ fontSize: 10 }}
                         ref={ref => {
@@ -406,9 +454,18 @@ class CustomerForm extends React.Component {
                     </FormControl>
                   </GridItem>
                 </Grid>
-                <Grid className="dropdowngrid" style={{ marginTop: 10 }} spacing={8}>
+                <Grid
+                  className="dropdowngrid"
+                  style={{
+                    marginTop: 10
+                  }}
+                  spacing={8}
+                >
                   <GridItem xs={6} sm={6} md={4}>
-                    <FormControl className={[classes.formControl, 'form-control']} variant="outlined">
+                    <FormControl
+                      className={[classes.formControl, "form-control"]}
+                      variant="outlined"
+                    >
                       <InputLabel
                         style={{ fontSize: 10 }}
                         ref={ref => {
@@ -436,7 +493,10 @@ class CustomerForm extends React.Component {
                     </FormControl>
                   </GridItem>
                   <GridItem xs={6} sm={6} md={4}>
-                    <FormControl className={[classes.formControl, 'form-control']} variant="outlined">
+                    <FormControl
+                      className={[classes.formControl, "form-control"]}
+                      variant="outlined"
+                    >
                       <InputLabel
                         style={{ fontSize: 10 }}
                         ref={ref => {
@@ -457,67 +517,38 @@ class CustomerForm extends React.Component {
                           />
                         }
                       >
-                        <MenuItem value={"Product Owner1"}>Product Owner1</MenuItem>
-                        <MenuItem value={"Product Owner2"}>Product Owner2</MenuItem>
-                        <MenuItem value={"Product Owner3"}>Product Owner3</MenuItem>
+                        <MenuItem value={"Product Owner1"}>
+                          Product Owner1
+                        </MenuItem>
+                        <MenuItem value={"Product Owner2"}>
+                          Product Owner2
+                        </MenuItem>
+                        <MenuItem value={"Product Owner3"}>
+                          Product Owner3
+                        </MenuItem>
                       </Select>
                     </FormControl>
                   </GridItem>
                 </Grid>
-                {/* </GridContainer>
-                <CustomInput
-                  labelText="First Name *"
-                  formControlProps={{
-                    fullWidth: true
-                  }}
-                  onChange={this.handleFirstNameChange}
-                  value={firstName}
-                  inputProps={{
-                    type: "text"
-                  }}
-                />
-                <CustomInput
-                  labelText="Last Name *"
-                  onChange={this.handleLastNameChange}
-                  value={lastName}
-                  formControlProps={{
-                    fullWidth: true
-                  }}
-                  inputProps={{
-                    type: "text"
-                  }}
-                />
-                <CustomInput
-                  labelText="Email Address *"
-                  id="registeremail"
-                  formControlProps={{
-                    fullWidth: true
-                  }}
-                  onChange={this.handleEmailChange}
-                  value={email}
-                  inputProps={{
-                    type: "email"
-                  }}
-                />
-                <CustomInput
-                  labelText="Passwrod *"
-                  id="registeremail"
-                  formControlProps={{
-                    fullWidth: true
-                  }}
-                  onChange={this.handlePassChange}
-                  value={password}
-                  inputProps={{
-                    type: "password"
-                  }}
-                /> */}
-                <Button
-                  color="rose"
-                  onClick={this.addCustomer}
-                  className={classes.registerButton}
-                >
-                  Add
+                {
+                  this.props.edit ?
+                    <Button
+                      color="rose"
+                      onClick={()=>console.log("edit customer")}
+                      className={classes.registerButton}
+                    >
+                      Edit
+                    </Button>
+                    :
+
+                    <Button
+                      color="rose"
+                      onClick={this.addCustomer}
+                      className={classes.registerButton}
+                    >
+                      Add
                 </Button>
+                }
                 {/* </Grid> */}
               </form>
             </CardBody>
@@ -576,7 +607,11 @@ class CustomerForm extends React.Component {
                     type: "password"
                   }}
                 />
-                <FormControl style={{ marginBottom: 10 }} className={['form-control']} variant="outlined">
+                <FormControl
+                  style={{ marginBottom: 10 }}
+                  className={["form-control"]}
+                  variant="outlined"
+                >
                   <InputLabel
                     style={{ fontSize: 10 }}
                     ref={ref => {
@@ -591,8 +626,8 @@ class CustomerForm extends React.Component {
                     onChange={this.handleProductOwnerStatusChange}
                     // displayEmpty
                     inputProps={{
-                      name: 'age',
-                      id: 'age-simple',
+                      name: "age",
+                      id: "age-simple",
                     }}
                   >
                     <MenuItem value={"Active"}>Active</MenuItem>
@@ -661,7 +696,13 @@ class CustomerForm extends React.Component {
                     type: "password"
                   }}
                 />
-                <FormControl style={{ marginBottom: 10 }} className={['form-control']} variant="outlined">
+                <FormControl
+                  style={{
+                    marginBottom: 10
+                  }}
+                  className={["form-control"]}
+                  variant="outlined"
+                >
                   <InputLabel
                     style={{ fontSize: 10 }}
                     ref={ref => {
@@ -676,8 +717,8 @@ class CustomerForm extends React.Component {
                     onChange={this.handleConsultantStatusChange}
                     // displayEmpty
                     inputProps={{
-                      name: 'age',
-                      id: 'age-simple'
+                      name: "age",
+                      id: "age-simple"
                     }}
                   >
                     <MenuItem value={"Active"}>Active</MenuItem>

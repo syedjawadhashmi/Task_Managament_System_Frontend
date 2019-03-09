@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 
 // @material-ui/core components
@@ -13,7 +14,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import extendedTablesStyle from "assets/jss/material-dashboard-pro-react/views/extendedTablesStyle.jsx";
 
 // import link for routing
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 class ExtendedTables extends React.Component {
   constructor(props) {

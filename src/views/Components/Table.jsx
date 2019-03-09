@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 import React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -28,10 +30,10 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Icon from "@material-ui/core/Icon";
 import FormControl from "@material-ui/core/FormControl";
 import InputBase from "@material-ui/core/InputBase";
-import Select from '@material-ui/core/Select';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
+import Select from "@material-ui/core/Select";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
 import Avatar from "@material-ui/core/Avatar";
 import profile from "../../assets/img/faces/avatar.jpg";
 import firebase from "../../constant/api/firebase";
@@ -40,21 +42,25 @@ const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
     margin: 0,
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing.unit * 2
   },
   closeButton: {
     position: "absolute",
     right: theme.spacing.unit,
     top: theme.spacing.unit,
     color: theme.palette.grey[500]
-  },
+  }
 }))(props => {
   const { children, classes, onClose } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <IconButton aria-label="Close" className={classes.closeButton} onClick={onClose}>
+        <IconButton
+          aria-label="Close"
+          className={classes.closeButton}
+          onClick={onClose}
+        >
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -64,16 +70,16 @@ const DialogTitle = withStyles(theme => ({
 const DialogContent = withStyles(theme => ({
   root: {
     margin: 0,
-    padding: theme.spacing.unit * 2,
-  },
+    padding: theme.spacing.unit * 2
+  }
 }))(MuiDialogContent);
 
 const DialogActions = withStyles(theme => ({
   root: {
     borderTop: `1px solid ${theme.palette.divider}`,
     margin: 0,
-    padding: theme.spacing.unit,
-  },
+    padding: theme.spacing.unit
+  }
 }))(MuiDialogActions);
 
 let counter = 0;
@@ -103,7 +109,9 @@ function stableSort(array, cmp) {
 }
 
 function getSorting(order, orderBy) {
-  return order === "desc" ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+  return order === "desc"
+    ? (a, b) => desc(a, b, orderBy)
+    : (a, b) => -desc(a, b, orderBy);
 }
 
 const rows = [
@@ -111,9 +119,14 @@ const rows = [
   { id: "calories", numeric: true, disablePadding: false, label: "Category" },
   { id: "fat", numeric: true, disablePadding: false, label: "Total Summary" },
   { id: "carbs", numeric: true, disablePadding: false, label: "Status" },
-  { id: "protein", numeric: true, disablePadding: false, label: "Last Updated" },
+  {
+    id: "protein",
+    numeric: true,
+    disablePadding: false,
+    label: "Last Updated"
+  },
   { id: "protein", numeric: true, disablePadding: false, label: "Assigned" },
-  { id: "fat", numeric: true, disablePadding: false, label: "Priority" },
+  { id: "fat", numeric: true, disablePadding: false, label: "Priority" }
   // { id: "fat", numeric: true, disablePadding: false, label: "Deadline" },
   // { id: "carbs", numeric: true, disablePadding: false, label: "Customer" },
   // { id: "protein", numeric: true, disablePadding: false, label: "Protein (g)" },
@@ -125,7 +138,13 @@ class EnhancedTableHead extends React.Component {
   };
 
   render() {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+    const {
+      onSelectAllClick,
+      order,
+      orderBy,
+      numSelected,
+      rowCount
+    } = this.props;
 
     return (
       <TableHead>
@@ -174,32 +193,32 @@ EnhancedTableHead.propTypes = {
   onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.string.isRequired,
   orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
+  rowCount: PropTypes.number.isRequired
 };
 
 const toolbarStyles = theme => ({
   root: {
-    paddingRight: theme.spacing.unit,
+    paddingRight: theme.spacing.unit
   },
   highlight:
     theme.palette.type === "light"
       ? {
-        color: theme.palette.secondary.main,
-        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-      }
+          color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+        }
       : {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.secondary.dark,
-      },
+          color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.dark
+        },
   spacer: {
-    flex: "1 1 100%",
+    flex: "1 1 100%"
   },
   actions: {
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.secondary
   },
   title: {
-    flex: "0 0 auto",
-  },
+    flex: "0 0 auto"
+  }
 });
 
 let EnhancedTableToolbar = props => {
@@ -208,7 +227,7 @@ let EnhancedTableToolbar = props => {
   return (
     <Toolbar
       className={classNames(classes.root, {
-        [classes.highlight]: numSelected > 0,
+        [classes.highlight]: numSelected > 0
       })}
     >
       <div className={classes.title}>
@@ -217,13 +236,19 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-            <Button variant="contained" onClick={projecthandleClickOpen} color="primary" id="tableTitle" className={classes.button}>
-              add
+          <Button
+            variant="contained"
+            onClick={projecthandleClickOpen}
+            color="primary"
+            id="tableTitle"
+            className={classes.button}
+          >
+            add
           </Button>
-            // <Typography variant="h6" id="tableTitle">
-            //   Nutrition
-            // </Typography>
-          )}
+          // <Typography variant="h6" id="tableTitle">
+          //   Nutrition
+          // </Typography>
+        )}
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
@@ -234,12 +259,12 @@ let EnhancedTableToolbar = props => {
             </IconButton>
           </Tooltip>
         ) : (
-            <Tooltip title="Filter list">
-              <IconButton aria-label="Filter list">
-                <FilterListIcon />
-              </IconButton>
-            </Tooltip>
-          )}
+          <Tooltip title="Filter list">
+            <IconButton aria-label="Filter list">
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        )}
       </div>
     </Toolbar>
   );
@@ -248,7 +273,7 @@ let EnhancedTableToolbar = props => {
 EnhancedTableToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
-  handleClickOpen: PropTypes.func.isRequired,
+  handleClickOpen: PropTypes.func.isRequired
 };
 
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
@@ -256,13 +281,13 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 const styles = theme => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 3
   },
   table: {
-    minWidth: 1020,
+    minWidth: 1020
   },
   tableWrapper: {
-    overflowX: "auto",
+    overflowX: "auto"
   },
   bootstrapInput: {
     borderRadius: 4,
@@ -285,21 +310,21 @@ const styles = theme => ({
       "sans-serif",
       "'Apple Color Emoji'",
       "'Segoe UI Emoji'",
-      "'Segoe UI Symbol'",
+      "'Segoe UI Symbol'"
     ].join(","),
     "&:focus": {
       borderRadius: 4,
       borderColor: "#80bdff",
-      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
-    },
+      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)"
+    }
   },
   bootstrapFormLabel: {
-    fontSize: 18,
+    fontSize: 18
   },
   avatar: {
     margin: 10,
     marginTop: 25
-  },
+  }
 });
 
 class Tables extends React.Component {
@@ -313,19 +338,212 @@ class Tables extends React.Component {
     projectopen: false,
     selected: [],
     data: [
-      createData("Cupcake", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 3.7, 67, 4.3, 305, 3.7, 67, 4.3),
-      createData("Donut", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 25.0, 51, 4.9),
-      createData("Eclair", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 16.0, 24, 6.0),
-      createData("Frozen yoghurt", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 6.0, 24, 4.0),
-      createData("Gingerbread", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 16.0, 49, 3.9),
-      createData("Honeycomb", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 3.2, 87, 6.5),
-      createData("Ice cream sandwich", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 9.0, 37, 4.3),
-      createData("Jelly Bean", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 0.0, 94, 0.0),
-      createData("KitKat", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 26.0, 65, 7.0),
-      createData("Lollipop", 392, <div><span>mandal</span><span>agent created</span></div>, 98, 0.0),
-      createData("Marshmallow", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 0, 81, 2.0),
-      createData("Nougat", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 19.0, 9, 37.0),
-      createData("Oreo", <span style={{ color: "white", fontSize: 10, backgroundColor: "grey", padding: 2 }}>agent created</span>, 18.0, 63, 4.0),
+      createData(
+        "Cupcake",
+        <span
+          style={{
+            color: "white",
+            fontSize: 10,
+            backgroundColor: "grey",
+            padding: 2
+          }}
+        >
+          agent created
+        </span>,
+        3.7,
+        67,
+        4.3,
+        305,
+        3.7,
+        67,
+        4.3
+      ),
+      createData(
+        "Donut",
+        <span
+          style={{
+            color: "white",
+            fontSize: 10,
+            backgroundColor: "grey",
+            padding: 2
+          }}
+        >
+          agent created
+        </span>,
+        25.0,
+        51,
+        4.9
+      ),
+      createData(
+        "Eclair",
+        <span
+          style={{
+            color: "white",
+            fontSize: 10,
+            backgroundColor: "grey",
+            padding: 2
+          }}
+        >
+          agent created
+        </span>,
+        16.0,
+        24,
+        6.0
+      ),
+      createData(
+        "Frozen yoghurt",
+        <span
+          style={{
+            color: "white",
+            fontSize: 10,
+            backgroundColor: "grey",
+            padding: 2
+          }}
+        >
+          agent created
+        </span>,
+        6.0,
+        24,
+        4.0
+      ),
+      createData(
+        "Gingerbread",
+        <span
+          style={{
+            color: "white",
+            fontSize: 10,
+            backgroundColor: "grey",
+            padding: 2
+          }}
+        >
+          agent created
+        </span>,
+        16.0,
+        49,
+        3.9
+      ),
+      createData(
+        "Honeycomb",
+        <span
+          style={{
+            color: "white",
+            fontSize: 10,
+            backgroundColor: "grey",
+            padding: 2
+          }}
+        >
+          agent created
+        </span>,
+        3.2,
+        87,
+        6.5
+      ),
+      createData(
+        "Ice cream sandwich",
+        <span
+          style={{
+            color: "white",
+            fontSize: 10,
+            backgroundColor: "grey",
+            padding: 2
+          }}
+        >
+          agent created
+        </span>,
+        9.0,
+        37,
+        4.3
+      ),
+      createData(
+        "Jelly Bean",
+        <span
+          style={{
+            color: "white",
+            fontSize: 10,
+            backgroundColor: "grey",
+            padding: 2
+          }}
+        >
+          agent created
+        </span>,
+        0.0,
+        94,
+        0.0
+      ),
+      createData(
+        "KitKat",
+        <span
+          style={{
+            color: "white",
+            fontSize: 10,
+            backgroundColor: "grey",
+            padding: 2
+          }}
+        >
+          agent created
+        </span>,
+        26.0,
+        65,
+        7.0
+      ),
+      createData(
+        "Lollipop",
+        392,
+        <div>
+          <span>mandal</span>
+          <span>agent created</span>
+        </div>,
+        98,
+        0.0
+      ),
+      createData(
+        "Marshmallow",
+        <span
+          style={{
+            color: "white",
+            fontSize: 10,
+            backgroundColor: "grey",
+            padding: 2
+          }}
+        >
+          agent created
+        </span>,
+        0,
+        81,
+        2.0
+      ),
+      createData(
+        "Nougat",
+        <span
+          style={{
+            color: "white",
+            fontSize: 10,
+            backgroundColor: "grey",
+            padding: 2
+          }}
+        >
+          agent created
+        </span>,
+        19.0,
+        9,
+        37.0
+      ),
+      createData(
+        "Oreo",
+        <span
+          style={{
+            color: "white",
+            fontSize: 10,
+            backgroundColor: "grey",
+            padding: 2
+          }}
+        >
+          agent created
+        </span>,
+        18.0,
+        63,
+        4.0
+      )
     ],
     page: 0,
     rowsPerPage: 5
@@ -411,7 +629,8 @@ class Tables extends React.Component {
     const { newProjectName, Consultants, ProductOwner } = this.state;
     var userId = firebase.auth().currentUser.uid;
     const ref = firebase.database().ref("Projects/" + userId);
-    ref.push({
+    ref
+      .push({
         uid: userId,
         newProjectName: newProjectName,
         Consultant: Consultants,
@@ -430,12 +649,24 @@ class Tables extends React.Component {
   };
   render() {
     const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page, newProjectName } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    const {
+      data,
+      order,
+      orderBy,
+      selected,
+      rowsPerPage,
+      page,
+      newProjectName
+    } = this.state;
+    const emptyRows =
+      rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
       <Paper className={classes.root}>
-        <EnhancedTableToolbar projecthandleClickOpen={this.projecthandleClickOpen} numSelected={selected.length} />
+        <EnhancedTableToolbar
+          projecthandleClickOpen={this.projecthandleClickOpen}
+          numSelected={selected.length}
+        />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -495,10 +726,10 @@ class Tables extends React.Component {
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
-            "aria-label": "Previous Page",
+            "aria-label": "Previous Page"
           }}
           nextIconButtonProps={{
-            "aria-label": "Next Page",
+            "aria-label": "Next Page"
           }}
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
@@ -516,11 +747,13 @@ class Tables extends React.Component {
             <FormControl className={classes.margin}>
               <InputBase
                 id="bootstrap-input"
-                placeholder={"Enter your comments here, and @mention people to grab their attention."}
+                placeholder={
+                  "Enter your comments here, and @mention people to grab their attention."
+                }
                 defaultValue=""
                 classes={{
                   root: classes.bootstrapRoot,
-                  input: classes.bootstrapInput,
+                  input: classes.bootstrapInput
                 }}
               />
               <div
@@ -578,32 +811,56 @@ class Tables extends React.Component {
                   flexDirection: "row"
                 }}
               >
-                <Avatar alt="Remy Sharp" src={profile} className={classes.avatar} />
+                <Avatar
+                  alt="Remy Sharp"
+                  src={profile}
+                  className={classes.avatar}
+                />
                 <Paper className={classes.root} elevation={1}>
-                  <Typography style={{ margin: 10 }} variant="h6" component="h4">
-                    Nikhil Gaekward <span style={{ fontSize: 12 }}> 0 min ago</span>
+                  <Typography
+                    style={{ margin: 10 }}
+                    variant="h6"
+                    component="h4"
+                  >
+                    Nikhil Gaekward{" "}
+                    <span style={{ fontSize: 12 }}> 0 min ago</span>
                   </Typography>
                   <Typography style={{ margin: 10 }} component="p">
                     why is there a drop in visitors going to the island?
-                   <p style={{ color: "rgb(0, 0, 255)" }}>@Alan Wright</p>
+                    <p style={{ color: "rgb(0, 0, 255)" }}>@Alan Wright</p>
                   </Typography>
-                  <Button><Icon>reply</Icon>reply</Button>
+                  <Button>
+                    <Icon>reply</Icon>reply
+                  </Button>
                 </Paper>
               </div>
-              <div style={{
-                display: "flex",
-                flexDirection: "row",
-              }}>
-                <Avatar alt="Remy Sharp" src={profile} className={classes.avatar} />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row"
+                }}
+              >
+                <Avatar
+                  alt="Remy Sharp"
+                  src={profile}
+                  className={classes.avatar}
+                />
                 <Paper className={classes.root} elevation={1}>
-                  <Typography style={{ margin: 10 }} variant="h6" component="h4">
-                    Nikhil Gaekward <span style={{ fontSize: 12 }}> 2 days ago</span>
+                  <Typography
+                    style={{ margin: 10 }}
+                    variant="h6"
+                    component="h4"
+                  >
+                    Nikhil Gaekward{" "}
+                    <span style={{ fontSize: 12 }}> 2 days ago</span>
                   </Typography>
                   <Typography style={{ margin: 10 }} component="p">
                     why is there a drop in visitors going to the island?
-                   <p style={{ color: "rgb(0, 0, 255)" }}>@Alan Wright</p>
+                    <p style={{ color: "rgb(0, 0, 255)" }}>@Alan Wright</p>
                   </Typography>
-                  <Button><Icon>reply</Icon>reply</Button>
+                  <Button>
+                    <Icon>reply</Icon>reply
+                  </Button>
                 </Paper>
               </div>
             </FormControl>
@@ -620,7 +877,10 @@ class Tables extends React.Component {
           open={this.state.projectopen}
         >
           {/* add a project model */}
-          <DialogTitle id="customized-dialog-title" onClose={this.projecthandleClose}>
+          <DialogTitle
+            id="customized-dialog-title"
+            onClose={this.projecthandleClose}
+          >
             Add Project
           </DialogTitle>
           <DialogContent>
@@ -638,7 +898,10 @@ class Tables extends React.Component {
                 }}
               />
             </FormControl>
-            <FormControl variant="outlined" className={[classes.formControl, 'form-control']}>
+            <FormControl
+              variant="outlined"
+              className={[classes.formControl, "form-control"]}
+            >
               <InputLabel
                 style={{ fontSize: 10 }}
                 ref={ref => {
@@ -663,7 +926,10 @@ class Tables extends React.Component {
                 <MenuItem value={"Consultant3"}>Consultant3</MenuItem>
               </Select>
             </FormControl>
-            <FormControl variant="outlined" className={[classes.formControl, 'form-control']}>
+            <FormControl
+              variant="outlined"
+              className={[classes.formControl, "form-control"]}
+            >
               <InputLabel
                 style={{ fontSize: 10 }}
                 ref={ref => {
