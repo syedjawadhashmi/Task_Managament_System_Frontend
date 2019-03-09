@@ -53,6 +53,7 @@ class CustomerList extends React.Component {
       console.log("fetched data", arrdata);
     });
   };
+  
   deleteCustomer = asd => {
     console.log("key", asd);
     debugger
