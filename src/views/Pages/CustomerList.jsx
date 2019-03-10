@@ -28,82 +28,63 @@ class CustomerList extends React.Component {
   constructor() {
     super();
     this.state = {
+      posts: "",
       customers: []
     };
-    this.deleteCustomer = this.deleteCustomer.bind(this);
-  }
 
-  componentDidMount() {
-    this.show_user();
-  }
+    // Calling Data from Firebase and render into the DOM...!
+    firebase.database().ref("Customer").on("child_added" , (customer) => {
+      let currentpost = this.state.customers;
 
-  show_user = () => {
-    let arrdata = [];
-    let dataabase = firebase.database().ref("/Customer/");
-    dataabase.on("value", object => {
-      debugger
-      let keys = Object.keys(object.val());
-      let data = object.val();
+      let obj = {
+          all_customers : customer.val(),
+          key : customer.key
+      }
 
-      console.log(data);
-      for (var x in data) arrdata.push(data[x]);
+      currentpost.push(obj);
       this.setState({
-        customers: arrdata
-      });
-      console.log("fetched data", arrdata);
-    });
-  };
+          customers : currentpost,
+          posts : "",
+      })
+    })
+    
+     // Binding functions here...!
+     this.clickHandler = this.clickHandler.bind(this);
+     this.deleteCustomer = this.deleteCustomer.bind(this);
+  }
+ 
+  // Function of rendering data into the browser...!
+  clickHandler() {
+    if (this.state.posts === "") {
+        alert("Please Fill the Required Field First!")
+    }
+
+    else {
+        // Set Data to Firebase Database...!
+        firebase.database().ref("Ambulance").push(this.state.posts);
+    }
+  }
+
+
   
-  deleteCustomer = asd => {
-    console.log("key", asd);
-    debugger
-    // firebase.database().ref('Customer').on("child_added", function (snapshot, prevChildKey) {
-    //   var newPost = snapshot.val();
-    //   console.log("Author: " + newPost.email);
-    //   console.log("Title: " + newPost.title);
-    //   console.log("Previous Post ID: " + prevChildKey);
-    // });
-    var newPostKey = firebase.database().ref(`Customer`).child().orderByKey();
-    console.log("delete", newPostKey);
+  deleteCustomer = (key, index) => {
+    console.log("key", key, index);
     let fetchpost = this.state.customers;
-    firebase
-      .database()
-      .ref("Customer")
-      .child(asd)
-      .remove()
-      .then(() => {
-        // eslint-disable-next-line no-undef
-        // fetchpost.splice(v, 1);
+      firebase.database().ref("Customer").child(key).remove().then(() => {
+        fetchpost.splice(index , 1);
         this.setState({
-          customers: fetchpost
+          customers : fetchpost
         });
-        this.show_user();
-        console.log("customer delete");
-      });
+    })
   }
 
   render() {
     const { customers } = this.state;
-    console.log("customer", customers);
     const tableData = customers;
+    
+    console.log("customer", tableData);
     // const keys = keys;
 
-    const { classes } = this.props;
-    // const simpleButtons = [
-    //   { color: "success", icon: Edit },
-    //   { color: "danger", icon: Close }
-    // ].map((prop, key) => {
-    //   return (
-    //     <Button
-    //       color={prop.color}
-    //       simple
-    //       className={classes.actionButton}
-    //       key={key}
-    //     >
-    //       <prop.icon className={classes.icon} />
-    //     </Button>
-    //   );
-    // });
 
     const tableHead = [
       "#",
@@ -116,41 +97,6 @@ class CustomerList extends React.Component {
       "Zip Code",
       "Actions"
     ];
-    // const tableData = [
-    //   [
-    //     "1",
-    //     "Andrew Mike",
-    //     "Andrew@Mike.com",
-    //     "+920231231",
-    //     simpleButtons
-    //   ],
-    //   ["2", "John Doe", "John@doe.com", "+920231231",
-    //     simpleButtons
-    //   ],
-    //   [
-    //     "3",
-    //     "Alex Mike",
-    //     "Alex@Mike.com",
-    //     "+2443324234",
-    //     simpleButtons
-    //   ],
-    //   [
-    //     "4",
-    //     "Mike Monday",
-    //     "Mike@Monday",
-    //     "+324263464",
-    //     simpleButtons
-    //   ],
-    //   [
-    //     "5",
-    //     "Paul Dickens",
-    //     "Paul@Dickens.com",
-    //     "+4537534215",
-    //     simpleButtons
-    //   ]
-    // ]
-    console.log("data", tableData);
-
     return (
       <div>
         <GridContainer>

@@ -161,9 +161,11 @@ function CustomTable({ ...props }) {
                     </TableCell>
                   </TableRow>
                 );
-              } else if (prop.role === "Customer") {
+              } 
+              else {
+                // console.log('props_data', prop.key)
                 return (
-                  <TableRow key={key} hover={hover} className={tableRowClasses}>
+                  <TableRow key={prop.key} hover={hover} className={tableRowClasses}>
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
@@ -174,43 +176,43 @@ function CustomTable({ ...props }) {
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.customer}
+                      {prop.all_customers.customer}
                     </TableCell>
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.email}
+                      {prop.all_customers.email}
                     </TableCell>
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.phone}
+                      {prop.all_customers.phone}
                     </TableCell>
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.city}
+                      {prop.all_customers.city}
                     </TableCell>
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.address}
+                      {prop.all_customers.address}
                     </TableCell>
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.contact}
+                      {prop.all_customers.contact}
                     </TableCell>
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.zip_code}
+                      {prop.all_customers.zip_code}
                     </TableCell>
                     <TableCell
                       className={classes.tableCell}
@@ -218,7 +220,7 @@ function CustomTable({ ...props }) {
                     >
                       {/* {editButton}{deleteButton} */}
                       <EditButton prop={prop} />
-                      <DeleteButton asd={key} deleteUser={deleteUser} />
+                      <DeleteButton asd={prop.key} v={key} deleteUser={deleteUser} />
                     </TableCell>
                   </TableRow>
                 );
@@ -245,10 +247,10 @@ class EditButton extends React.Component {
 class DeleteButton extends React.Component {
   render() {
     // debugger
-    const { asd } = this.props;
+    const { asd, v } = this.props;
     console.log("key", asd);
     return (
-      <Button color="danger" simple onClick={() => this.props.deleteUser(asd)}>
+      <Button color="danger" simple onClick={() => this.props.deleteUser(asd, v)}>
         <Close color="danger" />
         {/* delete */}
       </Button>

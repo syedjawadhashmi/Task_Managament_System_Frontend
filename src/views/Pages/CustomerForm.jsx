@@ -256,7 +256,8 @@ class CustomerForm extends React.Component {
       // key: key
     };
     console.log("user", customer_data)
-    const ref = firebase.database().ref("Customer");
+
+    const ref = firebase.database().ref().child("Customer");
     ref.push(customer_data)
       .catch(error => {
         console.log("Error during user add on firebase", error);
