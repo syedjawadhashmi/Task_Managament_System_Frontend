@@ -127,6 +127,13 @@ function CustomTable({ ...props }) {
                     >
                       {prop.email}
                     </TableCell>
+
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.password}
+                    </TableCell>
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}

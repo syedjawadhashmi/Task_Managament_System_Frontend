@@ -24,11 +24,17 @@ router.post('/delete-user', function(req, res, next) {
       })
     })
     
-router.post('/update-users', function(req, res, next) {
+router.post('/update-user', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   admin.database().ref("Developer/" + req.body.uid).update({
-    // contactNum: req.body.contactNum,
-    // email: req.body.email,
-    // name: req.body.name
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      password: req.body.password,
+      status: req.body.status,
+      rate: req.body.rate,
+      rate_unit: req.body.rate_unit,
+      currency: req.body.currency
   }, function(error) {
       if (error) {
         res.json({"status": "error", "data" : error});
@@ -38,11 +44,10 @@ router.post('/update-users', function(req, res, next) {
     }
   );
   admin.auth().updateUser(req.body.uid, {
-    // email: req.body.email,
-    contactNum: req.body.contactNum,
-    // emailVerified: true,
-    // role: req.body.role,
-    displayName: req.body.name,
+    contactNum: req.body.phone,
+    emailVerified: true,
+    role: req.body.role,
+    displayName: req.body.firstName,
     disabled: false
   })
     .then(function(userRecord) {

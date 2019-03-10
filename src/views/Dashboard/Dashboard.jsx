@@ -84,7 +84,7 @@ class DeveloperLis extends React.Component {
       "First Name",
       "Last Name",
       "Email",
-      // "Password ",
+      "Password ",
       "Status  ",
       "Rate ",
       "Rate Unit",

@@ -106,7 +106,7 @@ class DeveloperForm extends React.Component {
         firstName: _param.firstName,
         lastName: _param.lastName,
         email: _param.email,
-        // password: _param.,
+        password: _param.password,
         status: _param.status,
         rate: _param.rate,
         rate_unit: _param.rate_unit,
@@ -157,6 +157,30 @@ class DeveloperForm extends React.Component {
 
   updateDeveloper = (e) => {
     e.preventDefault();
+    const { firstName, lastName, password, status, currency, rate, rate_unit } = this.state
+    const {_param} = this.props.location.state;
+    
+    return (
+      axios.post(`${rooturl}/update-user`,{
+        firstName: firstName,
+        lastName: lastName,
+        password: password,
+        status: status,
+        rate: rate,
+        rate_unit: rate_unit,
+        currency: currency,
+        uid: _param.uid
+      }).then((res) => {
+        alert('developer successfully update')
+        console.log("response of upddate req", res)
+        console.log("select of update req", _param.key)
+        })
+        .catch((err) => {
+          console.log("error", err);
+          let errorMessage = err;
+          alert(errorMessage);
+      })        
+    )
   }
   render() {
     const { classes } = this.props;
