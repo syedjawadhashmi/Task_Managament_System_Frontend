@@ -44,7 +44,7 @@ router.post('/update-user', function(req, res, next) {
     }
   );
   admin.auth().updateUser(req.body.uid, {
-    contactNum: req.body.phone,
+    phoneNumber: req.body.phone,
     emailVerified: true,
     role: req.body.role,
     displayName: req.body.firstName,

@@ -18,7 +18,7 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import { Link } from 'react-router-dom';
 import firebase from "../../constant/api/firebase";
 import axios from 'axios';
-const rooturl = 'http://localhost:3000/developers';
+const rooturl = 'https://taskmanagment-1.herokuapp.com/developers';
 
 
 
