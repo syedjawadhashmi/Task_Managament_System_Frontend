@@ -49,22 +49,9 @@ class CustomerList extends React.Component {
     })
     
      // Binding functions here...!
-     this.clickHandler = this.clickHandler.bind(this);
      this.deleteCustomer = this.deleteCustomer.bind(this);
   }
  
-  // Function of rendering data into the browser...!
-  clickHandler() {
-    if (this.state.posts === "") {
-        alert("Please Fill the Required Field First!")
-    }
-
-    else {
-        // Set Data to Firebase Database...!
-        firebase.database().ref("Ambulance").push(this.state.posts);
-    }
-  }
-
 
   
   deleteCustomer = (key, index) => {
@@ -118,14 +105,21 @@ class CustomerList extends React.Component {
                   sm={12}
                   md={12}
                 >
-                  <Link to="customer-form">
+                  <Link
+                  
+                    to={{
+                      pathname: "customer-form",
+                      state: {
+                        _param: ''
+                      }
+                      }} 
+                  >
                     <Button
                       variant="contained"
                       size="medium"
                       color="primary"
                       style={{ fontSize: 10, textTransform: "capitalize" }}
                     >
-                      {/* <NavigationIcon className={classes.extendedIcon} /> */}
                       Add a Customer
                     </Button>
                   </Link>

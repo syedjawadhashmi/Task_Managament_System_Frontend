@@ -70,6 +70,23 @@ class CustomerForm extends React.Component {
     };
   }
   componentDidMount() {
+    const {_param} = this.props.location.state;
+    console.log('parms', _param);
+    if(_param !== '') {
+      this.setState({
+        customer: _param.all_customers.customer,
+        email: _param.all_customers.email,
+        phone: _param.all_customers.phone,
+        contact: _param.all_customers.contact,
+        address: _param.all_customers.address,
+        city: _param.all_customers.city,
+        zip_code: _param.all_customers.zip_code,
+        USD: _param.all_customers.USD,
+        Country: _param.all_customers.Country,
+        Consultant: _param.all_customers.Consultant,
+        ProductOwner: _param.all_customers.ProductOwner
+      })
+    }
     this.setState({
       labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth
     });

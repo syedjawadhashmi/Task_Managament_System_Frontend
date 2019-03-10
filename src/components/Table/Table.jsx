@@ -218,8 +218,7 @@ function CustomTable({ ...props }) {
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {/* {editButton}{deleteButton} */}
-                      <EditButton prop={prop} />
+                      <EditButton _route={'customer-form'} _param={prop} />
                       <DeleteButton asd={prop.key} v={key} deleteUser={deleteUser} />
                     </TableCell>
                   </TableRow>
@@ -234,12 +233,19 @@ function CustomTable({ ...props }) {
 
 class EditButton extends React.Component {
   render() {
+    const { _param, _route } = this.props; 
+    console.log('parm', _param );
     return (
-      // <Link to={{ pathname: "customer-form", state: { edit: true } }} prop={this.props.prop} >
-        <Button component={Link} to="customer-form" edit= {true} color="success" simple onClick={() => console.log("delete")}>
+      <Link to={{
+        pathname: _route,
+        state: {
+          _param
+        }
+      }}>
+        <Button edit= {true} color="success" simple>
           <Edit color="success" />
         </Button>
-      // </Link>
+      </Link>
     );
   }
 }
@@ -252,7 +258,6 @@ class DeleteButton extends React.Component {
     return (
       <Button color="danger" simple onClick={() => this.props.deleteUser(asd, v)}>
         <Close color="danger" />
-        {/* delete */}
       </Button>
     );
   }
