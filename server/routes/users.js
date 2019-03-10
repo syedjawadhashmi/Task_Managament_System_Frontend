@@ -9,6 +9,8 @@ setTimeout(()=>{
 },2500)
 
 router.post('/delete-user', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   admin.auth().deleteUser(req.body.uid)
   .then(function() {
     var refUser = admin.database().ref("Developer/" + req.body.uid);
