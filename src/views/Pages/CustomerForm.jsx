@@ -611,15 +611,14 @@ class CustomerForm extends React.Component {
                     >
                       Edit
                     </Button>
-                    :
-
+                      :
                     <Button
                       color="rose"
                       onClick={_param === '' ? this.addCustomer : this.updateCustomer}
                       className={classes.registerButton}
                     >
-                      Add
-                </Button>
+                      {_param === '' ? "Add" : "Update"}
+                    </Button>
                 }
                 {/* </Grid> */}
               </form>

@@ -17,8 +17,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import firebase from "../../constant/api/firebase";
-
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
+import axios from 'axios';
+const rooturl = 'http://localhost:3000/developers';
 
 class DeveloperForm extends React.Component {
   constructor(props) {
@@ -41,6 +42,8 @@ class DeveloperForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeEnabled = this.handleChangeEnabled.bind(this);
   }
+
+
   handleChange(event) {
     this.setState({ selectedValue: event.target.value });
   }
@@ -95,6 +98,23 @@ class DeveloperForm extends React.Component {
     this.setState({ currency: e.target.value });
   }
 
+  componentDidMount() {
+    const {_param} = this.props.location.state;
+    console.log('parms', _param);
+    if(_param !== '') {
+      this.setState({
+        firstName: _param.firstName,
+        lastName: _param.lastName,
+        email: _param.email,
+        // password: _param.,
+        status: _param.status,
+        rate: _param.rate,
+        rate_unit: _param.rate_unit,
+        currency: _param.currency  
+      })
+    }
+  }
+
   addDeveloper = (e) => {
     debugger
     e.preventDefault();
@@ -116,6 +136,7 @@ class DeveloperForm extends React.Component {
             firstName: firstName,
             lastName: lastName,
             email: developer.email,
+            password: developer.password,
             role: "Developer",
             rate: developer.rate,
             rate_unit: developer.rate_unit,
@@ -133,9 +154,14 @@ class DeveloperForm extends React.Component {
     });
   };
 
+
+  updateDeveloper = (e) => {
+    e.preventDefault();
+  }
   render() {
     const { classes } = this.props;
     const { firstName, lastName, email, password, status, rate, rate_unit, currency } = this.state;
+    const {_param} = this.props.location.state;
 
     return (
       <GridContainer>
@@ -182,7 +208,7 @@ class DeveloperForm extends React.Component {
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={12} lg={12}>
-                    <CustomInput
+                  {_param === '' ?  <CustomInput
                       labelText="E-Mail"
                       id="email"
                       formControlProps={{
@@ -193,7 +219,20 @@ class DeveloperForm extends React.Component {
                       inputProps={{
                         type: "email"
                       }}
-                    />
+                    />:
+                    <CustomInput
+                      labelText="E-Mail"
+                      id="email"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      onChange={this.handleEmailChange}
+                      disabled={true}
+                      value={email}
+                      inputProps={{
+                        type: "email"
+                      }}
+                    />}
                   </GridItem>
                 </GridContainer>
                 <GridContainer>
@@ -290,7 +329,10 @@ class DeveloperForm extends React.Component {
                     />
                   </GridItem>
                   <GridItem xs={6} sm={4}>
-                    <Button onClick={this.addDeveloper} color={"rose"}>Add</Button>
+                    <Button 
+                      onClick={_param === '' ? this.addDeveloper : this.updateDeveloper}
+                    // onClick={this.addDeveloper}
+                     color={"rose"}>{_param === '' ? "Add" : "Update"}</Button>
                   </GridItem>
                 </GridContainer>
               </form>

@@ -155,9 +155,8 @@ function CustomTable({ ...props }) {
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      <EditButton />
-                      <DeleteButton deleteUser={deleteUser} />
-                      {/* {editButton}{deleteButton} */}
+                      <EditButton _route={'developer-form'} _param={prop} />
+                      <DeleteButton asd={prop.uid} v={key} deleteUser={deleteUser} />
                     </TableCell>
                   </TableRow>
                 );
