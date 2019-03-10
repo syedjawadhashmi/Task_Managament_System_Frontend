@@ -27,7 +27,8 @@ function CustomInput({ ...props }) {
     helpText,
     type,
     value,
-    onChange
+    onChange,
+    disabled
   } = props;
 
   const labelClasses = classNames({
@@ -78,6 +79,7 @@ function CustomInput({ ...props }) {
           disabled: classes.disabled,
           underline: underlineClasses
         }}
+        disabled={disabled}
         onChange={onChange}
         type={type}
         id={id}

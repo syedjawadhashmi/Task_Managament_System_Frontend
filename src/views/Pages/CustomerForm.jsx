@@ -69,6 +69,7 @@ class CustomerForm extends React.Component {
       edit: false
     };
   }
+
   componentDidMount() {
     const {_param} = this.props.location.state;
     console.log('parms', _param);
@@ -242,6 +243,44 @@ class CustomerForm extends React.Component {
       Consultantstatus: ""
     });
   };
+  
+  updateCustomer = (e) =>  {
+    e.preventDefault();
+    const {
+      email,
+      customer,
+      phone,
+      contact,
+      address,
+      city,
+      zip_code,
+      USD,
+      Country,
+      Consultant,
+      ProductOwner
+    } = this.state
+    const {_param} = this.props.location.state;
+
+    firebase.database().ref("Customer/" + _param.key).update({
+      email: email,
+      customer: customer,
+      phone: phone,
+      contact: contact,
+      address: address,
+      city: city,
+      zip_code: zip_code,
+      USD: USD,
+      Country: Country,
+      Consultant: Consultant,
+      ProductOwner: ProductOwner,
+      role: "Customer",
+    }).then(() => {
+      alert('user updated successfully')
+    }).catch(error => {
+      alert(error);
+    });
+  }
+  
   addCustomer = e => {
     e.preventDefault();
     const {
@@ -299,6 +338,8 @@ class CustomerForm extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const {_param} = this.props.location.state;
+
     const {
       customer,
       phone,
@@ -340,7 +381,7 @@ class CustomerForm extends React.Component {
                     type: "text"
                   }}
                 />
-                <CustomInput
+                {_param === '' ? <CustomInput
                   labelText="Email Address *"
                   id="registeremail"
                   formControlProps={{
@@ -351,7 +392,20 @@ class CustomerForm extends React.Component {
                   inputProps={{
                     type: "email"
                   }}
-                />
+                /> : 
+                <CustomInput
+                  labelText="Email Address *"
+                  id="registeremail"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  disabled={true}
+                  onChange={this.handleEmailChange}
+                  value={email}
+                  inputProps={{
+                    type: "email"
+                  }}
+                />}
                 <CustomInput
                   labelText="Phone *"
                   formControlProps={{
@@ -561,7 +615,7 @@ class CustomerForm extends React.Component {
 
                     <Button
                       color="rose"
-                      onClick={this.addCustomer}
+                      onClick={_param === '' ? this.addCustomer : this.updateCustomer}
                       className={classes.registerButton}
                     >
                       Add
