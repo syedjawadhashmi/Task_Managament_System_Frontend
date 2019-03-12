@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // eslint-disable-next-line no-unused-vars
 import React, { Component } from "react";
 // @material-ui/core
@@ -17,55 +18,55 @@ import Table from "../Components/Table";
 const drawerWidth = 240;
 
 const styles = theme => ({
-    root: {
-        display: "flex",
-    },
-    appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-    },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
-    },
-    drawerPaper: {
-        width: drawerWidth,
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing.unit * 3
-    },
-    toolbar: theme.mixins.toolbar
+  root: {
+    display: "flex"
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0
+  },
+  drawerPaper: {
+    width: drawerWidth
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 3
+  },
+  toolbar: theme.mixins.toolbar
 });
 
 class ProjectPage extends Component {
-    state = {
-        open: false
-    };
+  state = {
+    open: false
+  };
 
-    handleDrawerOpen = () => {
-        this.setState({ open: true });
-    };
+  handleDrawerOpen = () => {
+    this.setState({ open: true });
+  };
 
-    handleDrawerClose = () => {
-        this.setState({ open: false });
-    };
-    render() {
-        const { classes } = this.props;
-        const { open } = this.state;
-        return (
-            <div >
-                <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                        <CssBaseline />
-                        <div className={classes.toolbar} />
-                        <Table />
-                    </GridItem>
-                </GridContainer>
-            </div>
-        );
-    }
+  handleDrawerClose = () => {
+    this.setState({ open: false });
+  };
+  render() {
+    const { classes } = this.props;
+    const { open } = this.state;
+    return (
+      <div>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+            <CssBaseline />
+            <div className={classes.toolbar} />
+            <Table />
+          </GridItem>
+        </GridContainer>
+      </div>
+    );
+  }
 }
 ProjectPage.propTypes = {
-    classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired
 };
 export default withStyles(styles)(ProjectPage);

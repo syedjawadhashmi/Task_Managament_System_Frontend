@@ -1,4 +1,7 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-debugger */
+/* eslint-disable no-console */
+import React from "react";
 
 // @material-ui/core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -15,82 +18,79 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 
 // import link for routing
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import firebase from "../../constant/api/firebase";
-import axios from 'axios';
-const rooturl = 'https://taskmanagment-1.herokuapp.com/developers';
-
-
+import axios from "axios";
+const rooturl = "https://taskmanagment-1.herokuapp.com/developers";
 
 class DeveloperLis extends React.Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
-      developers : [],
-      posts: "",
-    }
-        
-     // Binding functions here...!
-     this.deleteUser = this.deleteUser.bind(this);
+      developers: [],
+      posts: ""
+    };
 
+    // Binding functions here...!
+    this.deleteUser = this.deleteUser.bind(this);
   }
 
   componentDidMount() {
     this.getUser();
   }
 
-  getUser =() => {
+  getUser = () => {
     let arrdata = [];
     let dataabase = firebase.database().ref("/Developer/");
     dataabase.on("value", object => {
       let data = object.val();
       for (var x in data) arrdata.push(data[x]);
       this.setState({
-        developers : arrdata
-      })
+        developers: arrdata
+      });
       console.log("fetched data", arrdata);
     });
-  }
+  };
 
   deleteUser = (key, index) => {
-    console.log('key, uid', key, index);
+    console.log("key, uid", key, index);
     let fetchpost = this.state.developers;
     // return (
-      debugger
-      axios.post(`${rooturl}/delete-user`,{ uid: key }).then((res) => {
-        console.log("response of delete req", res)
-        console.log("select of delete req", key)
-        fetchpost.splice(index , 1);
+    debugger;
+    axios
+      .post(`${rooturl}/delete-user`, { uid: key })
+      .then(res => {
+        console.log("response of delete req", res);
+        console.log("select of delete req", key);
+        fetchpost.splice(index, 1);
         this.setState({
-          developers : fetchpost
-        });         
+          developers: fetchpost
+        });
       })
-      .catch((err) => {
+      .catch(err => {
         console.log("error", err);
-        let errorMessage = err; 
-        alert(errorMessage)
-      })
+        let errorMessage = err;
+        alert(errorMessage);
+      });
     // )
-  }  
-
+  };
 
   render() {
-    const { developers } = this.state
-    console.log('dev', developers)
+    const { developers } = this.state;
+    console.log("dev", developers);
     const tableData = developers;
-    
+
     const tableHead = [
       "#",
       "First Name",
       "Last Name",
       "Email",
-      "Password ",
       "Status  ",
       "Rate ",
       "Rate Unit",
       "Currency",
       "Actions"
-    ]
+    ];
 
     return (
       <div>
@@ -103,25 +103,39 @@ class DeveloperLis extends React.Component {
             </CardHeader>
             <CardBody>
               <GridContainer>
-                <GridItem style={{display:'flex',flexDirection:'row',justifyContent:'flex-end'}} xs={12} sm={12} md={12} lg={12}>
-                  <Link 
+                <GridItem
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end"
+                  }}
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                >
+                  <Link
                     to={{
                       pathname: "developer-form",
                       state: {
-                        _param: ''
+                        _param: ""
                       }
-                    }} 
+                    }}
                   >
                     <Button
                       variant="contained"
                       color="primary"
-                      style={{ fontSize: 10, textTransform: 'capitalize' }}
+                      style={{ fontSize: 10, textTransform: "capitalize" }}
                     >
                       Add a developer
                     </Button>
                   </Link>
                 </GridItem>
-                <ExtendedTables tableHead={tableHead} tableData={tableData} deleteUser={this.deleteUser} />
+                <ExtendedTables
+                  tableHead={tableHead}
+                  tableData={tableData}
+                  deleteUser={this.deleteUser}
+                />
               </GridContainer>
             </CardBody>
           </Card>

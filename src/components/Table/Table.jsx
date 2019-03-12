@@ -75,7 +75,7 @@ function CustomTable({ ...props }) {
                     [classes.tableHeadFontSize]: !tableShopping
                   });
                 return (
-                  <TableCell className={tableCellClasses} key={key}>
+                  <TableCell className={classes.tableCell} key={key}>
                     {prop}
                   </TableCell>
                 );
@@ -126,13 +126,6 @@ function CustomTable({ ...props }) {
                       colSpan={prop.colspan}
                     >
                       {prop.email}
-                    </TableCell>
-
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {prop.password}
                     </TableCell>
                     <TableCell
                       className={classes.tableCell}

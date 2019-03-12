@@ -1,3 +1,6 @@
+/* eslint-disable no-debugger */
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 import React from "react";
 
 // @material-ui/core components
@@ -11,15 +14,15 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 import firebase from "../../constant/api/firebase";
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
-import axios from 'axios';
-const rooturl = 'https://taskmanagment-1.herokuapp.com/developers';
+import axios from "axios";
+const rooturl = "https://taskmanagment-1.herokuapp.com/developers";
 
 class DeveloperForm extends React.Component {
   constructor(props) {
@@ -37,12 +40,10 @@ class DeveloperForm extends React.Component {
       rate: "",
       rate_unit: "",
       currency: ""
-
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeEnabled = this.handleChangeEnabled.bind(this);
   }
-
 
   handleChange(event) {
     this.setState({ selectedValue: event.target.value });
@@ -66,42 +67,42 @@ class DeveloperForm extends React.Component {
     });
   }
 
-  handleFirstNameChange = (e) => {
+  handleFirstNameChange = e => {
     this.setState({ firstName: e.target.value });
-  }
+  };
 
-  handleLastNameChange = (e) => {
+  handleLastNameChange = e => {
     this.setState({ lastName: e.target.value });
-  }
+  };
 
-  handleEmailChange = (e) => {
+  handleEmailChange = e => {
     this.setState({ email: e.target.value });
-  }
+  };
 
-  handlePassChange = (e) => {
+  handlePassChange = e => {
     this.setState({ password: e.target.value });
-  }
+  };
 
-  handleStatusChange = (e) => {
+  handleStatusChange = e => {
     this.setState({ status: e.target.value });
-  }
+  };
 
-  handleRateChange = (e) => {
+  handleRateChange = e => {
     this.setState({ rate: e.target.value });
-  }
+  };
 
-  handleRateUnitChange = (e) => {
+  handleRateUnitChange = e => {
     this.setState({ rate_unit: e.target.value });
-  }
+  };
 
-  handleCurrencyChange = (e) => {
+  handleCurrencyChange = e => {
     this.setState({ currency: e.target.value });
-  }
+  };
 
   componentDidMount() {
-    const {_param} = this.props.location.state;
-    console.log('parms', _param);
-    if(_param !== '') {
+    const { _param } = this.props.location.state;
+    console.log("parms", _param);
+    if (_param !== "") {
       this.setState({
         firstName: _param.firstName,
         lastName: _param.lastName,
@@ -110,27 +111,45 @@ class DeveloperForm extends React.Component {
         status: _param.status,
         rate: _param.rate,
         rate_unit: _param.rate_unit,
-        currency: _param.currency  
-      })
+        currency: _param.currency
+      });
     }
   }
 
-  addDeveloper = (e) => {
-    debugger
+  addDeveloper = e => {
+    debugger;
     e.preventDefault();
-    const { firstName, lastName, email, password, status, currency, rate, rate_unit } = this.state
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      status,
+      currency,
+      rate,
+      rate_unit
+    } = this.state;
     const developer = {
-      firstName, lastName, email, password, status, currency, rate, rate_unit
-    }
-    console.log('user', developer)
-    firebase.auth().createUserWithEmailAndPassword(developer.email, developer.password)
+      firstName,
+      lastName,
+      email,
+      password,
+      status,
+      currency,
+      rate,
+      rate_unit
+    };
+    console.log("user", developer);
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(developer.email, developer.password)
       .then(send => {
         var userId = firebase.auth().currentUser.uid;
         var user = firebase.auth().currentUser;
-        console.log('user', user)
+        console.log("user", user);
         const ref = firebase.database().ref("Developer/" + userId);
-        ref.set(
-          {
+        ref
+          .set({
             uid: userId,
             name: developer.firstName + developer.lastName,
             firstName: firstName,
@@ -142,26 +161,42 @@ class DeveloperForm extends React.Component {
             rate_unit: developer.rate_unit,
             currency: developer.currency,
             status: developer.status
-          }
-        ).catch((error) => {console.log("Error during user creating on firebase", error);});
+          })
+          .catch(error => {
+            console.log("Error during user creating on firebase", error);
+          });
         alert("Developer registered successfully");
       })
       .catch(error => {
         alert(error);
       });
     this.setState({
-      firstName: '', lastName: '', email: '', password: '', status: '', currency: '', rate: '', rate_unit: ''
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      status: "",
+      currency: "",
+      rate: "",
+      rate_unit: ""
     });
   };
 
-
-  updateDeveloper = (e) => {
+  updateDeveloper = e => {
     e.preventDefault();
-    const { firstName, lastName, password, status, currency, rate, rate_unit } = this.state
-    const {_param} = this.props.location.state;
-    
-    return (
-      axios.post(`${rooturl}/update-user`,{
+    const {
+      firstName,
+      lastName,
+      password,
+      status,
+      currency,
+      rate,
+      rate_unit
+    } = this.state;
+    const { _param } = this.props.location.state;
+
+    return axios
+      .post(`${rooturl}/update-user`, {
         firstName: firstName,
         lastName: lastName,
         password: password,
@@ -170,22 +205,31 @@ class DeveloperForm extends React.Component {
         rate_unit: rate_unit,
         currency: currency,
         uid: _param.uid
-      }).then((res) => {
-        alert('developer successfully update')
-        console.log("response of upddate req", res)
-        console.log("select of update req", _param.key)
-        })
-        .catch((err) => {
-          console.log("error", err);
-          let errorMessage = err;
-          alert(errorMessage);
-      })        
-    )
-  }
+      })
+      .then(res => {
+        alert("developer successfully update");
+        console.log("response of upddate req", res);
+        console.log("select of update req", _param.key);
+      })
+      .catch(err => {
+        console.log("error", err);
+        let errorMessage = err;
+        alert(errorMessage);
+      });
+  };
   render() {
     const { classes } = this.props;
-    const { firstName, lastName, email, password, status, rate, rate_unit, currency } = this.state;
-    const {_param} = this.props.location.state;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      status,
+      rate,
+      rate_unit,
+      currency
+    } = this.state;
+    const { _param } = this.props.location.state;
 
     return (
       <GridContainer>
@@ -232,31 +276,34 @@ class DeveloperForm extends React.Component {
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={12} lg={12}>
-                  {_param === '' ?  <CustomInput
-                      labelText="E-Mail"
-                      id="email"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      onChange={this.handleEmailChange}
-                      value={email}
-                      inputProps={{
-                        type: "email"
-                      }}
-                    />:
-                    <CustomInput
-                      labelText="E-Mail"
-                      id="email"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      onChange={this.handleEmailChange}
-                      disabled={true}
-                      value={email}
-                      inputProps={{
-                        type: "email"
-                      }}
-                    />}
+                    {_param === "" ? (
+                      <CustomInput
+                        labelText="E-Mail"
+                        id="email"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        onChange={this.handleEmailChange}
+                        value={email}
+                        inputProps={{
+                          type: "email"
+                        }}
+                      />
+                    ) : (
+                      <CustomInput
+                        labelText="E-Mail"
+                        id="email"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        onChange={this.handleEmailChange}
+                        disabled={true}
+                        value={email}
+                        inputProps={{
+                          type: "email"
+                        }}
+                      />
+                    )}
                   </GridItem>
                 </GridContainer>
                 <GridContainer>
@@ -277,7 +324,11 @@ class DeveloperForm extends React.Component {
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={6} sm={6} lg={6}>
-                  <FormControl style={{marginTop:10}} className={[classes.formControl, 'form-control']} variant="outlined">
+                    <FormControl
+                      style={{ marginTop: 10 }}
+                      className={[classes.formControl, "form-control"]}
+                      variant="outlined"
+                    >
                       <InputLabel
                         style={{ fontSize: 10 }}
                         ref={ref => {
@@ -292,12 +343,12 @@ class DeveloperForm extends React.Component {
                         onChange={this.handleStatusChange}
                         // displayEmpty
                         inputProps={{
-                          name: 'age',
-                          id: 'age-simple',
+                          name: "age",
+                          id: "age-simple"
                         }}
                       >
-                        <MenuItem value={10}>Active</MenuItem>
-                        <MenuItem value={20}>Deactive</MenuItem>
+                        <MenuItem value={"Active"}>Active</MenuItem>
+                        <MenuItem value={"Suspended"}>Suspended</MenuItem>
                       </Select>
                     </FormControl>
                   </GridItem>
@@ -309,19 +360,47 @@ class DeveloperForm extends React.Component {
                         fullWidth: true
                       }}
                       inputProps={{
-                        type: "text"
+                        type: "number"
                         // placeholder: "Disabled",
                         // disabled: true
                       }}
                       onChange={this.handleRateChange}
                       value={rate}
-
                     />
                   </GridItem>
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={6} sm={6} lg={6}>
-                    <CustomInput
+                  <FormControl
+                      style={{ marginTop: 10 }}
+                      className={[classes.formControl, "form-control"]}
+                      variant="outlined"
+                    >
+                      <InputLabel
+                        style={{ fontSize: 10 }}
+                        ref={ref => {
+                          this.InputLabelRef = ref;
+                        }}
+                        htmlFor="outlined-age-simple"
+                      >
+                        Rate Unit
+                      </InputLabel>
+                      <Select
+                        value={this.state.rate_unit}
+                        onChange={this.handleRateUnitChange}
+                        // displayEmpty
+                        inputProps={{
+                          name: "age",
+                          id: "age-simple"
+                        }}
+                      >
+                        <MenuItem value={"Hourly"}>Hourly</MenuItem>
+                        <MenuItem value={"Daily"}>Daily</MenuItem>
+                        <MenuItem value={"Weekly"}>Weekly</MenuItem>
+                        <MenuItem value={"Monthly"}>Monthly</MenuItem>
+                      </Select>
+                    </FormControl>
+                    {/* <CustomInput
                       //   id="disabled"
                       labelText="Rate Unit"
                       formControlProps={{
@@ -334,10 +413,38 @@ class DeveloperForm extends React.Component {
                       }}
                       onChange={this.handleRateUnitChange}
                       value={rate_unit}
-                    />
+                    /> */}
                   </GridItem>
                   <GridItem xs={6} sm={6} lg={6}>
-                    <CustomInput
+                  <FormControl
+                      style={{ marginTop: 10 }}
+                      className={[classes.formControl, "form-control"]}
+                      variant="outlined"
+                    >
+                      <InputLabel
+                        style={{ fontSize: 10 }}
+                        ref={ref => {
+                          this.InputLabelRef = ref;
+                        }}
+                        htmlFor="outlined-age-simple"
+                      >
+                        Currency
+                      </InputLabel>
+                      <Select
+                        value={this.state.currency}
+                        onChange={this.handleCurrencyChange}
+                        // displayEmpty
+                        inputProps={{
+                          name: "age",
+                          id: "age-simple"
+                        }}
+                      >
+                        <MenuItem value={"USD"}>USD</MenuItem>
+                        <MenuItem value={"EURO"}>EURO</MenuItem>
+                        <MenuItem value={"AED"}>AED</MenuItem>
+                      </Select>
+                    </FormControl>
+                    {/* <CustomInput
                       //   id="disabled"
                       labelText="Currency"
                       formControlProps={{
@@ -350,13 +457,18 @@ class DeveloperForm extends React.Component {
                       }}
                       onChange={this.handleCurrencyChange}
                       value={currency}
-                    />
+                    /> */}
                   </GridItem>
                   <GridItem xs={6} sm={4}>
-                    <Button 
-                      onClick={_param === '' ? this.addDeveloper : this.updateDeveloper}
-                    // onClick={this.addDeveloper}
-                     color={"rose"}>{_param === '' ? "Add" : "Update"}</Button>
+                    <Button
+                      onClick={
+                        _param === "" ? this.addDeveloper : this.updateDeveloper
+                      }
+                      // onClick={this.addDeveloper}
+                      color={"rose"}
+                    >
+                      {_param === "" ? "Add" : "Update"}
+                    </Button>
                   </GridItem>
                 </GridContainer>
               </form>

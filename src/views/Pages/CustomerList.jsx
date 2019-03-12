@@ -33,45 +33,50 @@ class CustomerList extends React.Component {
     };
 
     // Calling Data from Firebase and render into the DOM...!
-    firebase.database().ref("Customer").on("child_added" , (customer) => {
-      let currentpost = this.state.customers;
+    firebase
+      .database()
+      .ref("Customer")
+      .on("child_added", customer => {
+        let currentpost = this.state.customers;
 
-      let obj = {
-          all_customers : customer.val(),
-          key : customer.key
-      }
+        let obj = {
+          all_customers: customer.val(),
+          key: customer.key
+        };
 
-      currentpost.push(obj);
-      this.setState({
-          customers : currentpost,
-          posts : "",
-      })
-    })
-    
-     // Binding functions here...!
-     this.deleteCustomer = this.deleteCustomer.bind(this);
+        currentpost.push(obj);
+        this.setState({
+          customers: currentpost,
+          posts: ""
+        });
+      });
+
+    // Binding functions here...!
+    this.deleteCustomer = this.deleteCustomer.bind(this);
   }
- 
 
-  
   deleteCustomer = (key, index) => {
     console.log("key", key, index);
     let fetchpost = this.state.customers;
-      firebase.database().ref("Customer").child(key).remove().then(() => {
-        fetchpost.splice(index , 1);
+    firebase
+      .database()
+      .ref("Customer")
+      .child(key)
+      .remove()
+      .then(() => {
+        fetchpost.splice(index, 1);
         this.setState({
-          customers : fetchpost
+          customers: fetchpost
         });
-    })
-  }
+      });
+  };
 
   render() {
     const { customers } = this.state;
     const tableData = customers;
-    
+
     console.log("customer", tableData);
     // const keys = keys;
-
 
     const tableHead = [
       "#",
@@ -106,13 +111,12 @@ class CustomerList extends React.Component {
                   md={12}
                 >
                   <Link
-                  
                     to={{
                       pathname: "customer-form",
                       state: {
-                        _param: ''
+                        _param: ""
                       }
-                      }} 
+                    }}
                   >
                     <Button
                       variant="contained"

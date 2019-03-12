@@ -69,6 +69,8 @@ $body-bg: #eeeeee !default;
 }
 .dropdowngrid{
   display: flex;
+  margin-left: -23px;
+  padding-left: 0% !important
 }
 .form-control{
   min-width: 100% !important;
