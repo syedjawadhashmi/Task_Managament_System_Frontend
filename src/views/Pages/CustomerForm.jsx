@@ -70,57 +70,57 @@ class CustomerForm extends React.Component {
 			edit: false,
 			allcustomers: []
 		};
-		firebase.database().ref('Customer').on('child_added', (customer) => {
+		firebase.database().ref('Users').on('child_added', (customer) => {
 			let currentpost = this.state.allcustomers;
-	
+
 			let obj = {
 				all_customers: customer.val(),
 				key: customer.key
 			};
-	
+
 			currentpost.push(obj);
 			this.setState({
 				allcustomers: currentpost,
 				posts: ''
 			});
 		});
-	
+
 		// Binding functions here...!
 		this.deleteCustomer = this.deleteCustomer.bind(this);
 	}
-componentWillReceiveProps(){
-	
-	this.updatestate()
-}
-componentDidUpdate(){
-}
-componentDidMount() {
+	componentWillReceiveProps() {
+
+		this.updatestate()
+	}
+	componentDidUpdate() {
+	}
+	componentDidMount() {
 		this.setState({
 			labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth
 		});
 	}
-updatestate=()=>{
-	const { _param } = this.props.location.state;
-	console.log('parms', _param);
-	if (_param !== '') {
-		this.setState({
-			customer: _param.all_customers.customer,
-			email: _param.all_customers.email,
-			phone: _param.all_customers.phone,
-			contact: _param.all_customers.contact,
-			address: _param.all_customers.address,
-			city: _param.all_customers.city,
-			zip_code: _param.all_customers.zip_code,
-			rate_unit: _param.all_customers.rate_unit,
-			Country: _param.all_customers.Country,
-			currency: _param.all_customers.currency,
-			type: _param.all_customers.type,
-			status: _param.all_customers.status,
-			customercode: _param.all_customers.customercode,
-			rate: _param.all_customers.rate,
-		});
+	updatestate = () => {
+		const { _param } = this.props.location.state;
+		console.log('parms', _param);
+		if (_param !== '') {
+			this.setState({
+				customer: _param.all_customers.customer,
+				email: _param.all_customers.email,
+				phone: _param.all_customers.phone,
+				contact: _param.all_customers.contact,
+				address: _param.all_customers.address,
+				city: _param.all_customers.city,
+				zip_code: _param.all_customers.zip_code,
+				rate_unit: _param.all_customers.rate_unit,
+				Country: _param.all_customers.Country,
+				currency: _param.all_customers.currency,
+				type: _param.all_customers.type,
+				status: _param.all_customers.status,
+				customercode: _param.all_customers.customercode,
+				rate: _param.all_customers.rate,
+			});
+		}
 	}
-}
 
 	handleCustomerChange = (e) => {
 		this.setState({ customer: e.target.value });
@@ -200,50 +200,51 @@ updatestate=()=>{
 		this.setState({ status: e.target.value });
 	};
 
-	addProductOwnerOrConsultant = (e) => {
-		e.preventDefault();
+	addProductOwnerOrConsultant = (userObj) => {
+		// e.preventDefault();
 		const {
-			ProductOwnerfirstName,
-			ProductOwnerlastName,
-			ProductOwneremail,
-			ProductOwnerpassword,
-			ProductOwnerstatus,
-			type
-		} = this.state;
+			name,
+			email,
+			password,
+			type,
+			status
+		} = userObj;
 		firebase
 			.auth()
-			.createUserWithEmailAndPassword(ProductOwneremail, ProductOwnerpassword)
+			.createUserWithEmailAndPassword(email, password)
 			.then(() => {
 				var userId = firebase.auth().currentUser.uid;
 				var user = firebase.auth().currentUser;
 				console.log('user', user);
-				const ref = firebase.database().ref('ProductOwners/' + userId);
+				const ref = firebase.database().ref(`Users/`).push()
 				ref
 					.set({
 						uid: userId,
-						firstname: ProductOwnerfirstName,
-						name: ProductOwnerlastName,
-						email: ProductOwneremail,
+						name: name,
+						email: email,
 						type: type,
-						status: ProductOwnerstatus
+						status: status
+					}).then((res) => {
+						debugger
 					})
 					.catch((error) => {
+						debugger
 						console.log('Error during user creating on firebase', error);
 					});
-				alert('Add Registered Successfully');
+				alert('Add Registered Successfully'); 
+				this.setState({
+					name: '',
+					email: '',
+					password: '',
+					type: '',
+					state: ''
+				});
 			})
 			.catch((error) => {
 				alert(error);
 			});
-		this.setState({
-			ProductOwnerfirstName: '',
-			ProductOwnerlastName: '',
-			ProductOwneremail: '',
-			ProductOwnerpassword: '',
-			ProductOwnerstatus: '',
-			type: ''
-		});
 	};
+
 	updateCustomer = e => {
 		e.preventDefault();
 		const {
@@ -357,20 +358,20 @@ updatestate=()=>{
 		});
 	};
 	deleteCustomer = (key, index) => {
-    console.log("key", key, index);
-    let fetchpost = this.state.allcustomers;
-    firebase
-      .database()
-      .ref("Customer")
-      .child(key)
-      .remove()
-      .then(() => {
-        fetchpost.splice(index, 1);
-        this.setState({
-          allcustomers: fetchpost
-        });
-      });
-  };
+		console.log("key", key, index);
+		let fetchpost = this.state.allcustomers;
+		firebase
+			.database()
+			.ref("Users")
+			.child(key)
+			.remove()
+			.then(() => {
+				fetchpost.splice(index, 1);
+				this.setState({
+					allcustomers: fetchpost
+				});
+			});
+	};
 
 	render() {
 		const { classes } = this.props;
@@ -394,7 +395,7 @@ updatestate=()=>{
 			customercode,
 			allcustomers
 		} = this.state;
-		const tableHead = [ '#', 'Name', 'Email', 'Type', 'Status', 'Actions' ];
+		const tableHead = ['#', 'Name', 'Email', 'Password', 'Type', 'Status', 'Actions'];
 		const tableData = allcustomers;
 
 		return (
@@ -450,7 +451,7 @@ updatestate=()=>{
 									<GridItem xs={6} sm={6} lg={6}>
 										<FormControl
 											style={{ marginTop: 10 }}
-											className={[ classes.formControl, 'form-control' ]}
+											className={[classes.formControl, 'form-control']}
 											variant="outlined"
 										>
 											<InputLabel
@@ -495,7 +496,7 @@ updatestate=()=>{
 									<GridItem xs={6} sm={6} lg={6}>
 										<FormControl
 											style={{ marginTop: 10 }}
-											className={[ classes.formControl, 'form-control' ]}
+											className={[classes.formControl, 'form-control']}
 											variant="outlined"
 										>
 											<InputLabel
@@ -552,20 +553,20 @@ updatestate=()=>{
 										}}
 									/>
 								) : (
-									<CustomInput
-										labelText="Email Address *"
-										id="registeremail"
-										formControlProps={{
-											fullWidth: true
-										}}
-										disabled={true}
-										onChange={this.handleEmailChange}
-										value={email}
-										inputProps={{
-											type: 'email'
-										}}
-									/>
-								)}
+										<CustomInput
+											labelText="Email Address *"
+											id="registeremail"
+											formControlProps={{
+												fullWidth: true
+											}}
+											disabled={true}
+											onChange={this.handleEmailChange}
+											value={email}
+											inputProps={{
+												type: 'email'
+											}}
+										/>
+									)}
 								<CustomInput
 									labelText="Phone *"
 									formControlProps={{
@@ -624,7 +625,7 @@ updatestate=()=>{
 								<Grid className="dropdowngrid" spacing={8}>
 									<GridItem xs={6} sm={6} md={4}>
 										<FormControl
-											className={[ classes.formControl, 'form-control' ]}
+											className={[classes.formControl, 'form-control']}
 											variant="outlined"
 										>
 											<InputLabel
@@ -655,9 +656,9 @@ updatestate=()=>{
 											</Select>
 										</FormControl>
 									</GridItem>
-									<GridItem xs={6} sm={6} md={4}>
+									{/* <GridItem xs={6} sm={6} md={4}>
 										<FormControl
-											className={[ classes.formControl, 'form-control' ]}
+											className={[classes.formControl, 'form-control']}
 											variant="outlined"
 										>
 											<InputLabel
@@ -686,12 +687,12 @@ updatestate=()=>{
 												<MenuItem value={'Product Owner'}>Product Owner</MenuItem>
 											</Select>
 										</FormControl>
-									</GridItem>
+									</GridItem> */}
 									{/* {
 										this.state.type == "Consultant"|| this.state.type == "Product Owner"? */}
-									<GridItem xs={6} sm={6} md={4}>
+									{/* <GridItem xs={6} sm={6} md={4}>
 										<FormControl
-											className={[ classes.formControl, 'form-control' ]}
+											className={[classes.formControl, 'form-control']}
 											variant="outlined"
 										>
 											<InputLabel
@@ -720,7 +721,7 @@ updatestate=()=>{
 												<MenuItem value={'Suspended'}>Suspended</MenuItem>
 											</Select>
 										</FormControl>
-									</GridItem>
+									</GridItem> */}
 									{/* :null
 									} */}
 								</Grid>
@@ -733,14 +734,14 @@ updatestate=()=>{
 										Edit
 									</Button>
 								) : (
-									<Button
-										color="rose"
-										onClick={_param === '' ? this.addCustomer : this.updateCustomer}
-										className={classes.registerButton}
-									>
-										{_param === '' ? 'Add' : 'Update'}
-									</Button>
-								)}
+										<Button
+											color="rose"
+											onClick={_param === '' ? this.addCustomer : this.updateCustomer}
+											className={classes.registerButton}
+										>
+											{_param === '' ? 'Add' : 'Update'}
+										</Button>
+									)}
 							</form>
 						</CardBody>
 					</Card>
@@ -753,7 +754,11 @@ updatestate=()=>{
 						<CardBody>
 							<GridItem xs={12}>
 
-								<ExtendedTablesCustomer tableHead={tableHead} tableData={tableData} deleteUser={this.deleteCustomer} />
+								<ExtendedTablesCustomer
+									tableHead={tableHead}
+									tableData={tableData}
+									deleteUser={this.deleteCustomer}
+									addUser={this.addProductOwnerOrConsultant} />
 							</GridItem>
 						</CardBody>
 					</CardHeader>
