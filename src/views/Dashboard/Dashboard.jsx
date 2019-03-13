@@ -124,6 +124,7 @@ class DeveloperLis extends React.Component {
                   >
                     <Button
                       variant="contained"
+                      size="medium"
                       color="primary"
                       style={{ fontSize: 10, textTransform: "capitalize" }}
                     >

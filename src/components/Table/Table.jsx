@@ -155,16 +155,86 @@ function CustomTable({ ...props }) {
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      <EditButton _route={'developer-form'} _param={prop} />
-                      <DeleteButton asd={prop.uid} v={key} deleteUser={deleteUser} />
+                      <EditButton _route={"developer-form"} _param={prop} />
+                      <DeleteButton
+                        asd={prop.uid}
+                        v={key}
+                        deleteUser={deleteUser}
+                      />
                     </TableCell>
                   </TableRow>
                 );
-              } 
+              }
+              // else if (prop.all_customers.type === "Consultant"||prop.all_customers.type === "Product Owner"){
+              //   // console.log('props_data', prop.key)
+              //   return (
+              //     <TableRow key={prop.key} hover={hover} className={tableRowClasses}>
+              //       <TableCell
+              //         className={classes.tableCell}
+              //         colSpan={prop.colspan}
+              //       >
+              //         {key}
+              //       </TableCell>
+              //       <TableCell
+              //         className={classes.tableCell}
+              //         colSpan={prop.colspan}
+              //       >
+              //         {prop.all_customers.customer}
+              //       </TableCell>
+              //       <TableCell
+              //         className={classes.tableCell}
+              //         colSpan={prop.colspan}
+              //       >
+              //         {prop.all_customers.email}
+              //       </TableCell>
+              //       <TableCell
+              //         className={classes.tableCell}
+              //         colSpan={prop.colspan}
+              //       >
+              //         {prop.all_customers.phone}
+              //       </TableCell>
+              //       <TableCell
+              //         className={classes.tableCell}
+              //         colSpan={prop.colspan}
+              //       >
+              //         {prop.all_customers.city}
+              //       </TableCell>
+              //       <TableCell
+              //         className={classes.tableCell}
+              //         colSpan={prop.colspan}
+              //       >
+              //         {prop.all_customers.address}
+              //       </TableCell>
+              //       {/* <TableCell
+              //         className={classes.tableCell}
+              //         colSpan={prop.colspan}
+              //       >
+              //         {prop.all_customers.contact}
+              //       </TableCell>
+              //       <TableCell
+              //         className={classes.tableCell}
+              //         colSpan={prop.colspan}
+              //       >
+              //         {prop.all_customers.zip_code}
+              //       </TableCell> */}
+              //       <TableCell
+              //         className={classes.tableCell}
+              //         colSpan={prop.colspan}
+              //       >
+              //         <EditButton _route={'customer-form'} _param={prop} />
+              //         <DeleteButton asd={prop.key} v={key} deleteUser={deleteUser} />
+              //       </TableCell>
+              //     </TableRow>
+              //   );
+              // }
               else {
                 // console.log('props_data', prop.key)
                 return (
-                  <TableRow key={prop.key} hover={hover} className={tableRowClasses}>
+                  <TableRow
+                    key={prop.key}
+                    hover={hover}
+                    className={tableRowClasses}
+                  >
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
@@ -217,8 +287,12 @@ function CustomTable({ ...props }) {
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      <EditButton _route={'customer-form'} _param={prop} />
-                      <DeleteButton asd={prop.key} v={key} deleteUser={deleteUser} />
+                      <EditButton _route={"customer-form"} _param={prop} />
+                      <DeleteButton
+                        asd={prop.key}
+                        v={key}
+                        deleteUser={deleteUser}
+                      />
                     </TableCell>
                   </TableRow>
                 );
@@ -232,16 +306,18 @@ function CustomTable({ ...props }) {
 
 class EditButton extends React.Component {
   render() {
-    const { _param, _route } = this.props; 
-    console.log('parm', _param );
+    const { _param, _route } = this.props;
+    console.log("parm", _param);
     return (
-      <Link to={{
-        pathname: _route,
-        state: {
-          _param
-        }
-      }}>
-        <Button edit= {true} color="success" simple>
+      <Link
+        to={{
+          pathname: _route,
+          state: {
+            _param
+          }
+        }}
+      >
+        <Button edit={true} color="success" simple>
           <Edit color="success" />
         </Button>
       </Link>
@@ -255,7 +331,11 @@ class DeleteButton extends React.Component {
     const { asd, v } = this.props;
     console.log("key", asd);
     return (
-      <Button color="danger" simple onClick={() => this.props.deleteUser(asd, v)}>
+      <Button
+        color="danger"
+        simple
+        onClick={() => this.props.deleteUser(asd, v)}
+      >
         <Close color="danger" />
       </Button>
     );

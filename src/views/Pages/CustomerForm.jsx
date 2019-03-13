@@ -20,6 +20,7 @@ import Card from 'components/Card/Card.jsx';
 import CardHeader from 'components/Card/CardHeader.jsx';
 import CardBody from 'components/Card/CardBody.jsx';
 import CardIcon from 'components/Card/CardIcon.jsx';
+import ExtendedTablesCustomer from '../Tables/ExtendedTablesCustomer';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
@@ -61,41 +62,66 @@ class CustomerForm extends React.Component {
 			ProductOwneremail: '',
 			ProductOwnerpassword: '',
 			ProductOwnerstatus: '',
-			ConsultantfirstName: '',
-			ConsultantlastName: '',
-			Consultantemail: '',
-			Consultantpassword: '',
-			Consultantstatus: '',
+			status: '',
 			type: '',
 			rate: '',
-      rate_unit: '',
-      customercode:'',
-			edit: false
+			rate_unit: '',
+			customercode: '',
+			edit: false,
+			allcustomers: []
 		};
-	}
-
-	componentDidMount() {
-		const { _param } = this.props.location.state;
-		console.log('parms', _param);
-		if (_param !== '') {
+		firebase.database().ref('Customer').on('child_added', (customer) => {
+			let currentpost = this.state.allcustomers;
+	
+			let obj = {
+				all_customers: customer.val(),
+				key: customer.key
+			};
+	
+			currentpost.push(obj);
 			this.setState({
-				customer: _param.all_customers.customer,
-				email: _param.all_customers.email,
-				phone: _param.all_customers.phone,
-				contact: _param.all_customers.contact,
-				address: _param.all_customers.address,
-				city: _param.all_customers.city,
-				zip_code: _param.all_customers.zip_code,
-				USD: _param.all_customers.USD,
-				Country: _param.all_customers.Country,
-				Consultant: _param.all_customers.Consultant,
-				ProductOwner: _param.all_customers.ProductOwner
+				allcustomers: currentpost,
+				posts: ''
 			});
-		}
+		});
+	
+		// Binding functions here...!
+		this.deleteCustomer = this.deleteCustomer.bind(this);
+	}
+componentWillReceiveProps(){
+	
+	this.updatestate()
+}
+componentDidUpdate(){
+}
+componentDidMount() {
 		this.setState({
 			labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth
 		});
 	}
+updatestate=()=>{
+	const { _param } = this.props.location.state;
+	console.log('parms', _param);
+	if (_param !== '') {
+		this.setState({
+			customer: _param.all_customers.customer,
+			email: _param.all_customers.email,
+			phone: _param.all_customers.phone,
+			contact: _param.all_customers.contact,
+			address: _param.all_customers.address,
+			city: _param.all_customers.city,
+			zip_code: _param.all_customers.zip_code,
+			rate_unit: _param.all_customers.rate_unit,
+			Country: _param.all_customers.Country,
+			currency: _param.all_customers.currency,
+			type: _param.all_customers.type,
+			status: _param.all_customers.status,
+			customercode: _param.all_customers.customercode,
+			rate: _param.all_customers.rate,
+		});
+	}
+}
+
 	handleCustomerChange = (e) => {
 		this.setState({ customer: e.target.value });
 	};
@@ -170,6 +196,9 @@ class CustomerForm extends React.Component {
 	handleCurrencyChange = (e) => {
 		this.setState({ currency: e.target.value });
 	};
+	handlestatusChange = (e) => {
+		this.setState({ status: e.target.value });
+	};
 
 	addProductOwnerOrConsultant = (e) => {
 		e.preventDefault();
@@ -215,12 +244,12 @@ class CustomerForm extends React.Component {
 			type: ''
 		});
 	};
-	updateCustomer = (e) => {
+	updateCustomer = e => {
 		e.preventDefault();
 		const {
-      customercode,
-      rate,
-      rate_unit,
+			customercode,
+			rate,
+			rate_unit,
 			email,
 			customer,
 			phone,
@@ -230,8 +259,8 @@ class CustomerForm extends React.Component {
 			zip_code,
 			// USD,
 			Country,
-			Consultant,
-			ProductOwner
+			type,
+			status
 		} = this.state;
 		const { _param } = this.props.location.state;
 
@@ -239,21 +268,23 @@ class CustomerForm extends React.Component {
 			.database()
 			.ref('Customer/' + _param.key)
 			.update({
-        customercode:customercode,
+				customercode: customercode,
 				email: email,
 				customer: customer,
 				phone: phone,
 				contact: contact,
 				address: address,
 				city: city,
-        zip_code: zip_code,
-        rate:rate,
-        rate_unit:rate_unit,
+				zip_code: zip_code,
+				rate: rate,
+				rate_unit: rate_unit,
 				// USD: USD,
 				Country: Country,
+				type: type,
+				status: status
 				// Consultant: Consultant,
 				// ProductOwner: ProductOwner,
-				role: 'Customer'
+				// role: 'Customer'
 			})
 			.then(() => {
 				alert('user updated successfully');
@@ -276,11 +307,13 @@ class CustomerForm extends React.Component {
 			Country,
 			currency,
 			rate,
-      rate_unit,
-      customercode
+			rate_unit,
+			customercode,
+			type,
+			status
 		} = this.state;
 		const customer_data = {
-      customercode,
+			customercode,
 			email,
 			customer,
 			phone,
@@ -292,7 +325,8 @@ class CustomerForm extends React.Component {
 			rate,
 			rate_unit,
 			Country,
-			role: 'Customer'
+			type: type,
+			status: status
 		};
 		console.log('user', customer_data);
 
@@ -302,9 +336,9 @@ class CustomerForm extends React.Component {
 		});
 		alert('Customer Registered Successfully');
 		this.setState({
-      customercode:'',
-      rate:'',
-      rate_unit:'',
+			customercode: '',
+			rate: '',
+			rate_unit: '',
 			firstName: '',
 			lastName: '',
 			email: '',
@@ -318,9 +352,25 @@ class CustomerForm extends React.Component {
 			USD: '',
 			Country: '',
 			Consultant: '',
-			ProductOwner: ''
+			type: '',
+			status: ''
 		});
 	};
+	deleteCustomer = (key, index) => {
+    console.log("key", key, index);
+    let fetchpost = this.state.allcustomers;
+    firebase
+      .database()
+      .ref("Customer")
+      .child(key)
+      .remove()
+      .then(() => {
+        fetchpost.splice(index, 1);
+        this.setState({
+          allcustomers: fetchpost
+        });
+      });
+  };
 
 	render() {
 		const { classes } = this.props;
@@ -340,9 +390,12 @@ class CustomerForm extends React.Component {
 			ProductOwnerpassword,
 			currency,
 			rate,
-      rate_unit,
-      customercode
+			rate_unit,
+			customercode,
+			allcustomers
 		} = this.state;
+		const tableHead = [ '#', 'Name', 'Email', 'Type', 'Status', 'Actions' ];
+		const tableData = allcustomers;
 
 		return (
 			<GridContainer>
@@ -386,7 +439,7 @@ class CustomerForm extends React.Component {
 										fullWidth: true
 									}}
 									inputProps={{
-										type: 'text'
+										type: 'number'
 										// placeholder: "Disabled",
 										// disabled: true
 									}}
@@ -395,35 +448,35 @@ class CustomerForm extends React.Component {
 								/>
 								<GridContainer>
 									<GridItem xs={6} sm={6} lg={6}>
-                  <FormControl
-                      style={{ marginTop: 10 }}
-                      className={[classes.formControl, "form-control"]}
-                      variant="outlined"
-                    >
-                      <InputLabel
-                        style={{ fontSize: 10 }}
-                        ref={ref => {
-                          this.InputLabelRef = ref;
-                        }}
-                        htmlFor="outlined-age-simple"
-                      >
-                        Rate Unit
-                      </InputLabel>
-                      <Select
-                        value={this.state.rate_unit}
-                        onChange={this.handleRateUnitChange}
-                        // displayEmpty
-                        inputProps={{
-                          name: "age",
-                          id: "age-simple"
-                        }}
-                      >
-                        <MenuItem value={"Hourly"}>Hourly</MenuItem>
-                        <MenuItem value={"Daily"}>Daily</MenuItem>
-                        <MenuItem value={"Weekly"}>Weekly</MenuItem>
-                        <MenuItem value={"Monthly"}>Monthly</MenuItem>
-                      </Select>
-                    </FormControl>
+										<FormControl
+											style={{ marginTop: 10 }}
+											className={[ classes.formControl, 'form-control' ]}
+											variant="outlined"
+										>
+											<InputLabel
+												style={{ fontSize: 10 }}
+												ref={(ref) => {
+													this.InputLabelRef = ref;
+												}}
+												htmlFor="outlined-age-simple"
+											>
+												Rate Unit
+											</InputLabel>
+											<Select
+												value={this.state.rate_unit}
+												onChange={this.handleRateUnitChange}
+												// displayEmpty
+												inputProps={{
+													name: 'age',
+													id: 'age-simple'
+												}}
+											>
+												<MenuItem value={'Hourly'}>Hourly</MenuItem>
+												<MenuItem value={'Daily'}>Daily</MenuItem>
+												<MenuItem value={'Weekly'}>Weekly</MenuItem>
+												<MenuItem value={'Monthly'}>Monthly</MenuItem>
+											</Select>
+										</FormControl>
 										{/* <CustomInput
 											//   id="disabled"
 											labelText="Rate Unit"
@@ -440,34 +493,34 @@ class CustomerForm extends React.Component {
 										/> */}
 									</GridItem>
 									<GridItem xs={6} sm={6} lg={6}>
-                  <FormControl
-                      style={{ marginTop: 10 }}
-                      className={[classes.formControl, "form-control"]}
-                      variant="outlined"
-                    >
-                      <InputLabel
-                        style={{ fontSize: 10 }}
-                        ref={ref => {
-                          this.InputLabelRef = ref;
-                        }}
-                        htmlFor="outlined-age-simple"
-                      >
-                        Currency
-                      </InputLabel>
-                      <Select
-                        value={this.state.currency}
-                        onChange={this.handleCurrencyChange}
-                        // displayEmpty
-                        inputProps={{
-                          name: "age",
-                          id: "age-simple"
-                        }}
-                      >
-                        <MenuItem value={"USD"}>USD</MenuItem>
-                        <MenuItem value={"EURO"}>EURO</MenuItem>
-                        <MenuItem value={"AED"}>AED</MenuItem>
-                      </Select>
-                    </FormControl>
+										<FormControl
+											style={{ marginTop: 10 }}
+											className={[ classes.formControl, 'form-control' ]}
+											variant="outlined"
+										>
+											<InputLabel
+												style={{ fontSize: 10 }}
+												ref={(ref) => {
+													this.InputLabelRef = ref;
+												}}
+												htmlFor="outlined-age-simple"
+											>
+												Currency
+											</InputLabel>
+											<Select
+												value={this.state.currency}
+												onChange={this.handleCurrencyChange}
+												// displayEmpty
+												inputProps={{
+													name: 'age',
+													id: 'age-simple'
+												}}
+											>
+												<MenuItem value={'USD'}>USD</MenuItem>
+												<MenuItem value={'EURO'}>EURO</MenuItem>
+												<MenuItem value={'AED'}>AED</MenuItem>
+											</Select>
+										</FormControl>
 										{/* <CustomInput
 											//   id="disabled"
 											labelText="Currency"
@@ -602,6 +655,74 @@ class CustomerForm extends React.Component {
 											</Select>
 										</FormControl>
 									</GridItem>
+									<GridItem xs={6} sm={6} md={4}>
+										<FormControl
+											className={[ classes.formControl, 'form-control' ]}
+											variant="outlined"
+										>
+											<InputLabel
+												style={{ fontSize: 10 }}
+												ref={(ref) => {
+													this.InputLabelRef = ref;
+												}}
+												htmlFor="outlined-age-simple"
+											>
+												Type
+											</InputLabel>
+											<Select
+												value={this.state.type}
+												onChange={this.handleTypeChange}
+												// displayEmpty
+												input={
+													<OutlinedInput
+														// style={{ fontSize: 10 }}
+														labelWidth={30}
+														name="Country"
+														id="outlined-age-simple"
+													/>
+												}
+											>
+												<MenuItem value={'Consultant'}>Consultant</MenuItem>
+												<MenuItem value={'Product Owner'}>Product Owner</MenuItem>
+											</Select>
+										</FormControl>
+									</GridItem>
+									{/* {
+										this.state.type == "Consultant"|| this.state.type == "Product Owner"? */}
+									<GridItem xs={6} sm={6} md={4}>
+										<FormControl
+											className={[ classes.formControl, 'form-control' ]}
+											variant="outlined"
+										>
+											<InputLabel
+												style={{ fontSize: 10 }}
+												ref={(ref) => {
+													this.InputLabelRef = ref;
+												}}
+												htmlFor="outlined-age-simple"
+											>
+												Status
+											</InputLabel>
+											<Select
+												value={this.state.status}
+												onChange={this.handlestatusChange}
+												// displayEmpty
+												input={
+													<OutlinedInput
+														// style={{ fontSize: 10 }}
+														labelWidth={30}
+														name="Country"
+														id="outlined-age-simple"
+													/>
+												}
+											>
+												<MenuItem value={'Active'}>Active</MenuItem>
+												<MenuItem value={'Suspended'}>Suspended</MenuItem>
+											</Select>
+										</FormControl>
+									</GridItem>
+									{/* :null
+									} */}
 								</Grid>
 								{this.props.edit ? (
 									<Button
@@ -627,108 +748,13 @@ class CustomerForm extends React.Component {
 				<Card>
 					<CardHeader color="rose" icon>
 						<CardIcon color="rose">
-							<h4>Add a Product Owner OR Consultant</h4>
+							<h4>Product Owner OR Consultant</h4>
 						</CardIcon>
 						<CardBody>
-							<CustomInput
-								labelText="First Name *"
-								formControlProps={{
-									fullWidth: true
-								}}
-								onChange={this.handleProductOwnerFirstNameChange}
-								value={ProductOwnerfirstName}
-								inputProps={{
-									type: 'text'
-								}}
-							/>
-							<CustomInput
-								labelText="Name *"
-								onChange={this.handleProductOwnerLastNameChange}
-								value={ProductOwnerlastName}
-								formControlProps={{
-									fullWidth: true
-								}}
-								inputProps={{
-									type: 'text'
-								}}
-							/>
-							<CustomInput
-								labelText="Email Address *"
-								id="registeremail"
-								formControlProps={{
-									fullWidth: true
-								}}
-								onChange={this.handleProductOwnerEmailChange}
-								value={ProductOwneremail}
-								inputProps={{
-									type: 'email'
-								}}
-							/>
-							<CustomInput
-								labelText="Passwrod *"
-								id="registeremail"
-								formControlProps={{
-									fullWidth: true
-								}}
-								onChange={this.handleProductOwnerPassChange}
-								value={ProductOwnerpassword}
-								inputProps={{
-									type: 'password'
-								}}
-							/>
-							<FormControl style={{ marginBottom: 10 }} className={[ 'form-control' ]} variant="outlined">
-								<InputLabel
-									style={{ fontSize: 10 }}
-									ref={(ref) => {
-										this.InputLabelRef = ref;
-									}}
-									htmlFor="outlined-age-simple"
-								>
-									Type
-								</InputLabel>
-								<Select
-									value={this.state.type}
-									onChange={this.handleTypeChange}
-									// displayEmpty
-									inputProps={{
-										name: 'age',
-										id: 'age-simple'
-									}}
-								>
-									<MenuItem value={'Consultant'}>Consultant</MenuItem>
-									<MenuItem value={'Product Owner'}>Product Owner</MenuItem>
-								</Select>
-							</FormControl>
-							<FormControl style={{ marginBottom: 10 }} className={[ 'form-control' ]} variant="outlined">
-								<InputLabel
-									style={{ fontSize: 10 }}
-									ref={(ref) => {
-										this.InputLabelRef = ref;
-									}}
-									htmlFor="outlined-age-simple"
-								>
-									Status
-								</InputLabel>
-								<Select
-									value={this.state.ProductOwnerstatus}
-									onChange={this.handleProductOwnerStatusChange}
-									// displayEmpty
-									inputProps={{
-										name: 'age',
-										id: 'age-simple'
-									}}
-								>
-									<MenuItem value={'Active'}>Active</MenuItem>
-									<MenuItem value={'Suspended'}>Suspended</MenuItem>
-								</Select>
-							</FormControl>
-							<Button
-								color="rose"
-								onClick={this.addProductOwnerOrConsultant}
-								className={classes.registerButton}
-							>
-								Add
-							</Button>
+							<GridItem xs={12}>
+
+								<ExtendedTablesCustomer tableHead={tableHead} tableData={tableData} deleteUser={this.deleteCustomer} />
+							</GridItem>
 						</CardBody>
 					</CardHeader>
 				</Card>

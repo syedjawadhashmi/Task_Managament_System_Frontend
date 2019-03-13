@@ -14,7 +14,13 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 // eslint-disable-next-line no-unused-vars
 import Table from "../Components/Table";
-
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardIcon from "components/Card/CardIcon.jsx";
+import Card from "components/Card/Card.jsx";
+import Button from "components/CustomButtons/Button.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+// import link for routing
+import { Link } from "react-router-dom";
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -56,11 +62,48 @@ class ProjectPage extends Component {
     return (
       <div>
         <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <CssBaseline />
-            <div className={classes.toolbar} />
-            <Table />
-          </GridItem>
+          <Card>
+            <CardHeader color="rose" icon>
+              <CardIcon color="rose">
+                <h4>Projects</h4>
+              </CardIcon>
+            </CardHeader>
+            <CardBody>
+              <GridContainer>
+                <GridItem
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end"
+                  }}
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                >
+                  {/* <Link
+										to={{
+											pathname: 'developer-form',
+											state: {
+												_param: ''
+											}
+										}}
+									>
+										<Button
+											variant="contained"
+											color="primary"
+											style={{ fontSize: 10, textTransform: 'capitalize' }}
+										>
+											Add a developer
+										</Button>
+									</Link> */}
+                  <CssBaseline />
+                  <div className={classes.toolbar} />
+                  <Table />
+                </GridItem>
+              </GridContainer>
+            </CardBody>
+          </Card>
         </GridContainer>
       </div>
     );
