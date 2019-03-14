@@ -70,31 +70,32 @@ class CustomerForm extends React.Component {
 			edit: false,
 			allcustomers: []
 		};
-		firebase.database().ref('Users').on('child_added', (customer) => {
-			let currentpost = this.state.allcustomers;
+		// firebase.database().ref('Users').on('child_added', (customer) => {
+		// 	let currentpost = this.state.allcustomers;
 
-			let obj = {
-				all_customers: customer.val(),
-				key: customer.key
-			};
+		// 	let obj = {
+		// 		all_customers: customer.val(),
+		// 		key: customer.key
+		// 	};
 
-			currentpost.push(obj);
-			this.setState({
-				allcustomers: currentpost,
-				posts: ''
-			});
-		});
+		// 	currentpost.push(obj);
+		// 	this.setState({
+		// 		allcustomers: currentpost,
+		// 		posts: ''
+		// 	});
+		// });
 
 		// Binding functions here...!
-		this.deleteCustomer = this.deleteCustomer.bind(this);
+		// this.deleteCustomer = this.deleteCustomer.bind(this);
 	}
 	componentWillReceiveProps() {
 
-		this.updatestate()
+		
 	}
 	componentDidUpdate() {
 	}
 	componentDidMount() {
+		this.updatestate()
 		this.setState({
 			labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth
 		});
@@ -200,50 +201,50 @@ class CustomerForm extends React.Component {
 		this.setState({ status: e.target.value });
 	};
 
-	addProductOwnerOrConsultant = (userObj) => {
-		// e.preventDefault();
-		const {
-			name,
-			email,
-			password,
-			type,
-			status
-		} = userObj;
-		firebase
-			.auth()
-			.createUserWithEmailAndPassword(email, password)
-			.then(() => {
-				var userId = firebase.auth().currentUser.uid;
-				var user = firebase.auth().currentUser;
-				console.log('user', user);
-				const ref = firebase.database().ref(`Users/`).push()
-				ref
-					.set({
-						uid: userId,
-						name: name,
-						email: email,
-						type: type,
-						status: status
-					}).then((res) => {
-						debugger
-					})
-					.catch((error) => {
-						debugger
-						console.log('Error during user creating on firebase', error);
-					});
-				alert('Add Registered Successfully'); 
-				this.setState({
-					name: '',
-					email: '',
-					password: '',
-					type: '',
-					state: ''
-				});
-			})
-			.catch((error) => {
-				alert(error);
-			});
-	};
+	// addProductOwnerOrConsultant = (userObj) => {
+	// 	// e.preventDefault();
+	// 	const {
+	// 		name,
+	// 		email,
+	// 		password,
+	// 		type,
+	// 		status
+	// 	} = userObj;
+	// 	firebase
+	// 		.auth()
+	// 		.createUserWithEmailAndPassword(email, password)
+	// 		.then(() => {
+	// 			var userId = firebase.auth().currentUser.uid;
+	// 			var user = firebase.auth().currentUser;
+	// 			console.log('user', user);
+	// 			const ref = firebase.database().ref(`Users/`).push()
+	// 			ref
+	// 				.set({
+	// 					uid: userId,
+	// 					name: name,
+	// 					email: email,
+	// 					type: type,
+	// 					status: status
+	// 				}).then((res) => {
+	// 					debugger
+	// 				})
+	// 				.catch((error) => {
+	// 					debugger
+	// 					console.log('Error during user creating on firebase', error);
+	// 				});
+	// 			alert('Add Registered Successfully'); 
+	// 			this.setState({
+	// 				name: '',
+	// 				email: '',
+	// 				password: '',
+	// 				type: '',
+	// 				state: ''
+	// 			});
+	// 		})
+	// 		.catch((error) => {
+	// 			alert(error);
+	// 		});
+	// };
 
 	updateCustomer = e => {
 		e.preventDefault();
@@ -357,21 +358,21 @@ class CustomerForm extends React.Component {
 			status: ''
 		});
 	};
-	deleteCustomer = (key, index) => {
-		console.log("key", key, index);
-		let fetchpost = this.state.allcustomers;
-		firebase
-			.database()
-			.ref("Users")
-			.child(key)
-			.remove()
-			.then(() => {
-				fetchpost.splice(index, 1);
-				this.setState({
-					allcustomers: fetchpost
-				});
-			});
-	};
+	// deleteCustomer = (key, index) => {
+	// 	console.log("key", key, index);
+	// 	let fetchpost = this.state.allcustomers;
+	// 	firebase
+	// 		.database()
+	// 		.ref("Users")
+	// 		.child(key)
+	// 		.remove()
+	// 		.then(() => {
+	// 			fetchpost.splice(index, 1);
+	// 			this.setState({
+	// 				allcustomers: fetchpost
+	// 			});
+	// 		});
+	// };
 
 	render() {
 		const { classes } = this.props;
@@ -396,7 +397,7 @@ class CustomerForm extends React.Component {
 			allcustomers
 		} = this.state;
 		const tableHead = ['#', 'Name', 'Email', 'Password', 'Type', 'Status', 'Actions'];
-		const tableData = allcustomers;
+		// const tableData = allcustomers;
 
 		return (
 			<GridContainer>
@@ -756,9 +757,10 @@ class CustomerForm extends React.Component {
 
 								<ExtendedTablesCustomer
 									tableHead={tableHead}
-									tableData={tableData}
-									deleteUser={this.deleteCustomer}
-									addUser={this.addProductOwnerOrConsultant} />
+									// tableData={allcustomers}
+									// deleteUser={this.deleteCustomer}
+									// addUser={this.addProductOwnerOrConsultant}
+									 />
 							</GridItem>
 						</CardBody>
 					</CardHeader>
