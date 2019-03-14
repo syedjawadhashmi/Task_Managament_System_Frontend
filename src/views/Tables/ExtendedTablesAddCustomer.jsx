@@ -39,12 +39,8 @@ class ExtendedTablesCustomer extends React.Component {
       password: "",
       type: "",
       status: "",
-      editing: "",
-      editname: "",
-      edittype: "",
-      editstatus: "",
-      editrow: [],
-      allcustomers: []
+      allcustomers: [],
+      users: []
     };
     this.deleteCustomer = this.deleteCustomer.bind(this);
   }
@@ -112,45 +108,46 @@ class ExtendedTablesCustomer extends React.Component {
     console.log("update keyy", userObj);
 
     this.setState({
-      editing: userObj.email
+      editing: userObj.key
     });
   };
   updateUser = UserObj => {
+      debugger
     const { editname, edittype, editstatus } = this.state;
-    firebase
-      .database()
-      .ref("Users/" + UserObj.key)
-      .update({
-        name: editname,
-        type: edittype,
-        status: editstatus
-      })
-      .then(() => {
-        alert("user updated successfully");
-        this.setState({
-          allcustomers: []
-        });
-        firebase
-          .database()
-          .ref("Users")
-          .on("child_added", customer => {
-            let currentpost = this.state.allcustomers;
+    // firebase
+    //   .database()
+    //   .ref("Users/" + UserObj.key)
+    //   .update({
+    //     name: editname,
+    //     type: edittype,
+    //     status: editstatus
+    //   })
+    //   .then(() => {
+    //     alert("user updated successfully");
+    //     this.setState({
+    //       allcustomers: []
+    //     });
+    //     firebase
+    //       .database()
+    //       .ref("Users")
+    //       .on("child_added", customer => {
+    //         let currentpost = this.state.allcustomers;
 
-            let obj = {
-              all_customers: customer.val(),
-              key: customer.key
-            };
+    //         let obj = {
+    //           all_customers: customer.val(),
+    //           key: customer.key
+    //         };
 
-            currentpost.push(obj);
-            this.setState({
-              allcustomers: currentpost,
-              posts: ""
-            });
-          });
-      })
-      .catch(error => {
-        alert(error);
-      });
+    //         currentpost.push(obj);
+    //         this.setState({
+    //           allcustomers: currentpost,
+    //           posts: ""
+    //         });
+    //       });
+    //   })
+    //   .catch(error => {
+    //     alert(error);
+    //   });
     this.setState({
       editing: "",
       editname: "",
@@ -158,48 +155,57 @@ class ExtendedTablesCustomer extends React.Component {
       editstatus: ""
     });
   };
-  deleteCustomer = (key, index) => {
+  deleteCustomer(key, index) {
     console.log("key", key, index);
-    let fetchpost = this.state.allcustomers;
-    firebase
-      .database()
-      .ref("Customers")
-      .child(key)
-      .remove()
-      .then(() => {
-        fetchpost.splice(index, 1);
-        this.setState({
-          allcustomers: fetchpost
-        });
-        this.setState({
-          allcustomers: []
-        });
-        firebase
-          .database()
-          .ref("Users")
-          .on("child_added", customer => {
-            let currentpost = this.state.allcustomers;
+    let customers = this.state.allcustomers.splice(index, 1)
+    if(customers.length == 1){
+        customers = []
+    }
+    this.setState({
+        allcustomers: customers
+    })
+    // this.state.allcustomers.splice(index, 1)
+    // let fetchpost = this.state.allcustomers;
+    // firebase
+    //   .database()
+    //   .ref("Users")
+    //   .child(key)
+    //   .remove()
+    //   .then(() => {
+    //     fetchpost.splice(index, 1);
+    //     this.setState({
+    //       allcustomers: fetchpost
+    //     });
+    //     this.setState({
+    //       allcustomers: []
+    //     });
+    //     firebase
+    //       .database()
+    //       .ref("Users")
+    //       .on("child_added", customer => {
+    //         let currentpost = this.state.allcustomers;
 
-            let obj = {
-              all_customers: customer.val(),
-              key: customer.key
-            };
+    //         let obj = {
+    //           all_customers: customer.val(),
+    //           key: customer.key
+    //         };
 
-            currentpost.push(obj);
-            this.setState({
-              allcustomers: currentpost,
-              posts: ""
-            });
-          });
-      });
+    //         currentpost.push(obj);
+    //         this.setState({
+    //           allcustomers: currentpost,
+    //           posts: ""
+    //         });
+    //       });
+    //   });
   };
   addProductOwnerOrConsultant = userObj => {
     // e.preventDefault();
+    let key = 0 ;
     const { name, email, password, type, status } = userObj;
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => {
+      .then((res) => {
         var userId = firebase.auth().currentUser.uid;
         var user = firebase.auth().currentUser;
         console.log("user", user);
@@ -229,17 +235,16 @@ class ExtendedTablesCustomer extends React.Component {
           password: "",
           type: "",
           state: "",
-          allcustomers: []
+        //   allcustomers: []
         });
-        firebase
-          .database()
-          .ref("Users")
-          .on("child_added", customer => {
-            let currentpost = this.state.allcustomers;
+
+        ++key
+
+        let currentpost = this.state.allcustomers;
 
             let obj = {
-              all_customers: customer.val(),
-              key: customer.key
+              all_customers: userObj,
+              key: key
             };
 
             currentpost.push(obj);
@@ -247,29 +252,17 @@ class ExtendedTablesCustomer extends React.Component {
               allcustomers: currentpost,
               posts: ""
             });
-          });
+            let allusers = []
+
+            this.state.allcustomers.map((cust) => {
+                allusers.push(cust.all_customers)
+            })
+            this.props.onAdd(allusers)
+
       })
       .catch(error => {
         alert(error);
-      });
-
-      firebase
-      .database()
-      .ref("Users")
-      .on("child_added", customer => {
-        let currentpost = this.state.allcustomers;
-
-        let obj = {
-          all_customers: customer.val(),
-          key: customer.key
-        };
-
-        currentpost.push(obj);
-        this.setState({
-          allcustomers: currentpost,
-          posts: ""
-        });
-      });
+      })
   };
 
   render() {
@@ -290,8 +283,6 @@ class ExtendedTablesCustomer extends React.Component {
       customHeadCellClasses,
       customHeadClassesForCells
     } = this.props;
-    debugger
-
 
     const {
       name,
@@ -302,6 +293,14 @@ class ExtendedTablesCustomer extends React.Component {
       editrow,
       allcustomers
     } = this.state;
+
+    let userObj = {
+        name: name,
+        email: email,
+        password: password,
+        type: type,
+        status: status
+    }
 
     console.log("ddd", allcustomers);
     // editrow = tableData;
@@ -415,18 +414,20 @@ class ExtendedTablesCustomer extends React.Component {
                           </Select>
                         </TableCell>
                         <TableCell className={classes.tableCell}>
-                          <AddButton
-                            user={this.state}
-                            addUser={this.addProductOwnerOrConsultant}
-                          />
+                            <Button 
+                                color="danger" 
+                                simple 
+                                onClick={() => this.addProductOwnerOrConsultant(userObj)}>
+                                    <Add color="success" />
+                            </Button>
+                          /> */}
                         </TableCell>
                       </TableRow>
                     </TableHead>
                   ) : null}
                   <TableBody>
-                    {tableData &&
-                      tableData.all_customers.users.map((prop, key) => {
-                        debugger
+                    {allcustomers &&
+                      allcustomers.map((prop, key) => {
                         // debugger
                         var rowColor = "";
                         var rowColored = false;
@@ -445,7 +446,7 @@ class ExtendedTablesCustomer extends React.Component {
 
                         return (
                           <TableRow
-                            key={key}
+                            key={prop.key}
                             hover={hover}
                             className={tableRowClasses}
                           >
@@ -459,8 +460,8 @@ class ExtendedTablesCustomer extends React.Component {
                               className={classes.tableCell}
                               colSpan={prop.colspan}
                             >
-                              {!(this.state.editing == prop.email) ? (
-                                prop.name
+                              {!(this.state.editing == prop.key) ? (
+                                prop.all_customers.name
                               ) : (
                                 <CustomInput
                                   labelText="Name *"
@@ -482,7 +483,7 @@ class ExtendedTablesCustomer extends React.Component {
                               className={classes.tableCell}
                               colSpan={prop.colspan}
                             >
-                              {prop.email}
+                              {prop.all_customers.email}
                             </TableCell>
                             <TableCell
                               className={classes.tableCell}
@@ -494,12 +495,12 @@ class ExtendedTablesCustomer extends React.Component {
                               className={classes.tableCell}
                               colSpan={prop.colspan}
                             >
-                              {!(this.state.editing == prop.email) ? (
-                                prop.type
+                              {!(this.state.editing == prop.key) ? (
+                                prop.all_customers.type
                               ) : (
                                 <Select
                                   value={this.state.edittype}
-                                  displayEmpty={prop.type}
+                                  displayEmpty={prop.all_customers.type}
                                   onChange={this.handleEditTypeChange}
                                   inputProps={{
                                     name: "age",
@@ -507,7 +508,7 @@ class ExtendedTablesCustomer extends React.Component {
                                   }}
                                 >
                                   <MenuItem value="" disabled>
-                                    <em>{prop.type}</em>
+                                    <em>{prop.all_customers.type}</em>
                                   </MenuItem>
                                   <MenuItem value={"Consultant"}>
                                     Consultant
@@ -522,12 +523,12 @@ class ExtendedTablesCustomer extends React.Component {
                               className={classes.tableCell}
                               colSpan={prop.colspan}
                             >
-                              {!(this.state.editing == prop.email) ? (
-                                prop.status
+                              {!(this.state.editing == prop.key) ? (
+                                prop.all_customers.status
                               ) : (
                                 <Select
                                   value={this.state.editstatus}
-                                  displayEmpty={prop.status}
+                                  displayEmpty={prop.all_customers.status}
                                   onChange={this.handleEditStatusChange}
                                   inputProps={{
                                     name: "age",
@@ -535,7 +536,7 @@ class ExtendedTablesCustomer extends React.Component {
                                   }}
                                 >
                                   <MenuItem value="" disabled>
-                                    <em>{prop.status}</em>
+                                    <em>{prop.all_customers.status}</em>
                                   </MenuItem>
                                   <MenuItem value={"Active"}>Active</MenuItem>
                                   <MenuItem value={"Suspended"}>
@@ -548,7 +549,7 @@ class ExtendedTablesCustomer extends React.Component {
                               className={classes.tableCell}
                               colSpan={prop.colspan}
                             >
-                              {!(this.state.editing == prop.email) ? (
+                              {/* {!(this.state.editing == prop.key) ? (
                                 <Button
                                   edit={true}
                                   color="success"
@@ -566,16 +567,18 @@ class ExtendedTablesCustomer extends React.Component {
                                 >
                                   <Check color="success" />
                                 </Button>
-                              )}
+                              )} */}
                               {/* <EditButton
                                 _route={"customer-form"}
                                 _param={prop}
                               /> */}
-                              <DeleteButton
-                                asd={prop.email}
-                                v={key}
-                                deleteUser={this.deleteCustomer}
-                              />
+                                    <Button
+                                        color="danger"
+                                        simple
+                                        onClick={() => this.deleteCustomer(prop.key, key)}
+                                    >
+                                        <Close color="danger" />
+                                    </Button>
                             </TableCell>
                           </TableRow>
                         );

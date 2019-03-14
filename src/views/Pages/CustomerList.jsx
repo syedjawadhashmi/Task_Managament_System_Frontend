@@ -112,7 +112,7 @@ class CustomerList extends React.Component {
                 >
                   <Link
                     to={{
-                      pathname: "customer-form",
+                      pathname: "add-customer-form",
                       state: {
                         _param: ""
                       }

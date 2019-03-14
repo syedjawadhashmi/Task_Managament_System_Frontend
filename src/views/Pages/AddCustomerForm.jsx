@@ -20,7 +20,7 @@ import Card from 'components/Card/Card.jsx';
 import CardHeader from 'components/Card/CardHeader.jsx';
 import CardBody from 'components/Card/CardBody.jsx';
 import CardIcon from 'components/Card/CardIcon.jsx';
-import ExtendedTablesCustomer from '../Tables/ExtendedTablesCustomer';
+import ExtendedTablesAddCustomer from '../Tables/ExtendedTablesAddCustomer';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
@@ -37,7 +37,7 @@ const styles = (theme) => ({
 	}
 });
 
-class CustomerForm extends React.Component {
+class AddCustomerForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -68,7 +68,8 @@ class CustomerForm extends React.Component {
 			rate_unit: '',
 			customercode: '',
 			edit: false,
-			allcustomers: []
+			allcustomers: [],
+			users: []
 		};
 		// firebase.database().ref('Users').on('child_added', (customer) => {
 		// 	let currentpost = this.state.allcustomers;
@@ -312,7 +313,8 @@ class CustomerForm extends React.Component {
 			rate_unit,
 			customercode,
 			type,
-			status
+			status,
+			users
 		} = this.state;
 		const customer_data = {
 			customercode,
@@ -327,6 +329,7 @@ class CustomerForm extends React.Component {
 			rate,
 			rate_unit,
 			Country,
+			users,
 			type: type,
 			status: status
 		};
@@ -355,7 +358,8 @@ class CustomerForm extends React.Component {
 			Country: '',
 			Consultant: '',
 			type: '',
-			status: ''
+			status: '',
+			users: []
 		});
 	};
 	// deleteCustomer = (key, index) => {
@@ -374,10 +378,15 @@ class CustomerForm extends React.Component {
 	// 		});
 	// };
 
+	onAdduser = (users) => {
+		this.setState({
+			users: users
+		})
+	}
+
 	render() {
 		const { classes } = this.props;
 		const { _param } = this.props.location.state;
-debugger
 
 		const {
 			customer,
@@ -406,7 +415,7 @@ debugger
 					<Card>
 						<CardHeader color="rose" icon>
 							<CardIcon color="rose">
-								<h4>Edit a Customer</h4>
+								<h4>Add a Customer</h4>
 							</CardIcon>
 						</CardHeader>
 						<CardBody>
@@ -756,9 +765,10 @@ debugger
 						<CardBody>
 							<GridItem xs={12}>
 
-								<ExtendedTablesCustomer
+								<ExtendedTablesAddCustomer
 									tableHead={tableHead}
-									tableData={_param}
+									onAdd = {this.onAdduser.bind(this)}
+									// tableData={allcustomers}
 									// deleteUser={this.deleteCustomer}
 									// addUser={this.addProductOwnerOrConsultant}
 									 />
@@ -771,4 +781,4 @@ debugger
 	}
 }
 
-export default withStyles(styles)(CustomerForm);
+export default withStyles(styles)(AddCustomerForm);

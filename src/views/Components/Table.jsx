@@ -1173,6 +1173,42 @@ class Tables extends React.Component {
                 })}
               </Select>
             </FormControl>
+
+            <FormControl
+              style={{ marginTop: 10 }}
+              className={[classes.formControl, "form-control"]}
+              variant="outlined"
+            >
+              <InputLabel
+                style={{ fontSize: 10 }}
+                ref={ref => {
+                  this.InputLabelRef = ref;
+                }}
+              >
+                Consultant
+              </InputLabel>
+              <Select
+                value={this.state.customer}
+                onChange={this.handleCustomerChange}
+                // input={<OutlinedInput labelWidth={80} name="age" id="outlined-age-simple" />}
+              >
+                {allcustomers.map((prop, key) => {
+                  return (
+                    <MenuItem
+                      value={
+                        prop.all_customers.customer + prop.all_customers.type
+                      }
+                    >
+                      {prop.all_customers.customer +
+                        "(" +
+                        prop.all_customers.type +
+                        ")"}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+
             <FormControl
               style={{ marginTop: 10 }}
               className={[classes.formControl, "form-control"]}
