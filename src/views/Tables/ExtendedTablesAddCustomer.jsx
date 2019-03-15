@@ -50,12 +50,10 @@ class ExtendedTablesCustomer extends React.Component {
     //   .ref("Users")
     //   .on("child_added", customer => {
     //     let currentpost = this.state.allcustomers;
-
     //     let obj = {
     //       all_customers: customer.val(),
     //       key: customer.key
     //     };
-
     //     currentpost.push(obj);
     //     this.setState({
     //       allcustomers: currentpost,
@@ -112,7 +110,7 @@ class ExtendedTablesCustomer extends React.Component {
     });
   };
   updateUser = UserObj => {
-      debugger
+    debugger;
     const { editname, edittype, editstatus } = this.state;
     // firebase
     //   .database()
@@ -148,64 +146,64 @@ class ExtendedTablesCustomer extends React.Component {
     //   .catch(error => {
     //     alert(error);
     //   });
-    this.setState({
-      editing: "",
-      editname: "",
-      edittype: "",
-      editstatus: ""
-    });
+    // this.setState({
+    //   editing: "",
+    //   editname: "",
+    //   edittype: "",
+    //   editstatus: ""
+    // });
   };
   deleteCustomer(key, index) {
     console.log("key", key, index);
-    let customers = this.state.allcustomers.splice(index, 1)
-    if(customers.length == 1){
-        customers = []
+    let customers = this.state.allcustomers.splice(index, 1);
+    if (customers.length == 1) {
+      customers = [];
     }
     this.setState({
-        allcustomers: customers
-    })
-    // this.state.allcustomers.splice(index, 1)
-    // let fetchpost = this.state.allcustomers;
-    // firebase
-    //   .database()
-    //   .ref("Users")
-    //   .child(key)
-    //   .remove()
-    //   .then(() => {
-    //     fetchpost.splice(index, 1);
-    //     this.setState({
-    //       allcustomers: fetchpost
-    //     });
-    //     this.setState({
-    //       allcustomers: []
-    //     });
-    //     firebase
-    //       .database()
-    //       .ref("Users")
-    //       .on("child_added", customer => {
-    //         let currentpost = this.state.allcustomers;
+      allcustomers: customers
+    });
+    this.state.allcustomers.splice(index, 1)
+    let fetchpost = this.state.allcustomers;
+    firebase
+      .database()
+      .ref("Users")
+      .child(key)
+      .remove()
+      .then(() => {
+        fetchpost.splice(index, 1);
+        this.setState({
+          allcustomers: fetchpost
+        });
+        this.setState({
+          allcustomers: []
+        });
+        firebase
+          .database()
+          .ref("Users")
+          .on("child_added", customer => {
+            let currentpost = this.state.allcustomers;
 
-    //         let obj = {
-    //           all_customers: customer.val(),
-    //           key: customer.key
-    //         };
+            let obj = {
+              all_customers: customer.val(),
+              key: customer.key
+            };
 
-    //         currentpost.push(obj);
-    //         this.setState({
-    //           allcustomers: currentpost,
-    //           posts: ""
-    //         });
-    //       });
-    //   });
-  };
+            currentpost.push(obj);
+            this.setState({
+              allcustomers: currentpost,
+              posts: ""
+            });
+          });
+      });
+  }
   addProductOwnerOrConsultant = userObj => {
     // e.preventDefault();
-    let key = 0 ;
+    let key = 0;
     const { name, email, password, type, status } = userObj;
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((res) => {
+      .then(res => {
         var userId = firebase.auth().currentUser.uid;
         var user = firebase.auth().currentUser;
         console.log("user", user);
@@ -234,35 +232,34 @@ class ExtendedTablesCustomer extends React.Component {
           email: "",
           password: "",
           type: "",
-          state: "",
-        //   allcustomers: []
+          state: ""
+          //   allcustomers: []
         });
 
-        ++key
+        ++key;
 
         let currentpost = this.state.allcustomers;
 
-            let obj = {
-              all_customers: userObj,
-              key: key
-            };
+        let obj = {
+          all_customers: userObj,
+          key: key
+        };
 
-            currentpost.push(obj);
-            this.setState({
-              allcustomers: currentpost,
-              posts: ""
-            });
-            let allusers = []
+        currentpost.push(obj);
+        this.setState({
+          allcustomers: currentpost,
+          posts: ""
+        });
+        let allusers = [];
 
-            this.state.allcustomers.map((cust) => {
-                allusers.push(cust.all_customers)
-            })
-            this.props.onAdd(allusers)
-
+        this.state.allcustomers.map(cust => {
+          allusers.push(cust.all_customers);
+        });
+        this.props.onAdd(allusers);
       })
       .catch(error => {
         alert(error);
-      })
+      });
   };
 
   render() {
@@ -295,14 +292,14 @@ class ExtendedTablesCustomer extends React.Component {
     } = this.state;
 
     let userObj = {
-        name: name,
-        email: email,
-        password: password,
-        type: type,
-        status: status
-    }
+      name: name,
+      email: email,
+      password: password,
+      type: type,
+      status: status
+    };
 
-    console.log("ddd", allcustomers);
+    // console.log("ddd", this.state.users);
     // editrow = tableData;
 
     return (
@@ -414,13 +411,15 @@ class ExtendedTablesCustomer extends React.Component {
                           </Select>
                         </TableCell>
                         <TableCell className={classes.tableCell}>
-                            <Button 
-                                color="danger" 
-                                simple 
-                                onClick={() => this.addProductOwnerOrConsultant(userObj)}>
-                                    <Add color="success" />
-                            </Button>
-                          /> */}
+                          <Button
+                            color="danger"
+                            simple
+                            onClick={() =>
+                              this.addProductOwnerOrConsultant(userObj)
+                            }
+                          >
+                            <Add color="success" />
+                          </Button>
                         </TableCell>
                       </TableRow>
                     </TableHead>
@@ -572,13 +571,15 @@ class ExtendedTablesCustomer extends React.Component {
                                 _route={"customer-form"}
                                 _param={prop}
                               /> */}
-                                    <Button
-                                        color="danger"
-                                        simple
-                                        onClick={() => this.deleteCustomer(prop.key, key)}
-                                    >
-                                        <Close color="danger" />
-                                    </Button>
+                              <Button
+                                color="danger"
+                                simple
+                                onClick={() =>
+                                  this.deleteCustomer(prop.key, key)
+                                }
+                              >
+                                <Close color="danger" />
+                              </Button>
                             </TableCell>
                           </TableRow>
                         );

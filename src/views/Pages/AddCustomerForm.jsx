@@ -89,40 +89,37 @@ class AddCustomerForm extends React.Component {
 		// Binding functions here...!
 		// this.deleteCustomer = this.deleteCustomer.bind(this);
 	}
-	componentWillReceiveProps() {
-
-		
-	}
-	componentDidUpdate() {
-	}
+	componentWillReceiveProps() {}
+	componentDidUpdate() {}
 	componentDidMount() {
-		this.updatestate()
+		// this.updatestate()
 		this.setState({
 			labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth
 		});
 	}
-	updatestate = () => {
-		const { _param } = this.props.location.state;
-		console.log('parms', _param);
-		if (_param !== '') {
-			this.setState({
-				customer: _param.all_customers.customer,
-				email: _param.all_customers.email,
-				phone: _param.all_customers.phone,
-				contact: _param.all_customers.contact,
-				address: _param.all_customers.address,
-				city: _param.all_customers.city,
-				zip_code: _param.all_customers.zip_code,
-				rate_unit: _param.all_customers.rate_unit,
-				Country: _param.all_customers.Country,
-				currency: _param.all_customers.currency,
-				type: _param.all_customers.type,
-				status: _param.all_customers.status,
-				customercode: _param.all_customers.customercode,
-				rate: _param.all_customers.rate,
-			});
-		}
-	}
+	// updatestate = () => {
+	// 	const { _param } = this.props.location.state;
+
+	// 	console.log('parms', _param);
+	// 	if (_param !== '') {
+	// 		this.setState({
+	// 			customer: _param.all_customers.customer,
+	// 			email: _param.all_customers.email,
+	// 			phone: _param.all_customers.phone,
+	// 			contact: _param.all_customers.contact,
+	// 			address: _param.all_customers.address,
+	// 			city: _param.all_customers.city,
+	// 			zip_code: _param.all_customers.zip_code,
+	// 			rate_unit: _param.all_customers.rate_unit,
+	// 			Country: _param.all_customers.Country,
+	// 			currency: _param.all_customers.currency,
+	// 			type: _param.all_customers.type,
+	// 			status: _param.all_customers.status,
+	// 			customercode: _param.all_customers.customercode,
+	// 			rate: _param.all_customers.rate,
+	// 		});
+	// 	}
+	// }
 
 	handleCustomerChange = (e) => {
 		this.setState({ customer: e.target.value });
@@ -233,7 +230,7 @@ class AddCustomerForm extends React.Component {
 	// 					debugger
 	// 					console.log('Error during user creating on firebase', error);
 	// 				});
-	// 			alert('Add Registered Successfully'); 
+	// 			alert('Add Registered Successfully');
 	// 			this.setState({
 	// 				name: '',
 	// 				email: '',
@@ -247,7 +244,7 @@ class AddCustomerForm extends React.Component {
 	// 		});
 	// };
 
-	updateCustomer = e => {
+	updateCustomer = (e) => {
 		e.preventDefault();
 		const {
 			customercode,
@@ -299,6 +296,10 @@ class AddCustomerForm extends React.Component {
 
 	addCustomer = (e) => {
 		e.preventDefault();
+		if(this.state.users.length == 0){
+			alert("please add consultant and product owners")
+			return false
+		}
 		const {
 			email,
 			customer,
@@ -379,15 +380,15 @@ class AddCustomerForm extends React.Component {
 	// };
 
 	onAdduser = (users) => {
+		debugger;
 		this.setState({
 			users: users
-		})
-	}
+		});
+	};
 
 	render() {
 		const { classes } = this.props;
 		const { _param } = this.props.location.state;
-
 		const {
 			customer,
 			phone,
@@ -406,9 +407,8 @@ class AddCustomerForm extends React.Component {
 			customercode,
 			allcustomers
 		} = this.state;
-		const tableHead = ['#', 'Name', 'Email', 'Password', 'Type', 'Status', 'Actions'];
-		// const tableData = allcustomers;
-
+		const tableHead = [ '#', 'Name', 'Email', 'Password', 'Type', 'Status', 'Actions' ];
+		console.log('asd', this.state.users);
 		return (
 			<GridContainer>
 				<GridItem xs={12} sm={12} md={12}>
@@ -462,7 +462,7 @@ class AddCustomerForm extends React.Component {
 									<GridItem xs={6} sm={6} lg={6}>
 										<FormControl
 											style={{ marginTop: 10 }}
-											className={[classes.formControl, 'form-control']}
+											className={[ classes.formControl, 'form-control' ]}
 											variant="outlined"
 										>
 											<InputLabel
@@ -507,7 +507,7 @@ class AddCustomerForm extends React.Component {
 									<GridItem xs={6} sm={6} lg={6}>
 										<FormControl
 											style={{ marginTop: 10 }}
-											className={[classes.formControl, 'form-control']}
+											className={[ classes.formControl, 'form-control' ]}
 											variant="outlined"
 										>
 											<InputLabel
@@ -564,20 +564,20 @@ class AddCustomerForm extends React.Component {
 										}}
 									/>
 								) : (
-										<CustomInput
-											labelText="Email Address *"
-											id="registeremail"
-											formControlProps={{
-												fullWidth: true
-											}}
-											disabled={true}
-											onChange={this.handleEmailChange}
-											value={email}
-											inputProps={{
-												type: 'email'
-											}}
-										/>
-									)}
+									<CustomInput
+										labelText="Email Address *"
+										id="registeremail"
+										formControlProps={{
+											fullWidth: true
+										}}
+										disabled={true}
+										onChange={this.handleEmailChange}
+										value={email}
+										inputProps={{
+											type: 'email'
+										}}
+									/>
+								)}
 								<CustomInput
 									labelText="Phone *"
 									formControlProps={{
@@ -636,7 +636,7 @@ class AddCustomerForm extends React.Component {
 								<Grid className="dropdowngrid" spacing={8}>
 									<GridItem xs={6} sm={6} md={4}>
 										<FormControl
-											className={[classes.formControl, 'form-control']}
+											className={[ classes.formControl, 'form-control' ]}
 											variant="outlined"
 										>
 											<InputLabel
@@ -667,92 +667,15 @@ class AddCustomerForm extends React.Component {
 											</Select>
 										</FormControl>
 									</GridItem>
-									{/* <GridItem xs={6} sm={6} md={4}>
-										<FormControl
-											className={[classes.formControl, 'form-control']}
-											variant="outlined"
-										>
-											<InputLabel
-												style={{ fontSize: 10 }}
-												ref={(ref) => {
-													this.InputLabelRef = ref;
-												}}
-												htmlFor="outlined-age-simple"
-											>
-												Type
-											</InputLabel>
-											<Select
-												value={this.state.type}
-												onChange={this.handleTypeChange}
-												// displayEmpty
-												input={
-													<OutlinedInput
-														// style={{ fontSize: 10 }}
-														labelWidth={30}
-														name="Country"
-														id="outlined-age-simple"
-													/>
-												}
-											>
-												<MenuItem value={'Consultant'}>Consultant</MenuItem>
-												<MenuItem value={'Product Owner'}>Product Owner</MenuItem>
-											</Select>
-										</FormControl>
-									</GridItem> */}
-									{/* {
-										this.state.type == "Consultant"|| this.state.type == "Product Owner"? */}
-									{/* <GridItem xs={6} sm={6} md={4}>
-										<FormControl
-											className={[classes.formControl, 'form-control']}
-											variant="outlined"
-										>
-											<InputLabel
-												style={{ fontSize: 10 }}
-												ref={(ref) => {
-													this.InputLabelRef = ref;
-												}}
-												htmlFor="outlined-age-simple"
-											>
-												Status
-											</InputLabel>
-											<Select
-												value={this.state.status}
-												onChange={this.handlestatusChange}
-												// displayEmpty
-												input={
-													<OutlinedInput
-														// style={{ fontSize: 10 }}
-														labelWidth={30}
-														name="Country"
-														id="outlined-age-simple"
-													/>
-												}
-											>
-												<MenuItem value={'Active'}>Active</MenuItem>
-												<MenuItem value={'Suspended'}>Suspended</MenuItem>
-											</Select>
-										</FormControl>
-									</GridItem> */}
-									{/* :null
-									} */}
 								</Grid>
-								{this.props.edit ? (
+								
 									<Button
 										color="rose"
-										onClick={() => console.log('edit customer')}
+										onClick={this.addCustomer}
 										className={classes.registerButton}
 									>
-										Edit
+										Add
 									</Button>
-								) : (
-										<Button
-											color="rose"
-											onClick={_param === '' ? this.addCustomer : this.updateCustomer}
-											className={classes.registerButton}
-										>
-											{_param === '' ? 'Add' : 'Update'}
-										</Button>
-									)}
 							</form>
 						</CardBody>
 					</Card>
@@ -764,14 +687,13 @@ class AddCustomerForm extends React.Component {
 						</CardIcon>
 						<CardBody>
 							<GridItem xs={12}>
-
 								<ExtendedTablesAddCustomer
 									tableHead={tableHead}
-									onAdd = {this.onAdduser.bind(this)}
+									onAdd={this.onAdduser.bind(this)}
 									// tableData={allcustomers}
 									// deleteUser={this.deleteCustomer}
 									// addUser={this.addProductOwnerOrConsultant}
-									 />
+								/>
 							</GridItem>
 						</CardBody>
 					</CardHeader>

@@ -68,7 +68,8 @@ class CustomerForm extends React.Component {
 			rate_unit: '',
 			customercode: '',
 			edit: false,
-			allcustomers: []
+			allcustomers: [],
+			users:[]
 		};
 		// firebase.database().ref('Users').on('child_added', (customer) => {
 		// 	let currentpost = this.state.allcustomers;
@@ -262,7 +263,8 @@ class CustomerForm extends React.Component {
 			// USD,
 			Country,
 			type,
-			status
+			status,
+			users
 		} = this.state;
 		const { _param } = this.props.location.state;
 
@@ -283,7 +285,8 @@ class CustomerForm extends React.Component {
 				// USD: USD,
 				Country: Country,
 				type: type,
-				status: status
+				status: status,
+				users:users,
 				// Consultant: Consultant,
 				// ProductOwner: ProductOwner,
 				// role: 'Customer'
@@ -355,7 +358,8 @@ class CustomerForm extends React.Component {
 			Country: '',
 			Consultant: '',
 			type: '',
-			status: ''
+			status: '',
+			
 		});
 	};
 	// deleteCustomer = (key, index) => {
@@ -373,11 +377,17 @@ class CustomerForm extends React.Component {
 	// 			});
 	// 		});
 	// };
+	onAdduser = (users) => {
+		debugger
+		this.setState({
+			users: users
+		});
+	};
 
 	render() {
 		const { classes } = this.props;
 		const { _param } = this.props.location.state;
-debugger
+
 
 		const {
 			customer,
@@ -759,6 +769,8 @@ debugger
 								<ExtendedTablesCustomer
 									tableHead={tableHead}
 									tableData={_param}
+									customerKey={_param.key}
+									onAdd={this.onAdduser.bind(this)}
 									// deleteUser={this.deleteCustomer}
 									// addUser={this.addProductOwnerOrConsultant}
 									 />

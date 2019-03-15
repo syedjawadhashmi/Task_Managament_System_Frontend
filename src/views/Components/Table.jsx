@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import React from "react";
@@ -44,6 +45,7 @@ import TextField from "@material-ui/core/TextField";
 import Edit from "@material-ui/icons/Edit";
 import Close from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
+import Input from "@material-ui/core/Input";
 const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -73,6 +75,7 @@ const DialogTitle = withStyles(theme => ({
     </MuiDialogTitle>
   );
 });
+
 const DialogContent = withStyles(theme => ({
   root: {
     margin: 0,
@@ -103,7 +106,15 @@ function desc(a, b, orderBy) {
   }
   return 0;
 }
-
+function getStyles(name, that) {
+  return {
+    fontWeight: "normal"
+    // that.state.name.indexOf(name) === -1
+    //   ? that.props.theme.typography.fontWeightRegular
+    // :
+    // that.props.theme.typography.fontWeightMedium,
+  };
+}
 function stableSort(array, cmp) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -356,6 +367,7 @@ let CustomTable = ({ ...props }) => {
     "Project Code",
     "Project Name",
     "Customer",
+    "Assignees",
     "Rate",
     "Rate Unit",
     "Currency",
@@ -443,6 +455,14 @@ let CustomTable = ({ ...props }) => {
                     colSpan={prop.colspan}
                   >
                     {prop.customer}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {prop.assignee.map(p => {
+                      return `${p},`;
+                    })}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -582,7 +602,6 @@ CustomTable.propTypes = {
 };
 
 CustomTable = withStyles(tableStyle)(CustomTable);
-
 class Tables extends React.Component {
   state = {
     order: "asc",
@@ -595,7 +614,7 @@ class Tables extends React.Component {
     ProjectCode: "",
     Rate: "",
     rate_unit: "",
-    customer: "",
+    customer: "company 1",
     currency: "",
     projectStartDate: "",
     projectEstimationEndDate: "",
@@ -604,7 +623,10 @@ class Tables extends React.Component {
     projects: [],
     allcustomers: [],
     posts: "",
-    _param: ""
+    _param: "",
+    assignee: [],
+    assigneename: [],
+    selectedassignee: []
   };
   componentDidMount() {
     this.showProjects();
@@ -641,7 +663,21 @@ class Tables extends React.Component {
     this.setState({ rate_unit: e.target.value });
   };
   handleCustomerChange = e => {
-    this.setState({ customer: e.target.value });
+    this.state.allcustomers.map(user => {
+      debugger;
+      if (e.target.value == user.all_customers.customer) {
+        this.setState({
+          assignee: user.all_customers.users
+        });
+      }
+    });
+    this.setState({
+      customer: e.target.value
+      // assignee: e.target.value.users
+    });
+  };
+  handleassigneeChange = e => {
+    this.setState({ assigneename: e.target.value });
   };
   handleCurrencyChange = e => {
     this.setState({ currency: e.target.value });
@@ -843,10 +879,12 @@ class Tables extends React.Component {
       currency,
       projectStartDate,
       projectEstimationEndDate,
-      projectActualEndDate
+      projectActualEndDate,
+      assigneename
     } = this.state;
     var userId = firebase.auth().currentUser.uid;
     const ref = firebase.database().ref("Projects/");
+    debugger
     ref
       .push({
         uid: userId,
@@ -858,7 +896,8 @@ class Tables extends React.Component {
         currency: currency,
         projectStartDate: projectStartDate,
         projectEstimationEndDate: projectEstimationEndDate,
-        projectActualEndDate: projectActualEndDate
+        projectActualEndDate: projectActualEndDate,
+        assignee: assigneename
       })
       .catch(error => {
         console.log("Error during user creating on firebase", error);
@@ -875,9 +914,24 @@ class Tables extends React.Component {
       projectEstimationEndDate: "",
       projectActualEndDate: "",
       projectopen: false,
-      _param: ""
+      _param: "",
+      assigneename:""
     });
   };
+  handleChangeMultiple = event => {
+    // this.state.assignee.map(user => {
+    //   debugger;
+    //   if (event.target.value == user.name) {
+    //     this.setState({
+    //       selectedassignee: user
+    //     });
+    //   }
+    // });
+    this.setState({
+      assigneename: event.target.value
+    });
+  };
+
   render() {
     const {
       data,
@@ -892,11 +946,13 @@ class Tables extends React.Component {
       rate_unit,
       currency,
       projects,
-			allcustomers,
-			_param
+      allcustomers,
+      _param
     } = this.state;
+    debugger;
+    // const assignees = allcustomers;
     const { classes } = this.props;
-    console.log("asas", this.state.allcustomers);
+    console.log("asas", this.state.selectedassignee);
 
     const tableData = projects;
     return (
@@ -1158,16 +1214,10 @@ class Tables extends React.Component {
                 // input={<OutlinedInput labelWidth={80} name="age" id="outlined-age-simple" />}
               >
                 {allcustomers.map((prop, key) => {
+                  debugger;
                   return (
-                    <MenuItem
-                      value={
-                        prop.all_customers.customer + prop.all_customers.type
-                      }
-                    >
-                      {prop.all_customers.customer +
-                        "(" +
-                        prop.all_customers.type +
-                        ")"}
+                    <MenuItem value={prop.all_customers.customer}>
+                      {prop.all_customers.customer}
                     </MenuItem>
                   );
                 })}
@@ -1185,24 +1235,24 @@ class Tables extends React.Component {
                   this.InputLabelRef = ref;
                 }}
               >
-                Consultant
+                Assignee
               </InputLabel>
               <Select
-                value={this.state.customer}
-                onChange={this.handleCustomerChange}
+                multiple
+                value={this.state.assigneename}
+                onChange={this.handleChangeMultiple}
+                input={<Input id="select-multiple" />}
                 // input={<OutlinedInput labelWidth={80} name="age" id="outlined-age-simple" />}
               >
-                {allcustomers.map((prop, key) => {
+                {this.state.assignee.map(name => {
+                  debugger;
                   return (
                     <MenuItem
-                      value={
-                        prop.all_customers.customer + prop.all_customers.type
-                      }
+                      key={name.name}
+                      value={name.name}
+                      style={getStyles(name, this)}
                     >
-                      {prop.all_customers.customer +
-                        "(" +
-                        prop.all_customers.type +
-                        ")"}
+                      {name.name}
                     </MenuItem>
                   );
                 })}
