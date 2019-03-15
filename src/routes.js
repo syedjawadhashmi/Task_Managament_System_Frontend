@@ -1,5 +1,6 @@
 import Dashboard from "views/Dashboard/Dashboard.jsx";
 import ProjectPage from "views/Pages/ProjectPage.jsx";
+import TaskPage from "views/Pages/TaskPage.jsx";
 import CustomerList from "views/Pages/CustomerList.jsx";
 import AddCustomerForm from "views/Pages/AddCustomerForm.jsx";
 import CustomerForm from "views/Pages/CustomerForm.jsx";
@@ -30,6 +31,13 @@ var dashRoutes = [
     name: "Project",
     icon: Image,
     component: ProjectPage,
+    layout: "/admin"
+  },
+  {
+    path: "/task-page",
+    name: "Task",
+    icon: Image,
+    component: TaskPage,
     layout: "/admin"
   },
   {

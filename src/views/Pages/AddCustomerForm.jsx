@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
@@ -296,10 +297,7 @@ class AddCustomerForm extends React.Component {
 
 	addCustomer = (e) => {
 		e.preventDefault();
-		if(this.state.users.length == 0){
-			alert("please add consultant and product owners")
-			return false
-		}
+		
 		const {
 			email,
 			customer,
@@ -341,6 +339,10 @@ class AddCustomerForm extends React.Component {
 			console.log('Error during user add on firebase', error);
 		});
 		alert('Customer Registered Successfully');
+		if (this.state.users.length == 0) {
+			alert('you are allowed to add consultant and product owners');
+			return false;
+		}
 		this.setState({
 			customercode: '',
 			rate: '',
@@ -478,10 +480,14 @@ class AddCustomerForm extends React.Component {
 												value={this.state.rate_unit}
 												onChange={this.handleRateUnitChange}
 												// displayEmpty
-												inputProps={{
-													name: 'age',
-													id: 'age-simple'
-												}}
+												input={
+													<OutlinedInput
+														// style={{ fontSize: 10 }}
+														labelWidth={40}
+														name="Country"
+														id="outlined-age-simple"
+													/>
+												}
 											>
 												<MenuItem value={'Hourly'}>Hourly</MenuItem>
 												<MenuItem value={'Daily'}>Daily</MenuItem>
@@ -523,10 +529,14 @@ class AddCustomerForm extends React.Component {
 												value={this.state.currency}
 												onChange={this.handleCurrencyChange}
 												// displayEmpty
-												inputProps={{
-													name: 'age',
-													id: 'age-simple'
-												}}
+												input={
+													<OutlinedInput
+														// style={{ fontSize: 10 }}
+														labelWidth={40}
+														name="Country"
+														id="outlined-age-simple"
+													/>
+												}
 											>
 												<MenuItem value={'USD'}>USD</MenuItem>
 												<MenuItem value={'EURO'}>EURO</MenuItem>
@@ -668,14 +678,10 @@ class AddCustomerForm extends React.Component {
 										</FormControl>
 									</GridItem>
 								</Grid>
-								
-									<Button
-										color="rose"
-										onClick={this.addCustomer}
-										className={classes.registerButton}
-									>
-										Add
-									</Button>
+
+								<Button color="rose" onClick={this.addCustomer} className={classes.registerButton}>
+									Add
+								</Button>
 							</form>
 						</CardBody>
 					</Card>

@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
@@ -378,7 +379,7 @@ class CustomerForm extends React.Component {
 	// 		});
 	// };
 	onAdduser = (users) => {
-		debugger
+		debugger;
 		this.setState({
 			users: users
 		});
@@ -479,10 +480,14 @@ class CustomerForm extends React.Component {
 												value={this.state.rate_unit}
 												onChange={this.handleRateUnitChange}
 												// displayEmpty
-												inputProps={{
-													name: 'age',
-													id: 'age-simple'
-												}}
+												input={
+													<OutlinedInput
+														// style={{ fontSize: 10 }}
+														labelWidth={40}
+														name="Country"
+														id="outlined-age-simple"
+													/>
+												}
 											>
 												<MenuItem value={'Hourly'}>Hourly</MenuItem>
 												<MenuItem value={'Daily'}>Daily</MenuItem>
@@ -524,10 +529,14 @@ class CustomerForm extends React.Component {
 												value={this.state.currency}
 												onChange={this.handleCurrencyChange}
 												// displayEmpty
-												inputProps={{
-													name: 'age',
-													id: 'age-simple'
-												}}
+												input={
+													<OutlinedInput
+														// style={{ fontSize: 10 }}
+														labelWidth={40}
+														name="Country"
+														id="outlined-age-simple"
+													/>
+												}
 											>
 												<MenuItem value={'USD'}>USD</MenuItem>
 												<MenuItem value={'EURO'}>EURO</MenuItem>
@@ -761,7 +770,7 @@ class CustomerForm extends React.Component {
 				<Card>
 					<CardHeader color="rose" icon>
 						<CardIcon color="rose">
-							<h4>Product Owner OR Consultant</h4>
+							<h4>Product Owners / Consultants</h4>
 						</CardIcon>
 						<CardBody>
 							<GridItem xs={12}>

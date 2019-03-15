@@ -109,10 +109,6 @@ function desc(a, b, orderBy) {
 function getStyles(name, that) {
   return {
     fontWeight: "normal"
-    // that.state.name.indexOf(name) === -1
-    //   ? that.props.theme.typography.fontWeightRegular
-    // :
-    // that.props.theme.typography.fontWeightMedium,
   };
 }
 function stableSort(array, cmp) {
@@ -360,20 +356,21 @@ let CustomTable = ({ ...props }) => {
     customHeadCellClasses,
     customHeadClassesForCells,
     handleClickOpen,
-    openUpdateProject
+    openUpdateProject,
+    editing
   } = props;
   const tableHead = [
     "#",
-    "Project Code",
-    "Project Name",
-    "Customer",
-    "Assignees",
-    "Rate",
-    "Rate Unit",
-    "Currency",
-    "Project Start Date",
-    "Project Actual End Date",
-    "Actions"
+    "Estimated developer efforts ",
+    "Actual developer efforts ",
+    "Rate unit ",
+    "Developer Effort amount calculated ",
+    "Developer Paid on ",
+    "Efforts estimated to customer ",
+    "Efforts adjusted to customer Adjusted ",
+    "Rate unit ",
+    "To invoice amount calculated ",
+    "Paid by Customer on "
   ];
   console.log(tableData);
   return (
@@ -442,7 +439,24 @@ let CustomTable = ({ ...props }) => {
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
-                    {prop.ProjectCode}
+                    {editing ? (
+                      <CustomInput
+                        id="required"
+                        md={12}
+                        lg={12}
+                        labelText="Project Code"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        // onChange={this.handleProjectCodeChange}
+                        // value={ProjectCode}
+                        inputProps={{
+                          type: "text"
+                        }}
+                      />
+                    ) : (
+                      prop.ProjectCode
+                    )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -459,11 +473,7 @@ let CustomTable = ({ ...props }) => {
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
-                  >
-                    {prop.assignee.map(p => {
-                      return `${p},`;
-                    })}
-                  </TableCell>
+                  />
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
@@ -524,14 +534,6 @@ class EditButton extends React.Component {
     const { _param, _route, asd, v } = this.props;
     console.log("parm", _param);
     return (
-      // <Link
-      //   to={{
-      //     pathname: _route,
-      //     state: {
-      //       _param
-      //     }
-      //   }}
-      // >
       <Button
         onClick={() => this.props.openUpdateProject(_param)}
         edit={true}
@@ -540,7 +542,6 @@ class EditButton extends React.Component {
       >
         <Edit color="success" />
       </Button>
-      // </Link>
     );
   }
 }
@@ -602,7 +603,7 @@ CustomTable.propTypes = {
 };
 
 CustomTable = withStyles(tableStyle)(CustomTable);
-class Tables extends React.Component {
+class TaskTable extends React.Component {
   state = {
     order: "asc",
     orderBy: "calories",
@@ -626,7 +627,8 @@ class Tables extends React.Component {
     _param: "",
     assignee: [],
     assigneename: [],
-    selectedassignee: []
+    selectedassignee: [],
+    editing: ""
   };
   componentDidMount() {
     this.showProjects();
@@ -635,7 +637,7 @@ class Tables extends React.Component {
   showProjects() {
     firebase
       .database()
-      .ref("Projects")
+      .ref("Tasks")
       .on("child_added", project => {
         let currentpost = this.state.projects;
 
@@ -674,7 +676,6 @@ class Tables extends React.Component {
       });
     this.setState({
       customer: e.target.value
-      // assignee: e.target.value.users
     });
   };
   handleassigneeChange = e => {
@@ -691,6 +692,26 @@ class Tables extends React.Component {
   };
   handleprojectActualEndDateChange = date => {
     this.setState({ projectActualEndDate: date.target.value });
+  };
+  handleClick = (event, id) => {
+    const { selected } = this.state;
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+
+    this.setState({ selected: newSelected });
   };
 
   handleChangePage = (event, page) => {
@@ -743,14 +764,13 @@ class Tables extends React.Component {
           posts: ""
         });
       });
-    // const {allcustomers}=this.state
   }
   deleteCustomer = (key, index) => {
     console.log("key", key, index);
     let fetchpost = this.state.projects;
     firebase
       .database()
-      .ref("Projects")
+      .ref("Tasks")
       .child(key)
       .remove()
       .then(() => {
@@ -777,7 +797,7 @@ class Tables extends React.Component {
       });
     }
   };
-  updateProject = (e, key) => {
+  updateTask = (e, key) => {
     debugger;
     e.preventDefault();
     const {
@@ -791,11 +811,10 @@ class Tables extends React.Component {
       projectEstimationEndDate,
       projectActualEndDate
     } = this.state;
-    // const { _param } = this.props.location.state;
 
     firebase
       .database()
-      .ref("Projects/" + key)
+      .ref("Tasks/" + key)
       .update({
         newProjectName: newProjectName,
         ProjectCode: ProjectCode,
@@ -828,7 +847,7 @@ class Tables extends React.Component {
       });
   };
 
-  addNewProject = e => {
+  addNewTask = e => {
     e.preventDefault();
     const {
       newProjectName,
@@ -843,7 +862,7 @@ class Tables extends React.Component {
       assigneename
     } = this.state;
     var userId = firebase.auth().currentUser.uid;
-    const ref = firebase.database().ref("Projects/");
+    const ref = firebase.database().ref("Tasks/");
     debugger;
     ref
       .push({
@@ -879,14 +898,6 @@ class Tables extends React.Component {
     });
   };
   handleChangeMultiple = event => {
-    // this.state.assignee.map(user => {
-    //   debugger;
-    //   if (event.target.value == user.name) {
-    //     this.setState({
-    //       selectedassignee: user
-    //     });
-    //   }
-    // });
     this.setState({
       assigneename: event.target.value
     });
@@ -928,6 +939,7 @@ class Tables extends React.Component {
         <CustomTable
           handleClickOpen={this.handleClickOpen}
           tableData={tableData}
+          editing={this.state.editing}
           deleteUser={this.deleteCustomer}
           updateProject={this.updateProject}
           openUpdateProject={this.openUpdateProject}
@@ -1079,7 +1091,7 @@ class Tables extends React.Component {
             id="customized-dialog-title"
             onClose={this.projecthandleClose}
           >
-            Add Project
+            Add Task
           </DialogTitle>
           <DialogContent>
             <FormControl
@@ -1091,31 +1103,64 @@ class Tables extends React.Component {
                 id="required"
                 md={12}
                 lg={12}
-                labelText="Project Code"
+                labelText="Estimated developer efforts"
                 formControlProps={{
                   fullWidth: true
                 }}
                 onChange={this.handleProjectCodeChange}
                 value={ProjectCode}
                 inputProps={{
-                  type: "text"
+                  type: "number"
                 }}
               />
               <CustomInput
                 id="required"
-                labelText="Project Name"
+                labelText="Actual developer efforts"
                 formControlProps={{
                   fullWidth: true
                 }}
                 onChange={this.handleProjectNameChange}
                 value={newProjectName}
                 inputProps={{
-                  type: "text"
+                  type: "number"
                 }}
               />
+              <FormControl
+                style={{ marginTop: 10 }}
+                className={[classes.formControl, "form-control"]}
+                variant="outlined"
+              >
+                <InputLabel
+                  style={{ fontSize: 10 }}
+                  ref={ref => {
+                    this.InputLabelRef = ref;
+                  }}
+                  htmlFor="outlined-age-simple"
+                >
+                  Rate Unit
+                </InputLabel>
+                <Select
+                  value={this.state.rate_unit}
+                  onChange={this.handleRateUnitChange}
+                  // displayEmpty
+                  input={
+                    <OutlinedInput
+                      // style={{ fontSize: 10 }}
+                      labelWidth={40}
+                      name="Country"
+                      id="outlined-age-simple"
+                    />
+                  }
+                >
+                  <MenuItem value={"Hourly"}>Hourly</MenuItem>
+                  <MenuItem value={"Daily"}>Daily</MenuItem>
+                  <MenuItem value={"Weekly"}>Weekly</MenuItem>
+                  <MenuItem value={"Monthly"}>Monthly</MenuItem>
+                </Select>
+              </FormControl>
               <CustomInput
                 id="required"
-                labelText="Rate"
+                labelText="Developer Effort amount calculated"
                 formControlProps={{
                   fullWidth: true
                 }}
@@ -1126,6 +1171,91 @@ class Tables extends React.Component {
                 }}
               />
             </FormControl>
+            {/* <FormControl
+              style={{ marginTop: 10 }}
+              className={[classes.formControl, "form-control"]}
+              variant="outlined"
+            >
+              <InputLabel
+                style={{ fontSize: 10 }}
+                ref={ref => {
+                  this.InputLabelRef = ref;
+                }}
+                htmlFor="outlined-age-simple"
+              >
+                Developer Effort amount calculated
+              </InputLabel>
+              <Select
+                value={this.state.rate_unit}
+                onChange={this.handleRateUnitChange}
+                // displayEmpty
+                input={
+                  <OutlinedInput
+                    // style={{ fontSize: 10 }}
+                    labelWidth={40}
+                    name="Country"
+                    id="outlined-age-simple"
+                  />
+                }
+              >
+                <MenuItem value={"Hourly"}>Hourly</MenuItem>
+                <MenuItem value={"Daily"}>Daily</MenuItem>
+                <MenuItem value={"Weekly"}>Weekly</MenuItem>
+                <MenuItem value={"Monthly"}>Monthly</MenuItem>
+              </Select>
+            </FormControl> */}
+            <FormControl fullWidth style={{ marginTop: 10 }}>
+              <TextField
+                id="date"
+                label="Developer Paid on"
+                type="date"
+                defaultValue="2017-05-24"
+                value={this.state.projectStartDate}
+                onChange={this.handleDateChange}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            </FormControl>
+            <FormControl
+              style={{ marginTop: 10 }}
+              className={[classes.formControl, "form-control"]}
+              variant="outlined"
+            >
+              <CustomInput
+                id="required"
+                labelText="Efforts estimated to customer"
+                formControlProps={{
+                  fullWidth: true
+                }}
+                onChange={this.handleRateChange}
+                value={Rate}
+                inputProps={{
+                  type: "number"
+                }}
+              />
+            </FormControl>
+
+            <FormControl
+              style={{ marginTop: 10 }}
+              className={[classes.formControl, "form-control"]}
+              variant="outlined"
+            >
+              <CustomInput
+                id="required"
+                labelText="Efforts adjusted to customer Adjusted"
+                formControlProps={{
+                  fullWidth: true
+                }}
+                onChange={this.handleRateChange}
+                value={Rate}
+                inputProps={{
+                  type: "number"
+                }}
+              />
+            </FormControl>
+
             <FormControl
               style={{ marginTop: 10 }}
               className={[classes.formControl, "form-control"]}
@@ -1159,158 +1289,24 @@ class Tables extends React.Component {
                 <MenuItem value={"Monthly"}>Monthly</MenuItem>
               </Select>
             </FormControl>
-            <FormControl
-              style={{ marginTop: 10 }}
-              className={[classes.formControl, "form-control"]}
-              variant="outlined"
-            >
-              <InputLabel
-                style={{ fontSize: 10 }}
-                ref={ref => {
-                  this.InputLabelRef = ref;
-                }}
-              >
-                Customer
-              </InputLabel>
-              <Select
-                value={this.state.customer}
-                onChange={this.handleCustomerChange}
-                input={
-                  <OutlinedInput
-                    labelWidth={40}
-                    name="age"
-                    id="outlined-age-simple"
-                  />
-                }
-              >
-                {allcustomers &&
-                  allcustomers.map((prop, key) => {
-                    debugger;
-                    return (
-                      <MenuItem value={prop.all_customers.customer}>
-                        {prop.all_customers.customer}
-                      </MenuItem>
-                    );
-                  })}
-              </Select>
-            </FormControl>
-
-            <FormControl
-              style={{ marginTop: 10 }}
-              className={[classes.formControl, "form-control"]}
-              variant="outlined"
-            >
-              <InputLabel
-                style={{ fontSize: 10 }}
-                ref={ref => {
-                  this.InputLabelRef = ref;
-                }}
-              >
-                Assignee
-              </InputLabel>
-              <Select
-                multiple
-                value={this.state.assigneename}
-                onChange={this.handleChangeMultiple}
-                input={
-                  <OutlinedInput
-                    id="select-multiple"
-                    labelWidth={40}
-                    name="Country"
-                  />
-                }
-                // input={<OutlinedInput labelWidth={80} name="age" id="outlined-age-simple" />}
-              >
-                {this.state.assignee.map(name => {
-                  debugger;
-                  return (
-                    <MenuItem
-                      key={name.name}
-                      value={name.name}
-                      style={getStyles(name, this)}
-                    >
-                      {name.name}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-
-            <FormControl
-              style={{ marginTop: 10 }}
-              className={[classes.formControl, "form-control"]}
-              variant="outlined"
-            >
-              <InputLabel
-                style={{ fontSize: 10 }}
-                ref={ref => {
-                  this.InputLabelRef = ref;
-                }}
-                htmlFor="outlined-age-simple"
-              >
-                Currency
-              </InputLabel>
-              <Select
-                value={this.state.currency}
-                onChange={this.handleCurrencyChange}
-                // displayEmpty
-                input={
-                  <OutlinedInput
-                    // style={{ fontSize: 10 }}
-                    labelWidth={40}
-                    name="Country"
-                    id="outlined-age-simple"
-                  />
-                }
-              >
-                {allcustomers &&
-                  allcustomers.map((prop, key) => {
-                    if (
-                      this.state.customer ==
-                      prop.all_customers.customer + prop.all_customers.type
-                    ) {
-                      return (
-                        <MenuItem value={prop.all_customers.currency}>
-                          {prop.all_customers.currency}
-                        </MenuItem>
-                      );
-                    }
-                  })}
-              </Select>
-            </FormControl>
-
             <FormControl fullWidth style={{ marginTop: 10 }}>
-              <TextField
-                id="date"
-                label="Project Start Date"
-                type="date"
-                defaultValue="2017-05-24"
-                value={this.state.projectStartDate}
-                onChange={this.handleDateChange}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true
+              <CustomInput
+                id="required"
+                labelText="To invoice amount calculate"
+                formControlProps={{
+                  fullWidth: true
+                }}
+                onChange={this.handleRateChange}
+                value={Rate}
+                inputProps={{
+                  type: "number"
                 }}
               />
             </FormControl>
             <FormControl fullWidth style={{ marginTop: 10 }}>
               <TextField
                 id="date"
-                label="Project Estimation End Date"
-                type="date"
-                defaultValue="2017-05-24"
-                value={this.state.projectEstimationEndDate}
-                onChange={this.handleprojectEstimationEndDateChange}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true
-                }}
-              />
-            </FormControl>
-            <FormControl fullWidth style={{ marginTop: 10 }}>
-              <TextField
-                id="date"
-                label="Project Actual End Date"
+                label="Paid by Customer on"
                 type="date"
                 defaultValue="2017-05-24"
                 value={this.state.projectActualEndDate}
@@ -1324,10 +1320,10 @@ class Tables extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={_param === "" ? this.addNewProject : this.updateProject}
+              onClick={_param === "" ? this.addNewTask : this.updateTask}
               color="primary"
             >
-              {_param === "" ? "Add Project" : "Update Project"}
+              {_param === "" ? "Add Task" : "Update Task"}
             </Button>
             <Button onClick={this.projecthandleClose} color="primary">
               Cancel
@@ -1339,8 +1335,8 @@ class Tables extends React.Component {
   }
 }
 
-Tables.propTypes = {
+TaskTable.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Tables);
+export default withStyles(styles)(TaskTable);

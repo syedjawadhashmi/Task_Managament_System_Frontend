@@ -342,10 +342,14 @@ class DeveloperForm extends React.Component {
                         value={this.state.status}
                         onChange={this.handleStatusChange}
                         // displayEmpty
-                        inputProps={{
-                          name: "age",
-                          id: "age-simple"
-                        }}
+                        input={
+                          <OutlinedInput
+                            // style={{ fontSize: 10 }}
+                            labelWidth={30}
+                            name="Country"
+                            id="outlined-age-simple"
+                          />
+                        }
                       >
                         <MenuItem value={"Active"}>Active</MenuItem>
                         <MenuItem value={"Suspended"}>Suspended</MenuItem>
@@ -371,7 +375,7 @@ class DeveloperForm extends React.Component {
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={6} sm={6} lg={6}>
-                  <FormControl
+                    <FormControl
                       style={{ marginTop: 10 }}
                       className={[classes.formControl, "form-control"]}
                       variant="outlined"
@@ -389,10 +393,14 @@ class DeveloperForm extends React.Component {
                         value={this.state.rate_unit}
                         onChange={this.handleRateUnitChange}
                         // displayEmpty
-                        inputProps={{
-                          name: "age",
-                          id: "age-simple"
-                        }}
+                        input={
+                          <OutlinedInput
+                            // style={{ fontSize: 10 }}
+                            labelWidth={40}
+                            name="Country"
+                            id="outlined-age-simple"
+                          />
+                        }
                       >
                         <MenuItem value={"Hourly"}>Hourly</MenuItem>
                         <MenuItem value={"Daily"}>Daily</MenuItem>
@@ -416,7 +424,7 @@ class DeveloperForm extends React.Component {
                     /> */}
                   </GridItem>
                   <GridItem xs={6} sm={6} lg={6}>
-                  <FormControl
+                    <FormControl
                       style={{ marginTop: 10 }}
                       className={[classes.formControl, "form-control"]}
                       variant="outlined"
@@ -434,10 +442,14 @@ class DeveloperForm extends React.Component {
                         value={this.state.currency}
                         onChange={this.handleCurrencyChange}
                         // displayEmpty
-                        inputProps={{
-                          name: "age",
-                          id: "age-simple"
-                        }}
+                        input={
+                          <OutlinedInput
+                            // style={{ fontSize: 10 }}
+                            labelWidth={40}
+                            name="Country"
+                            id="outlined-age-simple"
+                          />
+                        }
                       >
                         <MenuItem value={"USD"}>USD</MenuItem>
                         <MenuItem value={"EURO"}>EURO</MenuItem>

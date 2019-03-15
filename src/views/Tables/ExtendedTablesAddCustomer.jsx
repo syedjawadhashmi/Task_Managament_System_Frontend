@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React from "react";
@@ -23,6 +24,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -162,7 +164,7 @@ class ExtendedTablesCustomer extends React.Component {
     this.setState({
       allcustomers: customers
     });
-    this.state.allcustomers.splice(index, 1)
+    this.state.allcustomers.splice(index, 1);
     let fetchpost = this.state.allcustomers;
     firebase
       .database()
@@ -377,38 +379,78 @@ class ExtendedTablesCustomer extends React.Component {
                           />
                         </TableCell>
                         <TableCell className={classes.tableCell}>
-                          <Select
-                            value={type}
-                            onChange={this.handleTypeChange}
-                            inputProps={{
-                              name: "age",
-                              id: "age-simple"
-                            }}
+                          <FormControl
+                            style={{ marginTop: 10, minWidth: 100 }}
+                            className={[classes.formControl, "form-control"]}
+                            variant="outlined"
                           >
-                            <MenuItem value="">
+                            <InputLabel
+                              style={{ fontSize: 10 }}
+                              ref={ref => {
+                                this.InputLabelRef = ref;
+                              }}
+                              htmlFor="outlined-age-simple"
+                            >
+                              Type
+                            </InputLabel>
+                            <Select
+                              value={type}
+                              onChange={this.handleTypeChange}
+                              input={
+                                <OutlinedInput
+                                  // style={{ fontSize: 10 }}
+                                  labelWidth={30}
+                                  name="Country"
+                                  id="outlined-age-simple"
+                                />
+                              }
+                            >
+                              {/* <MenuItem value="">
                               <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={"Consultant"}>Consultant</MenuItem>
-                            <MenuItem value={"Product Owner"}>
-                              Product Owner
-                            </MenuItem>
-                          </Select>
+                            </MenuItem> */}
+                              <MenuItem value={"Consultant"}>
+                                Consultant
+                              </MenuItem>
+                              <MenuItem value={"Product Owner"}>
+                                Product Owner
+                              </MenuItem>
+                            </Select>
+                          </FormControl>
                         </TableCell>
                         <TableCell className={classes.tableCell}>
-                          <Select
-                            value={status}
-                            onChange={this.handleStatusChange}
-                            inputProps={{
-                              name: "age",
-                              id: "age-simple"
-                            }}
+                          <FormControl
+                            style={{ marginTop: 10, minWidth: 100 }}
+                            className={[classes.formControl, "form-control"]}
+                            variant="outlined"
                           >
-                            <MenuItem value="">
+                            <InputLabel
+                              style={{ fontSize: 10 }}
+                              ref={ref => {
+                                this.InputLabelRef = ref;
+                              }}
+                              htmlFor="outlined-age-simple"
+                            >
+                              Status
+                            </InputLabel>
+                            <Select
+                              value={status}
+                              onChange={this.handleStatusChange}
+                              input={
+                                <OutlinedInput
+                                  // style={{ fontSize: 10 }}
+                                  labelWidth={30}
+                                  name="Country"
+                                  id="outlined-age-simple"
+                                />
+                              }
+                            >
+                              {/* <MenuItem value="">
                               <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={"Active"}>Active</MenuItem>
-                            <MenuItem value={"Suspended"}>Suspended</MenuItem>
-                          </Select>
+                            </MenuItem> */}
+                              <MenuItem value={"Active"}>Active</MenuItem>
+                              <MenuItem value={"Suspended"}>Suspended</MenuItem>
+                            </Select>
+                          </FormControl>
                         </TableCell>
                         <TableCell className={classes.tableCell}>
                           <Button
@@ -501,10 +543,14 @@ class ExtendedTablesCustomer extends React.Component {
                                   value={this.state.edittype}
                                   displayEmpty={prop.all_customers.type}
                                   onChange={this.handleEditTypeChange}
-                                  inputProps={{
-                                    name: "age",
-                                    id: "age-simple"
-                                  }}
+                                  input={
+                                    <OutlinedInput
+                                      // style={{ fontSize: 10 }}
+                                      labelWidth={30}
+                                      name="Country"
+                                      id="outlined-age-simple"
+                                    />
+                                  }
                                 >
                                   <MenuItem value="" disabled>
                                     <em>{prop.all_customers.type}</em>
@@ -529,10 +575,14 @@ class ExtendedTablesCustomer extends React.Component {
                                   value={this.state.editstatus}
                                   displayEmpty={prop.all_customers.status}
                                   onChange={this.handleEditStatusChange}
-                                  inputProps={{
-                                    name: "age",
-                                    id: "age-simple"
-                                  }}
+                                  input={
+                                    <OutlinedInput
+                                      // style={{ fontSize: 10 }}
+                                      labelWidth={30}
+                                      name="Country"
+                                      id="outlined-age-simple"
+                                    />
+                                  }
                                 >
                                   <MenuItem value="" disabled>
                                     <em>{prop.all_customers.status}</em>
