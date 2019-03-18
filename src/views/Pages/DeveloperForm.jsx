@@ -161,11 +161,26 @@ class DeveloperForm extends React.Component {
             rate_unit: developer.rate_unit,
             currency: developer.currency,
             status: developer.status
+          }).then(() => {
+            const usersRef = firebase.database().ref("Users/").push({
+              uid: userId,
+              name: developer.firstName + developer.lastName,
+              firstName: firstName,
+              lastName: lastName,
+              email: developer.email,
+              password: developer.password,
+              type: "Developer",
+              rate: developer.rate,
+              rate_unit: developer.rate_unit,
+              currency: developer.currency,
+              status: developer.status
+            }).then(()=>{
+              alert("Developer registered successfully");
+            })
           })
           .catch(error => {
             console.log("Error during user creating on firebase", error);
           });
-        alert("Developer registered successfully");
       })
       .catch(error => {
         alert(error);
@@ -290,20 +305,20 @@ class DeveloperForm extends React.Component {
                         }}
                       />
                     ) : (
-                      <CustomInput
-                        labelText="E-Mail"
-                        id="email"
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        onChange={this.handleEmailChange}
-                        disabled={true}
-                        value={email}
-                        inputProps={{
-                          type: "email"
-                        }}
-                      />
-                    )}
+                        <CustomInput
+                          labelText="E-Mail"
+                          id="email"
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          onChange={this.handleEmailChange}
+                          disabled={true}
+                          value={email}
+                          inputProps={{
+                            type: "email"
+                          }}
+                        />
+                      )}
                   </GridItem>
                 </GridContainer>
                 <GridContainer>

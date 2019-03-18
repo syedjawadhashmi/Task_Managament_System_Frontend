@@ -460,7 +460,7 @@ let CustomTable = ({ ...props }) => {
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
-                    {prop.assignee.map(p => {
+                    {prop.assignedMembers.map(p => {
                       return `${p},`;
                     })}
                   </TableCell>
@@ -857,7 +857,7 @@ class Tables extends React.Component {
         projectStartDate: projectStartDate,
         projectEstimationEndDate: projectEstimationEndDate,
         projectActualEndDate: projectActualEndDate,
-        assignee: assigneename
+        assignedMembers: assigneename
       })
       .catch(error => {
         console.log("Error during user creating on firebase", error);
@@ -879,6 +879,7 @@ class Tables extends React.Component {
     });
   };
   handleChangeMultiple = event => {
+    debugger
     // this.state.assignee.map(user => {
     //   debugger;
     //   if (event.target.value == user.name) {
@@ -1226,7 +1227,7 @@ class Tables extends React.Component {
                   return (
                     <MenuItem
                       key={name.name}
-                      value={name.name}
+                      value={name}
                       style={getStyles(name, this)}
                     >
                       {name.name}

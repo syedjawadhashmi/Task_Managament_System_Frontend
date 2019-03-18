@@ -49,9 +49,9 @@ class LoginPage extends React.Component {
   handleLogin = () => {
     const { user_name, password } = this.state
     console.log('login pressed', user_name, password)
-    debugger
     firebase.auth().signInWithEmailAndPassword(user_name, password)
       .then(res => {
+        let self = this;
         const user = res.user;
         var token = '';
         firebase.auth().onAuthStateChanged(function (user) {
@@ -59,13 +59,14 @@ class LoginPage extends React.Component {
             user.getIdToken().then(function (idToken) {
               token = idToken
               localStorage.setItem('user', user_name);
+              localStorage.setItem('currentUser', JSON.stringify(user))
               localStorage.setItem('token', token);
               console.log('idToken', token);
+              self.props.history.push('/admin/customer-page');
+              alert('login success')
             });
           }
         });
-        this.props.history.push('/admin/customer-page');
-        alert('login success')
       })
       .catch(error => {
         console.log('error', error)

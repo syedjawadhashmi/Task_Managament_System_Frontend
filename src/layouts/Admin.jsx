@@ -22,6 +22,8 @@ import appStyle from "assets/jss/material-dashboard-pro-react/layouts/adminStyle
 import image from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/logo-white.svg";
 
+import firebase from "../constant/api/firebase";
+
 var ps;
 
 class Dashboard extends React.Component {
@@ -39,6 +41,19 @@ class Dashboard extends React.Component {
     this.resizeFunction = this.resizeFunction.bind(this);
   }
   componentDidMount() {
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        let ref = firebase.database().ref("Users");
+        ref.orderByChild("email").equalTo(`${user.email}`).on("child_added", function (snapshot) {
+          let currentUser = snapshot.val();
+          let role = snapshot.val().type
+          localStorage.setItem('currentUser',JSON.stringify(currentUser))
+          localStorage.setItem('role',JSON.stringify(role))
+        });
+      }
+    });
+
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.refs.mainPanel, {
         suppressScrollX: true,
@@ -168,10 +183,10 @@ class Dashboard extends React.Component {
               </div>
             </div>
           ) : (
-            <div className={classes.map}>
-              <Switch>{this.getRoutes(routes)}</Switch>
-            </div>
-          )}
+              <div className={classes.map}>
+                <Switch>{this.getRoutes(routes)}</Switch>
+              </div>
+            )}
           {this.getRoute() ? <Footer fluid /> : null}
           {/* <FixedPlugin
             handleImageClick={this.handleImageClick}
