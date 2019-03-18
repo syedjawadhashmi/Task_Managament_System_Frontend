@@ -43,6 +43,7 @@ import Datetime from "react-datetime";
 import tableStyle from "assets/jss/material-dashboard-pro-react/components/tableStyle";
 import TextField from "@material-ui/core/TextField";
 import Edit from "@material-ui/icons/Edit";
+import Check from "@material-ui/icons/Check";
 import Close from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
 import Input from "@material-ui/core/Input";
@@ -357,7 +358,14 @@ let CustomTable = ({ ...props }) => {
     customHeadClassesForCells,
     handleClickOpen,
     openUpdateProject,
-    editing
+    editing,
+    updateTask,
+    EDevEfforts,
+    handleEDevEffortsCodeChange,
+    handleADevEffortsCodeChange,
+    DevPaid,
+    ADevEffort,
+    handleDevPaidCodeChange
   } = props;
   const tableHead = [
     "#",
@@ -421,7 +429,6 @@ let CustomTable = ({ ...props }) => {
                 [classes.tableStripedRow]: striped && key % 2 === 0
               });
 
-              prop = prop.all_projects;
               // console.log('props_data', prop.key)
               return (
                 <TableRow
@@ -439,12 +446,137 @@ let CustomTable = ({ ...props }) => {
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
-                    {editing ? (
+                    {editing == prop.all_projects.newProjectName ? (
                       <CustomInput
                         id="required"
                         md={12}
                         lg={12}
-                        labelText="Project Code"
+                        labelText="Dev Efforts"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        onChange={handleEDevEffortsCodeChange}
+                        value={EDevEfforts}
+                        inputProps={{
+                          type: "text"
+                        }}
+                      />
+                    ) : (
+                      prop.all_projects.ProjectCode
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.all_projects.newProjectName ? (
+                      <CustomInput
+                        id="required"
+                        md={12}
+                        lg={12}
+                        labelText="Dev Efforts"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        onChange={handleADevEffortsCodeChange}
+                        value={ADevEffort}
+                        inputProps={{
+                          type: "text"
+                        }}
+                      />
+                    ) : (
+                      prop.all_projects.newProjectName
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {/* {editing == prop.all_projects.newProjectName ? (
+                      <CustomInput
+                        id="required"
+                        md={12}
+                        lg={12}
+                        labelText="Rate unit"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        onChange={hand}
+                        value={ProjectCode}
+                        inputProps={{
+                          type: "text"
+                        }}
+                      />
+                    ) : (
+                      )} */}
+                    {prop.all_projects.customer}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  />
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.all_projects.newProjectName ? (
+                      <CustomInput
+                        id="required"
+                        md={12}
+                        lg={12}
+                        labelText="Dev Paid "
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        onChange={handleDevPaidCodeChange}
+                        value={DevPaid}
+                        inputProps={{
+                          type: "text"
+                        }}
+                      />
+                    ) : (
+                      prop.all_projects.Rate
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {/* {editing == prop.all_projects.newProjectName ? (
+                      <CustomInput
+                        id="required"
+                        md={12}
+                        lg={12}
+                        labelText="Dev Paid "
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        onChange={handleDevPaidCodeChange}
+                        value={DevPaid}
+                        inputProps={{
+                          type: "text"
+                        }}
+                      />
+                    ) : (
+                    )} */}
+                    {prop.all_projects.rate_unit}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {prop.all_projects.projectEstimationEndDate}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {/* {editing == prop.all_projects.newProjectName ? (
+                      <CustomInput
+                        id="required"
+                        md={12}
+                        lg={12}
+                        labelText="Rate unit"
                         formControlProps={{
                           fullWidth: true
                         }}
@@ -455,68 +587,55 @@ let CustomTable = ({ ...props }) => {
                         }}
                       />
                     ) : (
-                      prop.ProjectCode
+                    )} */}
+                    {prop.all_projects.projectStartDate}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {/* {editing == prop.all_projects.newProjectName ? (
+                      <CustomInput
+                        id="required"
+                        md={12}
+                        lg={12}
+                        labelText="invoice "
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        // onChange={this.handleProjectCodeChange}
+                        // value={ProjectCode}
+                        inputProps={{
+                          type: "text"
+                        }}
+                      />
+                    ) : (
+                    )} */}
+                    {prop.all_projects.projectActualEndDate}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.all_projects.newProjectName ? (
+                      <EditButton
+                        updateTask={updateTask}
+                        edit={true}
+                        _param={prop}
+                        v={prop.key}
+                        asd={key}
+                      />
+                    ) : (
+                      <EditButton
+                        openUpdateProject={openUpdateProject}
+                        _param={prop}
+                        v={prop.key}
+                        asd={key}
+                      />
                     )}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    {prop.newProjectName}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    {prop.customer}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  />
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    {prop.Rate}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    {prop.rate_unit}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    {prop.currency}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    {prop.projectStartDate}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    {prop.projectActualEndDate}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    <EditButton
-                      openUpdateProject={openUpdateProject}
-                      _param={prop}
-                      asd={prop.uid}
-                      v={key}
-                    />
                     <DeleteButton
                       deleteUser={deleteUser}
-                      asd={prop.uid}
+                      asd={prop.key}
                       v={key}
                     />
                   </TableCell>
@@ -531,17 +650,30 @@ let CustomTable = ({ ...props }) => {
 
 class EditButton extends React.Component {
   render() {
-    const { _param, _route, asd, v } = this.props;
+    const { edit, _param, _route, asd, v } = this.props;
     console.log("parm", _param);
     return (
-      <Button
-        onClick={() => this.props.openUpdateProject(_param)}
-        edit={true}
-        color="success"
-        simple
-      >
-        <Edit color="success" />
-      </Button>
+      <div>
+        {edit ? (
+          <Button
+            edit={true}
+            color="success"
+            onClick={() => this.props.updateTask(_param, v)}
+            simple
+          >
+            <Check color="success" />
+          </Button>
+        ) : (
+          <Button
+            onClick={() => this.props.openUpdateProject(_param)}
+            edit={true}
+            color="success"
+            simple
+          >
+            <Edit color="success" />
+          </Button>
+        )}
+      </div>
     );
   }
 }
@@ -628,7 +760,10 @@ class TaskTable extends React.Component {
     assignee: [],
     assigneename: [],
     selectedassignee: [],
-    editing: ""
+    editing: "",
+    EDevEfforts: "",
+    ADevEffort: "",
+    DevPaid: ""
   };
   componentDidMount() {
     this.showProjects();
@@ -664,6 +799,18 @@ class TaskTable extends React.Component {
   handleRateUnitChange = e => {
     this.setState({ rate_unit: e.target.value });
   };
+  handleEDevEffortsCodeChange = e => {
+    this.setState({ EDevEfforts: e.target.value });
+    debugger;
+  };
+  handleDevPaidCodeChange = e => {
+    this.setState({ DevPaid: e.target.value });
+    debugger;
+  };
+  handleADevEffortsCodeChange = e => {
+    this.setState({ ADevEffort: e.target.value });
+    debugger;
+  };
   handleCustomerChange = e => {
     this.state.allcustomers &&
       this.state.allcustomers.map(user => {
@@ -684,14 +831,14 @@ class TaskTable extends React.Component {
   handleCurrencyChange = e => {
     this.setState({ currency: e.target.value });
   };
-  handleDateChange = date => {
-    this.setState({ projectStartDate: date.target.value });
+  handleDateChange = e => {
+    this.setState({ projectStartDate: e.target.value });
   };
-  handleprojectEstimationEndDateChange = date => {
-    this.setState({ projectEstimationEndDate: date.target.value });
+  handleprojectEstimationEndDateChange = e => {
+    this.setState({ projectEstimationEndDate: e.target.value });
   };
-  handleprojectActualEndDateChange = date => {
-    this.setState({ projectActualEndDate: date.target.value });
+  handleprojectActualEndDateChange = e => {
+    this.setState({ projectActualEndDate: e.target.value });
   };
   handleClick = (event, id) => {
     const { selected } = this.state;
@@ -780,67 +927,49 @@ class TaskTable extends React.Component {
         });
       });
   };
+
   openUpdateProject = _param => {
-    this.projecthandleClickOpen();
-    if (_param !== "") {
-      this.setState({
-        newProjectName: _param.newProjectName,
-        ProjectCode: _param.ProjectCode,
-        Rate: _param.Rate,
-        rate_unit: _param.rate_unit,
-        customer: _param.customer,
-        currency: _param.currency,
-        projectStartDate: _param.projectStartDate,
-        projectEstimationEndDate: _param.projectEstimationEndDate,
-        projectActualEndDate: _param.projectActualEndDate,
-        _param: _param
-      });
-    }
+    debugger;
+    this.setState({ editing: _param.all_projects.newProjectName });
+    // this.projecthandleClickOpen();
+    // if (_param !== "") {
+    //   this.setState({
+    //     newProjectName: _param.newProjectName,
+    //     ProjectCode: _param.ProjectCode,
+    //     Rate: _param.Rate,
+    //     rate_unit: _param.rate_unit,
+    //     customer: _param.customer,
+    //     currency: _param.currency,
+    //     projectStartDate: _param.projectStartDate,
+    //     projectEstimationEndDate: _param.projectEstimationEndDate,
+    //     projectActualEndDate: _param.projectActualEndDate,
+    //     _param: _param
+    //   });
+    // }
   };
   updateTask = (e, key) => {
     debugger;
-    e.preventDefault();
-    const {
-      newProjectName,
-      ProjectCode,
-      Rate,
-      rate_unit,
-      customer,
-      currency,
-      projectStartDate,
-      projectEstimationEndDate,
-      projectActualEndDate
-    } = this.state;
+    // e.preventDefault();
+    const { EDevEfforts, ADevEffort, DevPaid } = this.state;
 
     firebase
       .database()
       .ref("Tasks/" + key)
       .update({
-        newProjectName: newProjectName,
-        ProjectCode: ProjectCode,
-        Rate: Rate,
-        rate_unit: rate_unit,
-        customer: customer,
-        currency: currency,
-        projectStartDate: projectStartDate,
-        projectEstimationEndDate: projectEstimationEndDate,
-        projectActualEndDate: projectActualEndDate
+        newProjectName: EDevEfforts,
+        ProjectCode: ADevEffort,
+        Rate: DevPaid
       })
       .then(() => {
         alert("project updated successfully");
         this.setState({
-          newProjectName: "",
-          Rate: "",
-          ProjectCode: "",
-          rate_unit: "",
-          customer: "",
-          currency: "",
-          projectStartDate: "",
-          projectEstimationEndDate: "",
-          projectActualEndDate: "",
-          projectopen: false,
-          _param: ""
+          DevPaid: "",
+          ADevEffort: "",
+          EDevEfforts: "",
+          editing: "",
+          projects: []
         });
+        this.showProjects();
       })
       .catch(error => {
         alert(error);
@@ -938,10 +1067,16 @@ class TaskTable extends React.Component {
         </Button>
         <CustomTable
           handleClickOpen={this.handleClickOpen}
+          handleEDevEffortsCodeChange={this.handleEDevEffortsCodeChange}
+          handleADevEffortsCodeChange={this.handleADevEffortsCodeChange}
+          handleDevPaidCodeChange={this.handleDevPaidCodeChange}
+          ADevEffort={this.state.ADevEffort}
+          DevPaid={this.state.DevPaid}
+          EDevEfforts={this.state.EDevEfforts}
           tableData={tableData}
           editing={this.state.editing}
           deleteUser={this.deleteCustomer}
-          updateProject={this.updateProject}
+          updateTask={this.updateTask}
           openUpdateProject={this.openUpdateProject}
         />
         <Dialog
@@ -1099,6 +1234,9 @@ class TaskTable extends React.Component {
               md={12}
               lg={12}
             >
+              {/* {
+              this.state.editing == prop.
+            } */}
               <CustomInput
                 id="required"
                 md={12}
