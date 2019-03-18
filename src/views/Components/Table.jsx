@@ -375,7 +375,7 @@ let CustomTable = ({ ...props }) => {
     "Project Actual End Date",
     "Actions"
   ];
-  console.log(tableData);
+  console.log('eee', tableData);
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -409,7 +409,7 @@ let CustomTable = ({ ...props }) => {
         >
           {tableData &&
             tableData.map((prop, key) => {
-              // debugger
+              debugger
               var rowColor = "";
               var rowColored = false;
               if (prop.color !== undefined) {
@@ -424,7 +424,8 @@ let CustomTable = ({ ...props }) => {
                 [classes.tableStripedRow]: striped && key % 2 === 0
               });
 
-              prop = prop.all_projects;
+              prop = prop;
+              const project = prop.all_projects;
               // console.log('props_data', prop.key)
               return (
                 <TableRow
@@ -440,73 +441,73 @@ let CustomTable = ({ ...props }) => {
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
-                    colSpan={prop.colspan}
+                    colSpan={project.colspan}
                   >
-                    {prop.ProjectCode}
+                    {project.ProjectCode}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
-                    colSpan={prop.colspan}
+                    colSpan={project.colspan}
                   >
-                    {prop.newProjectName}
+                    {project.newProjectName}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
-                    colSpan={prop.colspan}
+                    colSpan={project.colspan}
                   >
-                    {prop.customer}
+                    {project.customer}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
-                    colSpan={prop.colspan}
+                    colSpan={project.colspan}
                   >
-                    {prop.assignedMembers.map(p => {
+                    {project.assignedMembers.map(p => {
                       return `${p.name},`;
                     })}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
-                    colSpan={prop.colspan}
+                    colSpan={project.colspan}
                   >
-                    {prop.Rate}
+                    {project.Rate}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
-                    colSpan={prop.colspan}
+                    colSpan={project.colspan}
                   >
-                    {prop.rate_unit}
+                    {project.rate_unit}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
-                    colSpan={prop.colspan}
+                    colSpan={project.colspan}
                   >
-                    {prop.currency}
+                    {project.currency}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
-                    colSpan={prop.colspan}
+                    colSpan={project.colspan}
                   >
-                    {prop.projectStartDate}
+                    {project.projectStartDate}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
-                    colSpan={prop.colspan}
+                    colSpan={project.colspan}
                   >
-                    {prop.projectActualEndDate}
+                    {project.projectActualEndDate}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
-                    colSpan={prop.colspan}
+                    colSpan={project.colspan}
                   >
                     <EditButton
                       openUpdateProject={openUpdateProject}
                       _param={prop}
-                      asd={prop.uid}
+                      asd={prop.key}
                       v={key}
                     />
                     <DeleteButton
                       deleteUser={deleteUser}
-                      asd={prop.uid}
+                      asd={prop.key}
                       v={key}
                     />
                   </TableCell>
@@ -533,7 +534,7 @@ class EditButton extends React.Component {
       //   }}
       // >
       <Button
-        onClick={() => this.props.openUpdateProject(_param)}
+        onClick={() => this.props.openUpdateProject(_param.all_projects, _param.key)}
         edit={true}
         color="success"
         simple
@@ -547,7 +548,7 @@ class EditButton extends React.Component {
 
 class DeleteButton extends React.Component {
   render() {
-    // debugger;
+    debugger;
     const { asd, v } = this.props;
     console.log("key", asd);
     return (
@@ -746,6 +747,7 @@ class Tables extends React.Component {
     // const {allcustomers}=this.state
   }
   deleteCustomer = (key, index) => {
+    debugger
     console.log("key", key, index);
     let fetchpost = this.state.projects;
     firebase
@@ -754,6 +756,7 @@ class Tables extends React.Component {
       .child(key)
       .remove()
       .then(() => {
+        debugger
         fetchpost.splice(index, 1);
         this.setState({
           projects: fetchpost
@@ -914,6 +917,7 @@ class Tables extends React.Component {
     // const assignees = allcustomers;
     const { classes } = this.props;
     console.log("asas", this.state.selectedassignee);
+    console.log("projects", projects);
 
     const tableData = projects;
     return (
