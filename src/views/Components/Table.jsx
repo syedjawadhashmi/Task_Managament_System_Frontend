@@ -461,7 +461,7 @@ let CustomTable = ({ ...props }) => {
                     colSpan={prop.colspan}
                   >
                     {prop.assignedMembers.map(p => {
-                      return `${p},`;
+                      return `${p.name},`;
                     })}
                   </TableCell>
                   <TableCell
