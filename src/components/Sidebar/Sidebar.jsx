@@ -68,6 +68,7 @@ class Sidebar extends React.Component {
   getCollapseStates = routes => {
     let initialState = {};
     routes.map((prop, key) => {
+      debugger
       if (prop.collapse) {
         initialState = {
           [prop.state]: this.getCollapseInitialState(prop.views),
@@ -210,7 +211,12 @@ class Sidebar extends React.Component {
           </ListItem>
         );
       }
-      const innerNavLinkClasses =
+      if(
+        (prop.name == 'Project' && (this.props.role == 'Product' || this.props.role == 'Product Owner' || this.props.role == 'Consultant')) ||
+        (prop.name == 'Task' && (this.props.role == 'Product' || this.props.role == 'Product Owner' || this.props.role == 'Consultant' || this.props.role == 'Developer')) ||
+        (this.props.role == 'Admin')        
+        ){
+        const innerNavLinkClasses =
         classes.collapseItemLink +
         " " +
         cx({
@@ -291,6 +297,8 @@ class Sidebar extends React.Component {
           </NavLink>
         </ListItem>
       );
+      }
+      
     });
   };
   render() {

@@ -144,6 +144,8 @@ class Dashboard extends React.Component {
     }
   }
   render() {
+    const role = localStorage.getItem('role').replace(/['"]+/g, '')
+    console.log('role', role.toString())
     const { classes, ...rest } = this.props;
     const mainPanel =
       classes.mainPanel +
@@ -156,6 +158,7 @@ class Dashboard extends React.Component {
     return (
       <div className={classes.wrapper}>
         <Sidebar
+          role = {role || 'Admin'}
           routes={routes}
           logoText={"Creative Tim"}
           logo={logo}
