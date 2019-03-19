@@ -297,7 +297,10 @@ class AddCustomerForm extends React.Component {
 
 	addCustomer = (e) => {
 		e.preventDefault();
-		
+		if (this.state.users.length == 0) {
+			alert('please add consultant and product owners');
+			return false;
+		}
 		const {
 			email,
 			customer,
@@ -339,10 +342,6 @@ class AddCustomerForm extends React.Component {
 			console.log('Error during user add on firebase', error);
 		});
 		alert('Customer Registered Successfully');
-		if (this.state.users.length == 0) {
-			alert('you are allowed to add consultant and product owners');
-			return false;
-		}
 		this.setState({
 			customercode: '',
 			rate: '',

@@ -46,7 +46,7 @@ class CustomerList extends React.Component {
           all_customers: customer.val(),
           key: customer.key
         };
-
+// debugger
         if (email == "admin@gmail.com") {
           currentpost.push(obj);
 
@@ -56,15 +56,15 @@ class CustomerList extends React.Component {
           });
         }
 
-        // const found = obj.all_customers.users.some(el => el.email === email);
-        // if (found) {
-        //   currentpost.push(obj);
+        const found = obj.all_customers.users.some(el => el.email === email);
+        if (found) {
+          currentpost.push(obj);
 
-        //   this.setState({
-        //     customers: currentpost,
-        //     posts: ""
-        //   });
-        // }
+          this.setState({
+            customers: currentpost,
+            posts: ""
+          });
+        }
       });
 
     // Binding functions here...!

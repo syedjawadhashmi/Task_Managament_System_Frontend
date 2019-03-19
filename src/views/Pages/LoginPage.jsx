@@ -32,79 +32,90 @@ class LoginPage extends React.Component {
     // we use this to make the card to appear after the page has been rendered
     this.state = {
       cardAnimaton: "cardHidden",
-      user_name: '',
-      password: '',
-
+      user_name: "",
+      password: ""
     };
   }
 
-  handleEmailChange = (e) => {
-    this.setState({ user_name: e.target.value })
-  }
+  handleEmailChange = e => {
+    this.setState({ user_name: e.target.value });
+  };
 
-  handlePassChange = (e) => {
-    this.setState({ password: e.target.value })
-  }
+  handlePassChange = e => {
+    this.setState({ password: e.target.value });
+  };
 
   handleLogin = () => {
-    const { user_name, password } = this.state
-    console.log('login pressed', user_name, password)
-    firebase.auth().signInWithEmailAndPassword(user_name, password)
+    const { user_name, password } = this.state;
+    debugger
+    console.log("login pressed",this.props);
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(user_name, password)
       .then(res => {
         let self = this;
         const user = res.user;
-        var token = '';
-        firebase.auth().onAuthStateChanged(function (user) {
-          if (user) {
-            user.getIdToken().then(function (idToken) {
-              token = idToken
-              localStorage.setItem('user', user_name);
-              localStorage.setItem('currentUser', JSON.stringify(user))
-              localStorage.setItem('token', token);
-              console.log('idToken', token);
+        var token = "";
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user && self.props.location.pathname == "/auth/login-page") {
+            user.getIdToken().then(function(idToken) {
+              token = idToken;
+              localStorage.setItem("user", user_name);
+              localStorage.setItem("currentUser", JSON.stringify(user));
+              localStorage.setItem("token", token);
+              let ref = firebase.database().ref("Users");
+              ref
+                .orderByChild("email")
+                .equalTo(`${user.email}`)
+                .on("child_added", function(snapshot) {
+                  let currentUser = snapshot.val();
+                  let role = snapshot.val().type;
+                  localStorage.setItem("currentUser", JSON.stringify(currentUser));
+                  localStorage.setItem("role", JSON.stringify(role));
+                  self.props.history.push("/admin/customer-page");
+                  alert("login success");
+                });
+              console.log("idToken", token);
             });
           }
         });
-        self.props.history.push('/admin/customer-page');
-        alert('login success')
+       
       })
       .catch(error => {
-        console.log('error', error)
+        console.log("error", error);
       });
     //     axios.post(
     //       `${baseUrl}${_login}`,
     //       {
     //         username: user_name,
     //         password: password
-    //       }, 
+    //       },
     //       {
     //           headers: {
-    //               'Content-Type': 'application/json', 
+    //               'Content-Type': 'application/json',
     //           }
     //       },
     //   )
     //       .then((res) => {
     //           console.log("success repsonse", res.data)
     //           var user = res.data
-    //           // alert('successfull login')    
+    //           // alert('successfull login')
 
     // this.props.history.push('/admin/developer');
     // localStorage.setItem('user', user.username);
     // localStorage.setItem('token', user.token);
-
 
     // })
     //       .catch((err) => {
     //           console.log("error", err);
     //           alert('error login')
     //     })
-  }
-
+  };
 
   componentDidMount() {
     // we add a hidden class to the card and after 700 ms we delete it and the transition appears
     this.timeOutFunction = setTimeout(
-      function () {
+      function() {
         this.setState({ cardAnimaton: "" });
       }.bind(this),
       700
@@ -129,8 +140,7 @@ class LoginPage extends React.Component {
                 >
                   <h4 className={classes.cardTitle}>Log in</h4>
                   <h5 className={classes.cardTitle}>SysProjects</h5>
-                  <div className={classes.socialLine}>
-                  </div>
+                  <div className={classes.socialLine} />
                 </CardHeader>
                 <CardBody>
                   <CustomInput
@@ -155,10 +165,9 @@ class LoginPage extends React.Component {
                     formControlProps={{
                       fullWidth: true
                     }}
-                    type={'password'}
+                    type={"password"}
                     value={this.state.password}
                     onChange={this.handlePassChange}
-
                     inputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -171,7 +180,13 @@ class LoginPage extends React.Component {
                   />
                 </CardBody>
                 <CardFooter className={classes.justifyContentCenter}>
-                  <Button onClick={this.handleLogin} color="rose" simple size="lg" block>
+                  <Button
+                    onClick={this.handleLogin}
+                    color="rose"
+                    simple
+                    size="lg"
+                    block
+                  >
                     Let's Go
                   </Button>
                 </CardFooter>

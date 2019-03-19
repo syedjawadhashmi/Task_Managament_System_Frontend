@@ -42,20 +42,22 @@ class Dashboard extends React.Component {
     this.resizeFunction = this.resizeFunction.bind(this);
   }
   componentDidMount() {
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        let ref = firebase.database().ref("Users");
-        ref
-          .orderByChild("email")
-          .equalTo(`${user.email}`)
-          .on("child_added", function(snapshot) {
-            let currentUser = snapshot.val();
-            let role = snapshot.val().type;
-            localStorage.setItem("currentUser", JSON.stringify(currentUser));
-            localStorage.setItem("role", JSON.stringify(role));
-          });
-      }
-    });
+    debugger
+    // firebase.auth().onAuthStateChanged(function(user) {
+    //   // let self = this;
+    //   if (user) {
+    //     // let ref = firebase.database().ref("Users");
+    //     // ref
+    //     //   .orderByChild("email")
+    //     //   .equalTo(`${user.email}`)
+    //     //   .on("child_added", function(snapshot) {
+    //     //     let currentUser = snapshot.val();
+    //     //     let role = snapshot.val().type;
+    //     //     localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    //     //     localStorage.setItem("role", JSON.stringify(role));
+    //     //   });
+    //   }
+    // });
 
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.refs.mainPanel, {
@@ -147,8 +149,8 @@ class Dashboard extends React.Component {
     }
   }
   render() {
-    // const role = localStorage.getItem("role").replace(/['"]+/g, "");
-    // console.log("role", role.toString());
+    const role =  localStorage.getItem("role") && localStorage.getItem("role").replace(/['"]+/g, "");
+    console.log("role", role.toString());
     const { classes, ...rest } = this.props;
     const mainPanel =
       classes.mainPanel +
@@ -161,7 +163,7 @@ class Dashboard extends React.Component {
     return (
       <div className={classes.wrapper}>
         <Sidebar
-          role={"Admin"}
+          role={role || "Admin"}
           routes={routes}
           logoText={"Creative Tim"}
           logo={logo}
