@@ -62,11 +62,11 @@ class LoginPage extends React.Component {
               localStorage.setItem('currentUser', JSON.stringify(user))
               localStorage.setItem('token', token);
               console.log('idToken', token);
-              self.props.history.push('/admin/customer-page');
-              alert('login success')
             });
           }
         });
+        self.props.history.push('/admin/customer-page');
+        alert('login success')
       })
       .catch(error => {
         console.log('error', error)
