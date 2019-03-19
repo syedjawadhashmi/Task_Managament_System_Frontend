@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from "react";
 import cx from "classnames";
 import PropTypes from "prop-types";
@@ -41,16 +42,18 @@ class Dashboard extends React.Component {
     this.resizeFunction = this.resizeFunction.bind(this);
   }
   componentDidMount() {
-
-    firebase.auth().onAuthStateChanged(function (user) {
+    firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         let ref = firebase.database().ref("Users");
-        ref.orderByChild("email").equalTo(`${user.email}`).on("child_added", function (snapshot) {
-          let currentUser = snapshot.val();
-          let role = snapshot.val().type
-          localStorage.setItem('currentUser',JSON.stringify(currentUser))
-          localStorage.setItem('role',JSON.stringify(role))
-        });
+        ref
+          .orderByChild("email")
+          .equalTo(`${user.email}`)
+          .on("child_added", function(snapshot) {
+            let currentUser = snapshot.val();
+            let role = snapshot.val().type;
+            localStorage.setItem("currentUser", JSON.stringify(currentUser));
+            localStorage.setItem("role", JSON.stringify(role));
+          });
       }
     });
 
@@ -144,8 +147,8 @@ class Dashboard extends React.Component {
     }
   }
   render() {
-    const role = localStorage.getItem('role').replace(/['"]+/g, '')
-    console.log('role', role.toString())
+    // const role = localStorage.getItem("role").replace(/['"]+/g, "");
+    // console.log("role", role.toString());
     const { classes, ...rest } = this.props;
     const mainPanel =
       classes.mainPanel +
@@ -158,7 +161,7 @@ class Dashboard extends React.Component {
     return (
       <div className={classes.wrapper}>
         <Sidebar
-          role = {role || 'Admin'}
+          role={"Admin"}
           routes={routes}
           logoText={"Creative Tim"}
           logo={logo}
@@ -186,10 +189,10 @@ class Dashboard extends React.Component {
               </div>
             </div>
           ) : (
-              <div className={classes.map}>
-                <Switch>{this.getRoutes(routes)}</Switch>
-              </div>
-            )}
+            <div className={classes.map}>
+              <Switch>{this.getRoutes(routes)}</Switch>
+            </div>
+          )}
           {this.getRoute() ? <Footer fluid /> : null}
           {/* <FixedPlugin
             handleImageClick={this.handleImageClick}

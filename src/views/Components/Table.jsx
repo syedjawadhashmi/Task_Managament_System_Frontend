@@ -375,7 +375,7 @@ let CustomTable = ({ ...props }) => {
     "Project Actual End Date",
     "Actions"
   ];
-  console.log('eee', tableData);
+  console.log("eee", tableData);
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -409,7 +409,7 @@ let CustomTable = ({ ...props }) => {
         >
           {tableData &&
             tableData.map((prop, key) => {
-              debugger
+              debugger;
               var rowColor = "";
               var rowColored = false;
               if (prop.color !== undefined) {
@@ -522,6 +522,7 @@ let CustomTable = ({ ...props }) => {
 
 class EditButton extends React.Component {
   render() {
+    debugger;
     const { _param, _route, asd, v } = this.props;
     console.log("parm", _param);
     return (
@@ -534,7 +535,9 @@ class EditButton extends React.Component {
       //   }}
       // >
       <Button
-        onClick={() => this.props.openUpdateProject(_param.all_projects, _param.key)}
+        onClick={() =>
+          this.props.openUpdateProject(_param.all_projects, _param.key)
+        }
         edit={true}
         color="success"
         simple
@@ -627,7 +630,8 @@ class Tables extends React.Component {
     _param: "",
     assignee: [],
     assigneename: [],
-    selectedassignee: []
+    selectedassignee: [],
+    pUKey: ""
   };
   componentDidMount() {
     this.showProjects();
@@ -747,7 +751,7 @@ class Tables extends React.Component {
     // const {allcustomers}=this.state
   }
   deleteCustomer = (key, index) => {
-    debugger
+    debugger;
     console.log("key", key, index);
     let fetchpost = this.state.projects;
     firebase
@@ -756,14 +760,14 @@ class Tables extends React.Component {
       .child(key)
       .remove()
       .then(() => {
-        debugger
+        debugger;
         fetchpost.splice(index, 1);
         this.setState({
           projects: fetchpost
         });
       });
   };
-  openUpdateProject = _param => {
+  openUpdateProject = (_param, key) => {
     this.projecthandleClickOpen();
     if (_param !== "") {
       this.setState({
@@ -776,7 +780,8 @@ class Tables extends React.Component {
         projectStartDate: _param.projectStartDate,
         projectEstimationEndDate: _param.projectEstimationEndDate,
         projectActualEndDate: _param.projectActualEndDate,
-        _param: _param
+        _param: _param,
+        pUKey: key
       });
     }
   };
@@ -792,13 +797,14 @@ class Tables extends React.Component {
       currency,
       projectStartDate,
       projectEstimationEndDate,
-      projectActualEndDate
+      projectActualEndDate,
+      pUKey
     } = this.state;
     // const { _param } = this.props.location.state;
 
     firebase
       .database()
-      .ref("Projects/" + key)
+      .ref("Projects/" + pUKey)
       .update({
         newProjectName: newProjectName,
         ProjectCode: ProjectCode,
@@ -823,8 +829,11 @@ class Tables extends React.Component {
           projectEstimationEndDate: "",
           projectActualEndDate: "",
           projectopen: false,
-          _param: ""
+          _param: "",
+          pUKey: "",
+          projects: []
         });
+        this.showProjects();
       })
       .catch(error => {
         alert(error);
@@ -878,11 +887,13 @@ class Tables extends React.Component {
       projectActualEndDate: "",
       projectopen: false,
       _param: "",
-      assigneename: []
+      assigneename: [],
+      // projects: []
     });
+    // this.showProjects();
   };
   handleChangeMultiple = event => {
-    debugger
+    debugger;
     // this.state.assignee.map(user => {
     //   debugger;
     //   if (event.target.value == user.name) {
@@ -1283,7 +1294,6 @@ class Tables extends React.Component {
                   })}
               </Select>
             </FormControl>
-
             <FormControl fullWidth style={{ marginTop: 10 }}>
               <TextField
                 id="date"

@@ -369,16 +369,17 @@ let CustomTable = ({ ...props }) => {
   } = props;
   const tableHead = [
     "#",
-    "Estimated developer efforts ",
-    "Actual developer efforts ",
-    "Rate unit ",
-    "Developer Effort amount calculated ",
-    "Developer Paid on ",
-    "Efforts estimated to customer ",
-    "Efforts adjusted to customer Adjusted ",
-    "Rate unit ",
-    "To invoice amount calculated ",
-    "Paid by Customer on "
+    "Project Code",
+    "Dev / Support",
+    "Ticket Summary",
+    "Status",
+    "Number",
+    "Last Updated",
+    "Assigned",
+    "Priority",
+    "Deadline",
+    "Customer",
+    "Action"
   ];
   console.log(tableData);
   return (
@@ -446,12 +447,12 @@ let CustomTable = ({ ...props }) => {
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
-                    {editing == prop.all_projects.newProjectName ? (
+                    {editing == prop.key ? (
                       <CustomInput
                         id="required"
                         md={12}
                         lg={12}
-                        labelText="Dev Efforts"
+                        labelText="Project Code"
                         formControlProps={{
                           fullWidth: true
                         }}
@@ -469,7 +470,7 @@ let CustomTable = ({ ...props }) => {
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
-                    {editing == prop.all_projects.newProjectName ? (
+                    {editing == prop.key ? (
                       <CustomInput
                         id="required"
                         md={12}
@@ -485,139 +486,79 @@ let CustomTable = ({ ...props }) => {
                         }}
                       />
                     ) : (
-                      prop.all_projects.newProjectName
+                      prop.all_projects.category
                     )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
-                    {/* {editing == prop.all_projects.newProjectName ? (
-                      <CustomInput
-                        id="required"
-                        md={12}
-                        lg={12}
-                        labelText="Rate unit"
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        onChange={hand}
-                        value={ProjectCode}
-                        inputProps={{
-                          type: "text"
-                        }}
-                      />
+                    {prop.all_projects.ticketSummary}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.key ? (
+                      <FormControl
+                        style={{ marginTop: 10 }}
+                        className={[classes.formControl, "form-control"]}
+                        variant="outlined"
+                      >
+                        <Select
+                          onChange={handleDevPaidCodeChange}
+                          value={DevPaid}
+                          // displayEmpty
+                        >
+                          <MenuItem value={"Open"}>Open</MenuItem>
+                          <MenuItem value={"Close"}>Close</MenuItem>
+                        </Select>
+                      </FormControl>
                     ) : (
-                      )} */}
+                      prop.all_projects.status
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {prop.all_projects.number}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {prop.all_projects.lastUpdated}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {prop.all_projects.assigned}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {prop.all_projects.priority}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {prop.all_projects.deadline}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
                     {prop.all_projects.customer}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
-                  />
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
                   >
-                    {editing == prop.all_projects.newProjectName ? (
-                      <CustomInput
-                        id="required"
-                        md={12}
-                        lg={12}
-                        labelText="Dev Paid "
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        onChange={handleDevPaidCodeChange}
-                        value={DevPaid}
-                        inputProps={{
-                          type: "text"
-                        }}
-                      />
-                    ) : (
-                      prop.all_projects.Rate
-                    )}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    {/* {editing == prop.all_projects.newProjectName ? (
-                      <CustomInput
-                        id="required"
-                        md={12}
-                        lg={12}
-                        labelText="Dev Paid "
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        onChange={handleDevPaidCodeChange}
-                        value={DevPaid}
-                        inputProps={{
-                          type: "text"
-                        }}
-                      />
-                    ) : (
-                    )} */}
-                    {prop.all_projects.rate_unit}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    {prop.all_projects.projectEstimationEndDate}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    {/* {editing == prop.all_projects.newProjectName ? (
-                      <CustomInput
-                        id="required"
-                        md={12}
-                        lg={12}
-                        labelText="Rate unit"
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        // onChange={this.handleProjectCodeChange}
-                        // value={ProjectCode}
-                        inputProps={{
-                          type: "text"
-                        }}
-                      />
-                    ) : (
-                    )} */}
-                    {prop.all_projects.projectStartDate}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    {/* {editing == prop.all_projects.newProjectName ? (
-                      <CustomInput
-                        id="required"
-                        md={12}
-                        lg={12}
-                        labelText="invoice "
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        // onChange={this.handleProjectCodeChange}
-                        // value={ProjectCode}
-                        inputProps={{
-                          type: "text"
-                        }}
-                      />
-                    ) : (
-                    )} */}
-                    {prop.all_projects.projectActualEndDate}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  >
-                    {editing == prop.all_projects.newProjectName ? (
+                    {editing == prop.key ? (
                       <EditButton
                         updateTask={updateTask}
                         edit={true}
@@ -746,8 +687,7 @@ class TaskTable extends React.Component {
     projectopen: false,
     ProjectCode: "",
     Rate: "",
-    rate_unit: "",
-    customer: "company 1",
+    category: "",
     currency: "",
     projectStartDate: "",
     projectEstimationEndDate: "",
@@ -763,13 +703,21 @@ class TaskTable extends React.Component {
     editing: "",
     EDevEfforts: "",
     ADevEffort: "",
-    DevPaid: ""
+    DevPaid: "",
+    ticketSummary: "",
+    status: "",
+    number: "",
+    lastUpdated: "",
+    assigned: "",
+    priority: "",
+    deadline: "",
+    customer: ""
   };
   componentDidMount() {
-    this.showProjects();
+    this.showTasks();
     this.all_customer();
   }
-  showProjects() {
+  showTasks() {
     firebase
       .database()
       .ref("Tasks")
@@ -787,17 +735,17 @@ class TaskTable extends React.Component {
         });
       });
   }
-  handleProjectNameChange = e => {
-    this.setState({ newProjectName: e.target.value });
+  handleticketSummaryChange = e => {
+    this.setState({ ticketSummary: e.target.value });
   };
   handleProjectCodeChange = e => {
     this.setState({ ProjectCode: e.target.value });
   };
-  handleRateChange = e => {
-    this.setState({ Rate: e.target.value });
+  handlestatusChange = e => {
+    this.setState({ status: e.target.value });
   };
-  handleRateUnitChange = e => {
-    this.setState({ rate_unit: e.target.value });
+  handlecategoryChange = e => {
+    this.setState({ category: e.target.value });
   };
   handleEDevEffortsCodeChange = e => {
     this.setState({ EDevEfforts: e.target.value });
@@ -811,28 +759,19 @@ class TaskTable extends React.Component {
     this.setState({ ADevEffort: e.target.value });
     debugger;
   };
-  handleCustomerChange = e => {
-    this.state.allcustomers &&
-      this.state.allcustomers.map(user => {
-        debugger;
-        if (e.target.value == user.all_customers.customer) {
-          this.setState({
-            assignee: user.all_customers.users
-          });
-        }
-      });
+  handlecustomerChange = e => {
     this.setState({
       customer: e.target.value
     });
   };
-  handleassigneeChange = e => {
-    this.setState({ assigneename: e.target.value });
+  handleassignedChange = e => {
+    this.setState({ assigned: e.target.value });
   };
-  handleCurrencyChange = e => {
-    this.setState({ currency: e.target.value });
+  handlepriorityChange = e => {
+    this.setState({ priority: e.target.value });
   };
-  handleDateChange = e => {
-    this.setState({ projectStartDate: e.target.value });
+  handledeadlineChange = e => {
+    this.setState({ deadline: e.target.value });
   };
   handleprojectEstimationEndDateChange = e => {
     this.setState({ projectEstimationEndDate: e.target.value });
@@ -865,11 +804,11 @@ class TaskTable extends React.Component {
     this.setState({ page });
   };
 
-  handleChangeRowsPerPage = event => {
-    this.setState({ rowsPerPage: event.target.value });
+  handlenumberChange = event => {
+    this.setState({ number: event.target.value });
   };
-  handleChangeConsultants = e => {
-    this.setState({ Consultants: e.target.value });
+  handlelastUpdatedChange = e => {
+    this.setState({ lastUpdated: e.target.value });
   };
   handleChangeProductOwner = e => {
     this.setState({ ProductOwner: e.target.value });
@@ -930,7 +869,7 @@ class TaskTable extends React.Component {
 
   openUpdateProject = _param => {
     debugger;
-    this.setState({ editing: _param.all_projects.newProjectName });
+    this.setState({ editing: _param.key });
     // this.projecthandleClickOpen();
     // if (_param !== "") {
     //   this.setState({
@@ -956,12 +895,11 @@ class TaskTable extends React.Component {
       .database()
       .ref("Tasks/" + key)
       .update({
-        newProjectName: EDevEfforts,
-        ProjectCode: ADevEffort,
-        Rate: DevPaid
+        ProjectCode: EDevEfforts,
+        status: DevPaid
       })
       .then(() => {
-        alert("project updated successfully");
+        alert("Task updated successfully");
         this.setState({
           DevPaid: "",
           ADevEffort: "",
@@ -969,7 +907,7 @@ class TaskTable extends React.Component {
           editing: "",
           projects: []
         });
-        this.showProjects();
+        this.showTasks();
       })
       .catch(error => {
         alert(error);
@@ -979,16 +917,16 @@ class TaskTable extends React.Component {
   addNewTask = e => {
     e.preventDefault();
     const {
-      newProjectName,
-      ProjectCode,
-      Rate,
-      rate_unit,
+      ticketSummary,
+      status,
+      number,
+      lastUpdated,
+      assigned,
+      priority,
+      deadline,
       customer,
-      currency,
-      projectStartDate,
-      projectEstimationEndDate,
-      projectActualEndDate,
-      assigneename
+      ProjectCode,
+      category
     } = this.state;
     var userId = firebase.auth().currentUser.uid;
     const ref = firebase.database().ref("Tasks/");
@@ -996,31 +934,32 @@ class TaskTable extends React.Component {
     ref
       .push({
         uid: userId,
-        newProjectName: newProjectName,
+        ticketSummary: ticketSummary,
         ProjectCode: ProjectCode,
-        Rate: Rate,
-        rate_unit: rate_unit,
+        status: status,
+        category: category,
         customer: customer,
-        currency: currency,
-        projectStartDate: projectStartDate,
-        projectEstimationEndDate: projectEstimationEndDate,
-        projectActualEndDate: projectActualEndDate,
-        assignee: assigneename
+        priority: priority,
+        number: number,
+        assigned: assigned,
+        deadline: deadline,
+        lastUpdated: lastUpdated
       })
       .catch(error => {
         console.log("Error during user creating on firebase", error);
       });
-    alert("Project Add Successfully");
+    alert("Task Add Successfully");
     this.setState({
-      newProjectName: "",
-      Rate: "",
+      ticketSummary: "",
+      status: "",
       ProjectCode: "",
-      rate_unit: "",
+      category: "",
       customer: "",
-      currency: "",
-      projectStartDate: "",
-      projectEstimationEndDate: "",
-      projectActualEndDate: "",
+      priority: "",
+      number: "",
+      assigned: "",
+      lastUpdated: "",
+      deadline: "",
       projectopen: false,
       _param: "",
       assigneename: []
@@ -1034,20 +973,19 @@ class TaskTable extends React.Component {
 
   render() {
     const {
-      data,
-      order,
-      orderBy,
-      selected,
-      rowsPerPage,
-      page,
-      newProjectName,
       ProjectCode,
-      Rate,
-      rate_unit,
-      currency,
+      category,
       projects,
       allcustomers,
-      _param
+      _param,
+      ticketSummary,
+      status,
+      number,
+      lastUpdated,
+      assigned,
+      priority,
+      deadline,
+      customer
     } = this.state;
     debugger;
     // const assignees = allcustomers;
@@ -1237,30 +1175,78 @@ class TaskTable extends React.Component {
               {/* {
               this.state.editing == prop.
             } */}
+              <FormControl
+                style={{ marginTop: 10 }}
+                className={[classes.formControl, "form-control"]}
+                variant="outlined"
+              >
+                <InputLabel
+                  style={{ fontSize: 10 }}
+                  ref={ref => {
+                    this.InputLabelRef = ref;
+                  }}
+                  htmlFor="outlined-age-simple"
+                >
+                  Project Code
+                </InputLabel>
+                <Select
+                  value={ProjectCode}
+                  onChange={this.handleProjectCodeChange}
+                  // displayEmpty
+                  input={
+                    <OutlinedInput
+                      // style={{ fontSize: 10 }}
+                      labelWidth={60}
+                      name="Country"
+                      id="outlined-age-simple"
+                    />
+                  }
+                >
+                  <MenuItem value={"Project Code1"}>Project Code1</MenuItem>
+                  <MenuItem value={"Project Code2"}>Project Code2</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl
+                style={{ marginTop: 10 }}
+                className={[classes.formControl, "form-control"]}
+                variant="outlined"
+              >
+                <InputLabel
+                  style={{ fontSize: 10 }}
+                  ref={ref => {
+                    this.InputLabelRef = ref;
+                  }}
+                  htmlFor="outlined-age-simple"
+                >
+                  Dev / Support
+                </InputLabel>
+                <Select
+                  value={category}
+                  onChange={this.handlecategoryChange}
+                  // displayEmpty
+                  input={
+                    <OutlinedInput
+                      // style={{ fontSize: 10 }}
+                      labelWidth={60}
+                      name="Country"
+                      id="outlined-age-simple"
+                    />
+                  }
+                >
+                  <MenuItem value={"Dev"}>Dev</MenuItem>
+                  <MenuItem value={"Support"}>Support</MenuItem>
+                </Select>
+              </FormControl>
               <CustomInput
                 id="required"
-                md={12}
-                lg={12}
-                labelText="Estimated developer efforts"
+                labelText="Ticket Summary"
                 formControlProps={{
                   fullWidth: true
                 }}
-                onChange={this.handleProjectCodeChange}
-                value={ProjectCode}
+                onChange={this.handleticketSummaryChange}
+                value={ticketSummary}
                 inputProps={{
-                  type: "number"
-                }}
-              />
-              <CustomInput
-                id="required"
-                labelText="Actual developer efforts"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                onChange={this.handleProjectNameChange}
-                value={newProjectName}
-                inputProps={{
-                  type: "number"
+                  type: "text"
                 }}
               />
               <FormControl
@@ -1275,11 +1261,153 @@ class TaskTable extends React.Component {
                   }}
                   htmlFor="outlined-age-simple"
                 >
-                  Rate Unit
+                  Status
                 </InputLabel>
                 <Select
-                  value={this.state.rate_unit}
-                  onChange={this.handleRateUnitChange}
+                  value={status}
+                  onChange={this.handlestatusChange}
+                  // displayEmpty
+                  input={
+                    <OutlinedInput
+                      // style={{ fontSize: 10 }}
+                      labelWidth={30}
+                      name="Country"
+                      id="outlined-age-simple"
+                    />
+                  }
+                >
+                  <MenuItem value={"Open"}>Open</MenuItem>
+                  <MenuItem value={"Close"}>Close</MenuItem>
+                </Select>
+              </FormControl>
+            </FormControl>
+            <FormControl fullWidth style={{ marginTop: 10 }}>
+              <CustomInput
+                id="required"
+                labelText="Number"
+                formControlProps={{
+                  fullWidth: true
+                }}
+                value={number}
+                onChange={this.handlenumberChange}
+                inputProps={{
+                  type: "number"
+                }}
+              />
+            </FormControl>
+            <FormControl
+              style={{ marginTop: 10 }}
+              className={[classes.formControl, "form-control"]}
+              variant="outlined"
+            >
+              <CustomInput
+                id="required"
+                labelText="Last Updated"
+                formControlProps={{
+                  fullWidth: true
+                }}
+                onChange={this.handlelastUpdatedChange}
+                value={lastUpdated}
+                inputProps={{
+                  type: "text"
+                }}
+              />
+            </FormControl>
+            <FormControl
+              style={{ marginTop: 10 }}
+              className={[classes.formControl, "form-control"]}
+              variant="outlined"
+            >
+              <InputLabel
+                style={{ fontSize: 10 }}
+                ref={ref => {
+                  this.InputLabelRef = ref;
+                }}
+                htmlFor="outlined-age-simple"
+              >
+                Assigned
+              </InputLabel>
+              <Select
+                value={assigned}
+                onChange={this.handleassignedChange}
+                // displayEmpty
+                input={
+                  <OutlinedInput
+                    // style={{ fontSize: 10 }}
+                    labelWidth={40}
+                    name="Country"
+                    id="outlined-age-simple"
+                  />
+                }
+              >
+                <MenuItem value={"Developer 1"}>Developer 1</MenuItem>
+                <MenuItem value={"Developer 2"}>Developer 2</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl
+              style={{ marginTop: 10 }}
+              className={[classes.formControl, "form-control"]}
+              variant="outlined"
+            >
+              <InputLabel
+                style={{ fontSize: 10 }}
+                ref={ref => {
+                  this.InputLabelRef = ref;
+                }}
+                htmlFor="outlined-age-simple"
+              >
+                Priority
+              </InputLabel>
+              <Select
+                value={priority}
+                onChange={this.handlepriorityChange}
+                // displayEmpty
+                input={
+                  <OutlinedInput
+                    // style={{ fontSize: 10 }}
+                    labelWidth={40}
+                    name="Country"
+                    id="outlined-age-simple"
+                  />
+                }
+              >
+                <MenuItem value={"High"}>High</MenuItem>
+                <MenuItem value={"Medium"}>Medium</MenuItem>
+                <MenuItem value={"Low"}>Low</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth style={{ marginTop: 10 }}>
+              <FormControl fullWidth style={{ marginTop: 10 }}>
+                <TextField
+                  id="date"
+                  label="Deadline"
+                  type="date"
+                  defaultValue="2017-05-24"
+                  value={deadline}
+                  onChange={this.handledeadlineChange}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                />
+              </FormControl>
+              <FormControl
+                style={{ marginTop: 10 }}
+                className={[classes.formControl, "form-control"]}
+                variant="outlined"
+              >
+                <InputLabel
+                  style={{ fontSize: 10 }}
+                  ref={ref => {
+                    this.InputLabelRef = ref;
+                  }}
+                  htmlFor="outlined-age-simple"
+                >
+                  Customer
+                </InputLabel>
+                <Select
+                  onChange={this.handlecustomerChange}
+                  value={customer}
                   // displayEmpty
                   input={
                     <OutlinedInput
@@ -1290,170 +1418,11 @@ class TaskTable extends React.Component {
                     />
                   }
                 >
-                  <MenuItem value={"Hourly"}>Hourly</MenuItem>
-                  <MenuItem value={"Daily"}>Daily</MenuItem>
-                  <MenuItem value={"Weekly"}>Weekly</MenuItem>
-                  <MenuItem value={"Monthly"}>Monthly</MenuItem>
+                  <MenuItem value={"Customer 1"}>Customer 1</MenuItem>
+                  <MenuItem value={"Customer 2"}>Customer 2</MenuItem>
+                  <MenuItem value={"Customer 2"}>Customer 2</MenuItem>
                 </Select>
               </FormControl>
-              <CustomInput
-                id="required"
-                labelText="Developer Effort amount calculated"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                onChange={this.handleRateChange}
-                value={Rate}
-                inputProps={{
-                  type: "number"
-                }}
-              />
-            </FormControl>
-            {/* <FormControl
-              style={{ marginTop: 10 }}
-              className={[classes.formControl, "form-control"]}
-              variant="outlined"
-            >
-              <InputLabel
-                style={{ fontSize: 10 }}
-                ref={ref => {
-                  this.InputLabelRef = ref;
-                }}
-                htmlFor="outlined-age-simple"
-              >
-                Developer Effort amount calculated
-              </InputLabel>
-              <Select
-                value={this.state.rate_unit}
-                onChange={this.handleRateUnitChange}
-                // displayEmpty
-                input={
-                  <OutlinedInput
-                    // style={{ fontSize: 10 }}
-                    labelWidth={40}
-                    name="Country"
-                    id="outlined-age-simple"
-                  />
-                }
-              >
-                <MenuItem value={"Hourly"}>Hourly</MenuItem>
-                <MenuItem value={"Daily"}>Daily</MenuItem>
-                <MenuItem value={"Weekly"}>Weekly</MenuItem>
-                <MenuItem value={"Monthly"}>Monthly</MenuItem>
-              </Select>
-            </FormControl> */}
-            <FormControl fullWidth style={{ marginTop: 10 }}>
-              <TextField
-                id="date"
-                label="Developer Paid on"
-                type="date"
-                defaultValue="2017-05-24"
-                value={this.state.projectStartDate}
-                onChange={this.handleDateChange}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true
-                }}
-              />
-            </FormControl>
-            <FormControl
-              style={{ marginTop: 10 }}
-              className={[classes.formControl, "form-control"]}
-              variant="outlined"
-            >
-              <CustomInput
-                id="required"
-                labelText="Efforts estimated to customer"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                onChange={this.handleRateChange}
-                value={Rate}
-                inputProps={{
-                  type: "number"
-                }}
-              />
-            </FormControl>
-
-            <FormControl
-              style={{ marginTop: 10 }}
-              className={[classes.formControl, "form-control"]}
-              variant="outlined"
-            >
-              <CustomInput
-                id="required"
-                labelText="Efforts adjusted to customer Adjusted"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                onChange={this.handleRateChange}
-                value={Rate}
-                inputProps={{
-                  type: "number"
-                }}
-              />
-            </FormControl>
-
-            <FormControl
-              style={{ marginTop: 10 }}
-              className={[classes.formControl, "form-control"]}
-              variant="outlined"
-            >
-              <InputLabel
-                style={{ fontSize: 10 }}
-                ref={ref => {
-                  this.InputLabelRef = ref;
-                }}
-                htmlFor="outlined-age-simple"
-              >
-                Rate Unit
-              </InputLabel>
-              <Select
-                value={this.state.rate_unit}
-                onChange={this.handleRateUnitChange}
-                // displayEmpty
-                input={
-                  <OutlinedInput
-                    // style={{ fontSize: 10 }}
-                    labelWidth={40}
-                    name="Country"
-                    id="outlined-age-simple"
-                  />
-                }
-              >
-                <MenuItem value={"Hourly"}>Hourly</MenuItem>
-                <MenuItem value={"Daily"}>Daily</MenuItem>
-                <MenuItem value={"Weekly"}>Weekly</MenuItem>
-                <MenuItem value={"Monthly"}>Monthly</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl fullWidth style={{ marginTop: 10 }}>
-              <CustomInput
-                id="required"
-                labelText="To invoice amount calculate"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                onChange={this.handleRateChange}
-                value={Rate}
-                inputProps={{
-                  type: "number"
-                }}
-              />
-            </FormControl>
-            <FormControl fullWidth style={{ marginTop: 10 }}>
-              <TextField
-                id="date"
-                label="Paid by Customer on"
-                type="date"
-                defaultValue="2017-05-24"
-                value={this.state.projectActualEndDate}
-                onChange={this.handleprojectActualEndDateChange}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true
-                }}
-              />
             </FormControl>
           </DialogContent>
           <DialogActions>

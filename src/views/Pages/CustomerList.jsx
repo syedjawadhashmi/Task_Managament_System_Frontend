@@ -32,7 +32,7 @@ class CustomerList extends React.Component {
       customers: []
     };
 
-    let currentUser = JSON.parse(localStorage.getItem('currentUser'))
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
     let email = currentUser.email;
 
     // Calling Data from Firebase and render into the DOM...!
@@ -40,7 +40,6 @@ class CustomerList extends React.Component {
       .database()
       .ref("Customer")
       .on("child_added", customer => {
-
         let currentpost = this.state.customers;
 
         let obj = {
@@ -48,7 +47,7 @@ class CustomerList extends React.Component {
           key: customer.key
         };
 
-        if (email == 'admin@gmail.com') {
+        if (email == "admin@gmail.com") {
           currentpost.push(obj);
 
           this.setState({
@@ -57,15 +56,15 @@ class CustomerList extends React.Component {
           });
         }
 
-        const found = obj.all_customers.users.some(el => (el.email === email));
-        if (found) {
-          currentpost.push(obj);
+        // const found = obj.all_customers.users.some(el => el.email === email);
+        // if (found) {
+        //   currentpost.push(obj);
 
-          this.setState({
-            customers: currentpost,
-            posts: ""
-          });
-        }
+        //   this.setState({
+        //     customers: currentpost,
+        //     posts: ""
+        //   });
+        // }
       });
 
     // Binding functions here...!
