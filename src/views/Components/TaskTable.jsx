@@ -367,8 +367,9 @@ let CustomTable = ({ ...props }) => {
     ADevEffort,
     handleDevPaidCodeChange
   } = props;
-  const usr_name = localStorage.getItem("user");
-  if (usr_name == "admin@gmail.com") {
+  const roles = localStorage.getItem("role");
+  const role = roles.slice(1, roles.length - 1);
+  if (role == "Admin") {
     var tableHead = [
       "#",
       "Project Code",
@@ -387,7 +388,30 @@ let CustomTable = ({ ...props }) => {
       "Developer Effort amount",
       "Developer Paid on",
       "Efforts estimated to customer",
-      "Efforts adjusted to customer ",
+      "Efforts adjusted to customer",
+      "Rate unit",
+      "To invoice amount",
+      "Paid by Customer on",
+      "Action"
+    ];
+  } else if (role == "Developer") {
+    var tableHead = [
+      "#",
+      "Project Code",
+      "Dev / Support",
+      "Ticket Summary",
+      "Status",
+      "Number",
+      "Last Updated",
+      "Assigned",
+      "Priority",
+      "Deadline",
+      "Customer",
+      "Estimated developer efforts",
+      "Actual developer efforts",
+      "Rate unit",
+      "Developer Effort amount",
+      "Developer Paid on",
       "Action"
     ];
   } else {
@@ -403,6 +427,11 @@ let CustomTable = ({ ...props }) => {
       "Priority",
       "Deadline",
       "Customer",
+      "Efforts estimated to customer",
+      "Efforts adjusted to customer",
+      "Rate unit",
+      "To invoice amount",
+      "Paid by Customer on",
       "Action"
     ];
   }
@@ -581,87 +610,124 @@ let CustomTable = ({ ...props }) => {
                   >
                     {prop.all_projects.customer}
                   </TableCell>
-                  {usr_name == "admin@gmail.com" ? (
+                  {role == "Admin" || role == "Developer" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.all_projects.customer}
+                      {prop.all_projects.est_dev_efforts}
                     </TableCell>
                   ) : null}
-                  {usr_name == "admin@gmail.com" ? (
+                  {role == "Admin" || role == "Developer" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.all_projects.customer}
+                      {prop.all_projects.act_dev_efforts}
                     </TableCell>
                   ) : null}
-                  {usr_name == "admin@gmail.com" ? (
+                  {role == "Admin" || role == "Developer" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.all_projects.customer}
+                      {prop.all_projects.rate_unit_dev}
                     </TableCell>
                   ) : null}
-                  {usr_name == "admin@gmail.com" ? (
+                  {role == "Admin" || role == "Developer" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.all_projects.customer}
+                      {prop.all_projects.dev_efforts_amt}
                     </TableCell>
                   ) : null}
-                  {usr_name == "admin@gmail.com" ? (
+                  {role == "Admin" || role == "Developer" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.all_projects.customer}
+                      {prop.all_projects.dev_paid_on}
                     </TableCell>
                   ) : null}
-                  {usr_name == "admin@gmail.com" ? (
+                  {role == "Admin" ||
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.all_projects.customer}
+                      {prop.all_projects.est_cus_efforts}
                     </TableCell>
                   ) : null}
-                  {usr_name == "admin@gmail.com" ? (
+                  {role == "Admin" ||
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
                     >
-                      {prop.all_projects.customer}
+                      {prop.all_projects.act_cus_efforts}
+                    </TableCell>
+                  ) : null}
+                  {role == "Admin" ||
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.rate_unit_cus}
+                    </TableCell>
+                  ) : null}
+                  {role == "Admin" ||
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.cus_efforts_amt}
+                    </TableCell>
+                  ) : null}
+                  {role == "Admin" ||
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.cus_paid_on}
                     </TableCell>
                   ) : null}
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
-                    {editing == prop.key ? (
-                      <EditButton
-                        updateTask={updateTask}
-                        edit={true}
-                        _param={prop}
-                        v={prop.key}
-                        asd={key}
-                      />
-                    ) : (
-                      <EditButton
-                        openUpdateProject={openUpdateProject}
-                        _param={prop}
-                        v={prop.key}
-                        asd={key}
-                      />
-                    )}
+                    {role == "Admin" || role == "Product Owner" ? (
+                      editing == prop.key ? (
+                        <EditButton
+                          updateTask={updateTask}
+                          edit={true}
+                          _param={prop}
+                          v={prop.key}
+                          asd={key}
+                        />
+                      ) : (
+                        <EditButton
+                          openUpdateProject={openUpdateProject}
+                          _param={prop}
+                          v={prop.key}
+                          asd={key}
+                        />
+                      )
+                    ) : null}
+                    {role == "Admin" || role == "Product Owner" ?
                     <DeleteButton
                       deleteUser={deleteUser}
                       asd={prop.key}
                       v={key}
-                    />
+                    />:null}
                   </TableCell>
                 </TableRow>
               );
@@ -798,7 +864,17 @@ class TaskTable extends React.Component {
     text: "",
     comments: [],
     from: "",
-    childKey: ""
+    childKey: "",
+    est_dev_efforts: "",
+    act_dev_efforts: "",
+    rate_unit_dev: "",
+    dev_efforts_amt: "",
+    dev_paid_on: "",
+    est_cus_efforts: "",
+    act_cus_efforts: "",
+    rate_unit_cus: "",
+    cus_efforts_amt: "",
+    cus_paid_on: ""
   };
   componentDidMount() {
     this.showTasks();
@@ -822,6 +898,36 @@ class TaskTable extends React.Component {
         });
       });
   }
+  handleest_dev_effortsChange = e => {
+    this.setState({ est_dev_efforts: e.target.value });
+  };
+  handleact_dev_effortsChange = e => {
+    this.setState({ act_dev_efforts: e.target.value });
+  };
+  handlerate_unit_devChange = e => {
+    this.setState({ rate_unit_dev: e.target.value });
+  };
+  handledev_efforts_amtChange = e => {
+    this.setState({ dev_efforts_amt: e.target.value });
+  };
+  handledev_paid_onChange = e => {
+    this.setState({ dev_paid_on: e.target.value });
+  };
+  handleest_cus_effortsChange = e => {
+    this.setState({ est_cus_efforts: e.target.value });
+  };
+  handleact_cus_effortsChange = e => {
+    this.setState({ act_cus_efforts: e.target.value });
+  };
+  handlerate_unit_cusChange = e => {
+    this.setState({ rate_unit_cus: e.target.value });
+  };
+  handlecus_efforts_amtChange = e => {
+    this.setState({ cus_efforts_amt: e.target.value });
+  };
+  handlecus_paid_onChange = e => {
+    this.setState({ cus_paid_on: e.target.value });
+  };
   handleticketSummaryChange = e => {
     this.setState({ ticketSummary: e.target.value });
   };
@@ -977,7 +1083,21 @@ class TaskTable extends React.Component {
   updateTask = (e, key) => {
     debugger;
     // e.preventDefault();
-    const { EDevEfforts, ADevEffort, DevPaid } = this.state;
+    const {
+      EDevEfforts,
+      ADevEffort,
+      DevPaid,
+      est_dev_efforts,
+      act_dev_efforts,
+      rate_unit_dev,
+      dev_efforts_amt,
+      dev_paid_on,
+      est_cus_efforts,
+      act_cus_efforts,
+      rate_unit_cus,
+      cus_efforts_amt,
+      cus_paid_on
+    } = this.state;
 
     firebase
       .database()
@@ -985,6 +1105,16 @@ class TaskTable extends React.Component {
       .update({
         ProjectCode: EDevEfforts,
         status: DevPaid
+        // est_dev_efforts: est_dev_efforts,
+        // act_dev_efforts: act_dev_efforts,
+        // rate_unit_dev: rate_unit_dev,
+        // dev_efforts_amt: dev_efforts_amt,
+        // dev_paid_on: dev_paid_on,
+        // est_cus_efforts: est_cus_efforts,
+        // act_cus_efforts: act_cus_efforts,
+        // rate_unit_cus: rate_unit_cus,
+        // cus_efforts_amt: cus_efforts_amt,
+        // cus_paid_on: cus_paid_on
       })
       .then(() => {
         alert("Task updated successfully");
@@ -1014,7 +1144,17 @@ class TaskTable extends React.Component {
       deadline,
       customer,
       ProjectCode,
-      category
+      category,
+      est_dev_efforts,
+      act_dev_efforts,
+      rate_unit_dev,
+      dev_efforts_amt,
+      dev_paid_on,
+      est_cus_efforts,
+      act_cus_efforts,
+      rate_unit_cus,
+      cus_efforts_amt,
+      cus_paid_on
     } = this.state;
     var userId = firebase.auth().currentUser.uid;
     const ref = firebase.database().ref("Tasks/");
@@ -1030,7 +1170,17 @@ class TaskTable extends React.Component {
         number: number,
         assigned: assigned,
         deadline: deadline,
-        lastUpdated: lastUpdated
+        lastUpdated: lastUpdated,
+        est_dev_efforts: est_dev_efforts,
+        act_dev_efforts: act_dev_efforts,
+        rate_unit_dev: rate_unit_dev,
+        dev_efforts_amt: dev_efforts_amt,
+        dev_paid_on: dev_paid_on,
+        est_cus_efforts: est_cus_efforts,
+        act_cus_efforts: act_cus_efforts,
+        rate_unit_cus: rate_unit_cus,
+        cus_efforts_amt: cus_efforts_amt,
+        cus_paid_on: cus_paid_on
       })
       .catch(error => {
         console.log("Error during user creating on firebase", error);
@@ -1049,6 +1199,16 @@ class TaskTable extends React.Component {
       deadline: "",
       projectopen: false,
       _param: "",
+      est_dev_efforts: "",
+      act_dev_efforts: "",
+      rate_unit_dev: "",
+      dev_efforts_amt: "",
+      dev_paid_on: "",
+      est_cus_efforts: "",
+      act_cus_efforts: "",
+      rate_unit_cus: "",
+      cus_efforts_amt: "",
+      cus_paid_on: "",
       assigneename: []
     });
   };
@@ -1107,12 +1267,24 @@ class TaskTable extends React.Component {
       assigned,
       priority,
       deadline,
-      customer
+      customer,
+      est_dev_efforts,
+      act_dev_efforts,
+      rate_unit_dev,
+      dev_efforts_amt,
+      dev_paid_on,
+      est_cus_efforts,
+      act_cus_efforts,
+      rate_unit_cus,
+      cus_efforts_amt,
+      cus_paid_on
     } = this.state;
     // const assignees = allcustomers;
     const { classes } = this.props;
     console.log("asas", this.state.selectedassignee);
-
+    debugger;
+    const roles = localStorage.getItem("role");
+    const role = roles.slice(1, roles.length - 1);
     const tableData = projects;
     return (
       <Paper className={classes.root}>
@@ -1215,100 +1387,6 @@ class TaskTable extends React.Component {
                   {/* UserName:<h5>{c.from}</h5>Post:<p>{c.text}</p> */}
                 </div>
               ))}
-              {/* <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row"
-                }}
-              >
-                <Avatar
-                  alt="Remy Sharp"
-                  src={profile}
-                  className={classes.avatar}
-                />
-                <Paper className={classes.root} elevation={1}>
-                  <Typography
-                    style={{
-                      margin: 10
-                    }}
-                    variant="h6"
-                    component="h4"
-                  >
-                    Nikhil Gaekward <span style={{ fontSize: 12 }}> Now</span>
-                  </Typography>
-                  <Typography style={{ margin: 10 }} component="p">
-                    why is there a drop in visitors going to the island?
-                    <p
-                      style={{
-                        color: "rgb(0, 0, 255)"
-                      }}
-                    >
-                      @Alan Wright
-                    </p>
-                  </Typography>
-                  <Button>
-                    <Icon>reply</Icon>reply
-                  </Button>
-                </Paper>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row"
-                }}
-              >
-                <Avatar
-                  alt="Remy Sharp"
-                  src={profile}
-                  className={classes.avatar}
-                />
-                <Paper className={classes.root} elevation={1}>
-                  <Typography
-                    style={{ margin: 10 }}
-                    variant="h6"
-                    component="h4"
-                  >
-                    Nikhil Gaekward{" "}
-                    <span style={{ fontSize: 12 }}> 0 min ago</span>
-                  </Typography>
-                  <Typography style={{ margin: 10 }} component="p">
-                    why is there a drop in visitors going to the island?
-                    <p style={{ color: "rgb(0, 0, 255)" }}>@Alan Wright</p>
-                  </Typography>
-                  <Button>
-                    <Icon>reply</Icon>reply
-                  </Button>
-                </Paper>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row"
-                }}
-              >
-                <Avatar
-                  alt="Remy Sharp"
-                  src={profile}
-                  className={classes.avatar}
-                />
-                <Paper className={classes.root} elevation={1}>
-                  <Typography
-                    style={{ margin: 10 }}
-                    variant="h6"
-                    component="h4"
-                  >
-                    Nikhil Gaekward{" "}
-                    <span style={{ fontSize: 12 }}> 2 days ago</span>
-                  </Typography>
-                  <Typography style={{ margin: 10 }} component="p">
-                    why is there a drop in visitors going to the island?
-                    <p style={{ color: "rgb(0, 0, 255)" }}>@Alan Wright</p>
-                  </Typography>
-                  <Button>
-                    <Icon>reply</Icon>reply
-                  </Button>
-                </Paper>
-              </div> */}
             </FormControl>
           </DialogContent>
           <DialogActions>
@@ -1587,6 +1665,208 @@ class TaskTable extends React.Component {
                 </Select>
               </FormControl>
             </FormControl>
+            {role == "Admin" ? (
+              <FormControl fullWidth style={{ marginTop: 10 }}>
+                <CustomInput
+                  id="required"
+                  labelText="Estimated developer efforts"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  onChange={this.handleest_dev_effortsChange}
+                  value={est_dev_efforts}
+                  inputProps={{
+                    type: "number"
+                  }}
+                />
+              </FormControl>
+            ) : null}
+            {role == "Admin" ? (
+              <FormControl fullWidth style={{ marginTop: 10 }}>
+                <CustomInput
+                  id="required"
+                  labelText="Actual developer efforts"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  onChange={this.handleact_dev_effortsChange}
+                  value={act_dev_efforts}
+                  inputProps={{
+                    type: "number"
+                  }}
+                />
+              </FormControl>
+            ) : null}
+            {role == "Admin" ? (
+              <FormControl
+                fullWidth
+                style={{ marginTop: 10 }}
+                style={{ marginTop: 10 }}
+                className={[classes.formControl, "form-control"]}
+                variant="outlined"
+              >
+                <InputLabel
+                  style={{ fontSize: 10 }}
+                  ref={ref => {
+                    this.InputLabelRef = ref;
+                  }}
+                  htmlFor="outlined-age-simple"
+                >
+                  Rate Unit
+                </InputLabel>
+                <Select
+                  onChange={this.handlerate_unit_devChange}
+                  value={rate_unit_dev}
+                  // displayEmpty
+                  input={
+                    <OutlinedInput
+                      // style={{ fontSize: 10 }}
+                      labelWidth={40}
+                      name="Country"
+                      id="outlined-age-simple"
+                    />
+                  }
+                >
+                  <MenuItem value={"Hourly"}>Hourly</MenuItem>
+                  <MenuItem value={"Daily"}>Daily</MenuItem>
+                  <MenuItem value={"Weekly"}>Weekly</MenuItem>
+                  <MenuItem value={"Monthly"}>Monthly</MenuItem>
+                </Select>
+              </FormControl>
+            ) : null}
+            {role == "Admin" ? (
+              <FormControl fullWidth style={{ marginTop: 10 }}>
+                <CustomInput
+                  id="required"
+                  labelText="Developer Effort amount "
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  onChange={this.handledev_efforts_amtChange}
+                  value={dev_efforts_amt}
+                  inputProps={{
+                    type: "number"
+                  }}
+                />
+              </FormControl>
+            ) : null}
+            {role == "Admin" ? (
+              <FormControl fullWidth style={{ marginTop: 10 }}>
+                <TextField
+                  id="date"
+                  label="Developer Paid on"
+                  type="date"
+                  defaultValue="2017-05-24"
+                  value={dev_paid_on}
+                  onChange={this.handledev_paid_onChange}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                />
+              </FormControl>
+            ) : null}
+            {role == "Admin" ? (
+              <FormControl fullWidth style={{ marginTop: 10 }}>
+                <CustomInput
+                  id="required"
+                  labelText="Efforts estimated to customer "
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  value={est_cus_efforts}
+                  onChange={this.handleest_cus_effortsChange}
+                  inputProps={{
+                    type: "number"
+                  }}
+                />
+              </FormControl>
+            ) : null}
+            {role == "Admin" ? (
+              <FormControl fullWidth style={{ marginTop: 10 }}>
+                <CustomInput
+                  id="required"
+                  labelText="Efforts adjusted to customer"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  value={act_cus_efforts}
+                  onChange={this.handleact_cus_effortsChange}
+                  inputProps={{
+                    type: "number"
+                  }}
+                />
+              </FormControl>
+            ) : null}
+            {role == "Admin" ? (
+              <FormControl
+                fullWidth
+                style={{ marginTop: 10 }}
+                style={{ marginTop: 10 }}
+                className={[classes.formControl, "form-control"]}
+                variant="outlined"
+              >
+                <InputLabel
+                  style={{ fontSize: 10 }}
+                  ref={ref => {
+                    this.InputLabelRef = ref;
+                  }}
+                  htmlFor="outlined-age-simple"
+                >
+                  Rate Unit
+                </InputLabel>
+                <Select
+                  value={rate_unit_cus}
+                  onChange={this.handlerate_unit_cusChange}
+                  // displayEmpty
+                  input={
+                    <OutlinedInput
+                      // style={{ fontSize: 10 }}
+                      labelWidth={40}
+                      name="Country"
+                      id="outlined-age-simple"
+                    />
+                  }
+                >
+                  <MenuItem value={"Hourly"}>Hourly</MenuItem>
+                  <MenuItem value={"Daily"}>Daily</MenuItem>
+                  <MenuItem value={"Weekly"}>Weekly</MenuItem>
+                  <MenuItem value={"Monthly"}>Monthly</MenuItem>
+                </Select>
+              </FormControl>
+            ) : null}
+            {role == "Admin" ? (
+              <FormControl fullWidth style={{ marginTop: 10 }}>
+                <CustomInput
+                  id="required"
+                  labelText="To invoice amount "
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  value={cus_efforts_amt}
+                  onChange={this.handlecus_efforts_amtChange}
+                  inputProps={{
+                    type: "number"
+                  }}
+                />
+              </FormControl>
+            ) : null}
+            {role == "Admin" ? (
+              <FormControl fullWidth style={{ marginTop: 10 }}>
+                <TextField
+                  id="date"
+                  label="Paid by Customer on"
+                  type="date"
+                  defaultValue="2017-05-24"
+                  value={cus_paid_on}
+                  onChange={this.handlecus_paid_onChange}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                />
+              </FormControl>
+            ) : null}
           </DialogContent>
           <DialogActions>
             <Button
