@@ -57,7 +57,8 @@ class LoginPage extends React.Component {
         const user = res.user;
         var token = "";
         firebase.auth().onAuthStateChanged(function(user) {
-          if (user && self.props.location.pathname == "/auth/login-page") {
+          debugger
+          if (user && window.location.pathname == "/auth/login-page") {
             user.getIdToken().then(function(idToken) {
               token = idToken;
               localStorage.setItem("user", user_name);

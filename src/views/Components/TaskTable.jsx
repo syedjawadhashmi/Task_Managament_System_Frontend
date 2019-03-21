@@ -367,20 +367,46 @@ let CustomTable = ({ ...props }) => {
     ADevEffort,
     handleDevPaidCodeChange
   } = props;
-  const tableHead = [
-    "#",
-    "Project Code",
-    "Dev / Support",
-    "Ticket Summary",
-    "Status",
-    "Number",
-    "Last Updated",
-    "Assigned",
-    "Priority",
-    "Deadline",
-    "Customer",
-    "Action"
-  ];
+  const usr_name = localStorage.getItem("user");
+  if (usr_name == "admin@gmail.com") {
+    var tableHead = [
+      "#",
+      "Project Code",
+      "Dev / Support",
+      "Ticket Summary",
+      "Status",
+      "Number",
+      "Last Updated",
+      "Assigned",
+      "Priority",
+      "Deadline",
+      "Customer",
+      "Estimated developer efforts",
+      "Actual developer efforts",
+      "Rate unit",
+      "Developer Effort amount",
+      "Developer Paid on",
+      "Efforts estimated to customer",
+      "Efforts adjusted to customer ",
+      "Action"
+    ];
+  } else {
+    var tableHead = [
+      "#",
+      "Project Code",
+      "Dev / Support",
+      "Ticket Summary",
+      "Status",
+      "Number",
+      "Last Updated",
+      "Assigned",
+      "Priority",
+      "Deadline",
+      "Customer",
+      "Action"
+    ];
+  }
+  // if(AsyncStorage.getItem('user'))
   console.log(tableData);
   return (
     <div className={classes.tableResponsive}>
@@ -429,13 +455,14 @@ let CustomTable = ({ ...props }) => {
                 [classes[rowColor + "Row"]]: rowColored,
                 [classes.tableStripedRow]: striped && key % 2 === 0
               });
-
+              let that = this;
               // console.log('props_data', prop.key)
               return (
                 <TableRow
                   key={prop.key}
                   hover={hover}
                   className={tableRowClasses}
+                  onClick={() => handleClickOpen(prop.key)}
                 >
                   <TableCell
                     className={classes.tableCell}
@@ -554,6 +581,62 @@ let CustomTable = ({ ...props }) => {
                   >
                     {prop.all_projects.customer}
                   </TableCell>
+                  {usr_name == "admin@gmail.com" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.customer}
+                    </TableCell>
+                  ) : null}
+                  {usr_name == "admin@gmail.com" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.customer}
+                    </TableCell>
+                  ) : null}
+                  {usr_name == "admin@gmail.com" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.customer}
+                    </TableCell>
+                  ) : null}
+                  {usr_name == "admin@gmail.com" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.customer}
+                    </TableCell>
+                  ) : null}
+                  {usr_name == "admin@gmail.com" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.customer}
+                    </TableCell>
+                  ) : null}
+                  {usr_name == "admin@gmail.com" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.customer}
+                    </TableCell>
+                  ) : null}
+                  {usr_name == "admin@gmail.com" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.customer}
+                    </TableCell>
+                  ) : null}
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
@@ -711,7 +794,11 @@ class TaskTable extends React.Component {
     assigned: "",
     priority: "",
     deadline: "",
-    customer: ""
+    customer: "",
+    text: "",
+    comments: [],
+    from: "",
+    childKey: ""
   };
   componentDidMount() {
     this.showTasks();
@@ -816,9 +903,10 @@ class TaskTable extends React.Component {
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
-  handleClickOpen = () => {
+  handleClickOpen = key => {
     this.setState({
-      open: true
+      open: true,
+      childKey: key
     });
   };
   projecthandleClickOpen = () => {
@@ -930,7 +1018,6 @@ class TaskTable extends React.Component {
     } = this.state;
     var userId = firebase.auth().currentUser.uid;
     const ref = firebase.database().ref("Tasks/");
-    debugger;
     ref
       .push({
         uid: userId,
@@ -971,6 +1058,41 @@ class TaskTable extends React.Component {
     });
   };
 
+  handleInputChange = e => {
+    this.setState({
+      text: e.target.value
+    });
+  };
+
+  handleMessaging = e => {
+    const usr_name = localStorage.getItem("user");
+    console.log(this.state.childKey);
+
+    const ref = firebase
+      .database()
+      .ref(`Tasks`)
+      .child(this.state.childKey);
+    if (usr_name) {
+      this.state.comments.push({
+        from: usr_name,
+        text: this.state.text,
+        timestamp: new Date()
+      });
+    }
+    ref
+      .update({
+        comments: this.state.comments
+      })
+      .catch(error => {
+        alert("Something went wrong");
+      });
+
+    alert("Successfully post comment");
+    this.setState({
+      text: ""
+    });
+  };
+
   render() {
     const {
       ProjectCode,
@@ -987,7 +1109,6 @@ class TaskTable extends React.Component {
       deadline,
       customer
     } = this.state;
-    debugger;
     // const assignees = allcustomers;
     const { classes } = this.props;
     console.log("asas", this.state.selectedassignee);
@@ -1033,11 +1154,12 @@ class TaskTable extends React.Component {
                 placeholder={
                   "Enter your comments here, and @mention people to grab their attention."
                 }
-                defaultValue=""
+                value={this.state.text}
                 classes={{
                   root: classes.bootstrapRoot,
                   input: classes.bootstrapInput
                 }}
+                onChange={this.handleInputChange}
               />
               <div
                 style={{
@@ -1050,9 +1172,50 @@ class TaskTable extends React.Component {
                   marginLeft: "77%"
                 }}
               >
-                Post Comment
+                <button type="button" onClick={this.handleMessaging}>
+                  Post Comment
+                </button>
               </div>
-              <div
+              {this.state.comments.map(c => (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row"
+                  }}
+                >
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={profile}
+                    className={classes.avatar}
+                  />
+                  <Paper className={classes.root} elevation={1}>
+                    <Typography
+                      style={{
+                        margin: 10
+                      }}
+                      variant="h6"
+                      component="h4"
+                    >
+                      {c.from} <span style={{ fontSize: 12 }}> Now</span>
+                    </Typography>
+                    <Typography style={{ margin: 10 }} component="p">
+                      {c.text}
+                      {/* <p
+                        style={{
+                          color: "rgb(0, 0, 255)"
+                        }}
+                      >
+                        @Alan Wright
+                      </p> */}
+                    </Typography>
+                    <Button>
+                      <Icon>reply</Icon>reply
+                    </Button>
+                  </Paper>
+                  {/* UserName:<h5>{c.from}</h5>Post:<p>{c.text}</p> */}
+                </div>
+              ))}
+              {/* <div
                 style={{
                   display: "flex",
                   flexDirection: "row"
@@ -1145,7 +1308,7 @@ class TaskTable extends React.Component {
                     <Icon>reply</Icon>reply
                   </Button>
                 </Paper>
-              </div>
+              </div> */}
             </FormControl>
           </DialogContent>
           <DialogActions>
