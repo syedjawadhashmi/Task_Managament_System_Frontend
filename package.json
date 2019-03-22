@@ -9,6 +9,8 @@
     "chartist": "0.10.1",
     "firebase": "^5.8.5",
     "history": "4.7.2",
+    "jspdf": "^1.5.3",
+    "jspdf-autotable": "^3.0.13",
     "material-ui-table-edit": "^3.0.3",
     "moment": "2.24.0",
     "mui-editable-table": "^0.3.3",

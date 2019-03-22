@@ -47,6 +47,8 @@ import Check from "@material-ui/icons/Check";
 import Close from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
 import Input from "@material-ui/core/Input";
+import * as jsPDF from "jspdf";
+import "jspdf-autotable";
 const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -217,13 +219,13 @@ const toolbarStyles = theme => ({
   highlight:
     theme.palette.type === "light"
       ? {
-        color: theme.palette.secondary.main,
-        backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-      }
+          color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+        }
       : {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.secondary.dark
-      },
+          color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.dark
+        },
   spacer: {
     flex: "1 1 100%"
   },
@@ -250,19 +252,19 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-            <Button
-              variant="contained"
-              onClick={projecthandleClickOpen}
-              color="primary"
-              id="tableTitle"
-              className={classes.button}
-            >
-              add
+          <Button
+            variant="contained"
+            onClick={projecthandleClickOpen}
+            color="primary"
+            id="tableTitle"
+            className={classes.button}
+          >
+            add
           </Button>
-            // <Typography variant="h6" id="tableTitle">
-            //   Nutrition
-            // </Typography>
-          )}
+          // <Typography variant="h6" id="tableTitle">
+          //   Nutrition
+          // </Typography>
+        )}
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
@@ -273,12 +275,12 @@ let EnhancedTableToolbar = props => {
             </IconButton>
           </Tooltip>
         ) : (
-            <Tooltip title="Filter list">
-              <IconButton aria-label="Filter list">
-                <FilterListIcon />
-              </IconButton>
-            </Tooltip>
-          )}
+          <Tooltip title="Filter list">
+            <IconButton aria-label="Filter list">
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        )}
       </div>
     </Toolbar>
   );
@@ -519,8 +521,8 @@ let CustomTable = ({ ...props }) => {
                         }}
                       />
                     ) : (
-                        prop.all_projects.ProjectCode
-                      )}
+                      prop.all_projects.ProjectCode
+                    )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -542,8 +544,8 @@ let CustomTable = ({ ...props }) => {
                         }}
                       />
                     ) : (
-                        prop.all_projects.category
-                      )}
+                      prop.all_projects.category
+                    )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -564,15 +566,15 @@ let CustomTable = ({ ...props }) => {
                         <Select
                           onChange={handleDevPaidCodeChange}
                           value={DevPaid}
-                        // displayEmpty
+                          // displayEmpty
                         >
                           <MenuItem value={"Open"}>Open</MenuItem>
                           <MenuItem value={"Close"}>Close</MenuItem>
                         </Select>
                       </FormControl>
                     ) : (
-                        prop.all_projects.status
-                      )}
+                      prop.all_projects.status
+                    )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -651,60 +653,62 @@ let CustomTable = ({ ...props }) => {
                     </TableCell>
                   ) : null}
                   {role == "Admin" ||
-                    role == "Product Owner" ||
-                    role == "Consultant" ? (
-                      <TableCell
-                        className={classes.tableCell}
-                        colSpan={prop.colspan}
-                      >
-                        {prop.all_projects.est_cus_efforts}
-                      </TableCell>
-                    ) : null}
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.est_cus_efforts}
+                    </TableCell>
+                  ) : null}
                   {role == "Admin" ||
-                    role == "Product Owner" ||
-                    role == "Consultant" ? (
-                      <TableCell
-                        className={classes.tableCell}
-                        colSpan={prop.colspan}
-                      >
-                        {prop.all_projects.act_cus_efforts}
-                      </TableCell>
-                    ) : null}
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.act_cus_efforts}
+                    </TableCell>
+                  ) : null}
                   {role == "Admin" ||
-                    role == "Product Owner" ||
-                    role == "Consultant" ? (
-                      <TableCell
-                        className={classes.tableCell}
-                        colSpan={prop.colspan}
-                      >
-                        {prop.all_projects.rate_unit_cus}
-                      </TableCell>
-                    ) : null}
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.rate_unit_cus}
+                    </TableCell>
+                  ) : null}
                   {role == "Admin" ||
-                    role == "Product Owner" ||
-                    role == "Consultant" ? (
-                      <TableCell
-                        className={classes.tableCell}
-                        colSpan={prop.colspan}
-                      >
-                        {prop.all_projects.cus_efforts_amt}
-                      </TableCell>
-                    ) : null}
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.cus_efforts_amt}
+                    </TableCell>
+                  ) : null}
                   {role == "Admin" ||
-                    role == "Product Owner" ||
-                    role == "Consultant" ? (
-                      <TableCell
-                        className={classes.tableCell}
-                        colSpan={prop.colspan}
-                      >
-                        {prop.all_projects.cus_paid_on}
-                      </TableCell>
-                    ) : null}
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {prop.all_projects.cus_paid_on}
+                    </TableCell>
+                  ) : null}
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
-                    {role == "Admin" || prop.all_projects.createdBy == firebase.auth().currentUser.email ? (
+                    {role == "Admin" ||
+                    prop.all_projects.createdBy ==
+                      firebase.auth().currentUser.email ? (
                       editing == prop.key ? (
                         <EditButton
                           updateTask={updateTask}
@@ -714,20 +718,21 @@ let CustomTable = ({ ...props }) => {
                           asd={key}
                         />
                       ) : (
-                          <EditButton
-                            openUpdateProject={openUpdateProject}
-                            _param={prop}
-                            v={prop.key}
-                            asd={key}
-                          />
-                        )
+                        <EditButton
+                          openUpdateProject={openUpdateProject}
+                          _param={prop}
+                          v={prop.key}
+                          asd={key}
+                        />
+                      )
                     ) : null}
-                    {role == "Admin" || role == "Product Owner" ?
+                    {role == "Admin" || role == "Product Owner" ? (
                       <DeleteButton
                         deleteUser={deleteUser}
                         asd={prop.key}
                         v={key}
-                      /> : null}
+                      />
+                    ) : null}
                   </TableCell>
                 </TableRow>
               );
@@ -754,15 +759,15 @@ class EditButton extends React.Component {
             <Check color="success" />
           </Button>
         ) : (
-            <Button
-              onClick={() => this.props.openUpdateProject(_param)}
-              edit={true}
-              color="success"
-              simple
-            >
-              <Edit color="success" />
-            </Button>
-          )}
+          <Button
+            onClick={() => this.props.openUpdateProject(_param)}
+            edit={true}
+            color="success"
+            simple
+          >
+            <Edit color="success" />
+          </Button>
+        )}
       </div>
     );
   }
@@ -893,9 +898,11 @@ class TaskTable extends React.Component {
         };
 
         let email = firebase.auth().currentUser.email;
-        const role = localStorage.getItem("role") && localStorage.getItem("role").replace(/['"]+/g, "");
+        const role =
+          localStorage.getItem("role") &&
+          localStorage.getItem("role").replace(/['"]+/g, "");
 
-        if (project.val().createdBy == email || role == 'Admin') {
+        if (project.val().createdBy == email || role == "Admin") {
           currentpost.push(obj);
           this.setState({
             projects: currentpost,
@@ -1066,6 +1073,26 @@ class TaskTable extends React.Component {
         });
       });
   };
+  createPDF = () => {
+    var col = [
+      { title: "Name", dataKey: "name" },
+      { title: "Age", dataKey: "age" },
+      { title: "Marks", dataKey: "marks" }
+    ];
+    var row = [
+      { name: "Ata", age: "23", marks: "234" },
+      { name: "Ata", age: "23", marks: "234" },
+      { name: "Ata", age: "23", marks: "234" },
+      { name: "Ata", age: "23", marks: "234" },
+      { name: "Ata", age: "23", marks: "234" }
+    ];
+
+    var doc = new jsPDF("p", "pt");
+    doc.setFontSize(20);
+    doc.setTextColor(40);
+    doc.autoTable(col, row);
+    doc.save("Test.pdf");
+  };
 
   openUpdateProject = _param => {
     debugger;
@@ -1163,7 +1190,7 @@ class TaskTable extends React.Component {
       cus_paid_on
     } = this.state;
     var userId = firebase.auth().currentUser.uid;
-    const email = firebase.auth().currentUser.email
+    const email = firebase.auth().currentUser.email;
     const ref = firebase.database().ref("Tasks/");
     ref
       .push({
@@ -1269,23 +1296,27 @@ class TaskTable extends React.Component {
       reader.onload = event => {
         // Create the file metadata
         var metadata = {
-          contentType: 'image/jpeg'
+          contentType: "image/jpeg"
         };
 
         var storageRef = firebase.storage().ref();
 
         // Upload file and metadata to the object 'images/mountains.jpg'
-        var uploadTask = storageRef.child('images/' + files[0].name).put(files[0], metadata);
+        var uploadTask = storageRef
+          .child("images/" + files[0].name)
+          .put(files[0], metadata);
 
         // Listen for state changes, errors, and completion of the upload.
-        uploadTask.then( // or 'state_changed'
-          function (snapshot) {
+        uploadTask.then(
+          // or 'state_changed'
+          function(snapshot) {
             // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
+            var progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
 
             if (progress == 100) {
-              alert('image is uploaded')
+              alert("image is uploaded");
             }
 
             // switch (snapshot.state) {
@@ -1296,28 +1327,33 @@ class TaskTable extends React.Component {
             //     console.log('Upload is running');
             //     break;
             // }
-          }, function (error) {
+          },
+          function(error) {
             switch (error.code) {
-              case 'storage/unauthorized':
+              case "storage/unauthorized":
                 // User doesn't have permission to access the object
                 break;
 
-              case 'storage/canceled':
+              case "storage/canceled":
                 // User canceled the upload
                 break;
 
-              case 'storage/unknown':
+              case "storage/unknown":
                 // Unknown error occurred, inspect error.serverResponse
                 break;
             }
-          }, function () {
+          },
+          function() {
             // Upload completed successfully, now we can get the download URL
-            uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-              console.log('File available at', downloadURL);
-            });
-          });
-      }
-    };
+            uploadTask.snapshot.ref
+              .getDownloadURL()
+              .then(function(downloadURL) {
+                console.log("File available at", downloadURL);
+              });
+          }
+        );
+      };
+    }
     reader.readAsDataURL(files[0]);
   }
 
@@ -1363,6 +1399,14 @@ class TaskTable extends React.Component {
           style={{ fontSize: 10, margin: 10 }}
         >
           Add
+        </Button>
+        <Button
+          onClick={this.createPDF}
+          variant="contained"
+          color="primary"
+          style={{ fontSize: 10, margin: 10 }}
+        >
+          Create PDF
         </Button>
         <CustomTable
           handleClickOpen={this.handleClickOpen}
