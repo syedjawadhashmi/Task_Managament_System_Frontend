@@ -704,7 +704,7 @@ let CustomTable = ({ ...props }) => {
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
-                    {role == "Admin" || role == "Product Owner" ? (
+                    {role == "Admin" || prop.all_projects.createdBy == firebase.auth().currentUser.email ? (
                       editing == prop.key ? (
                         <EditButton
                           updateTask={updateTask}
@@ -891,11 +891,17 @@ class TaskTable extends React.Component {
           all_projects: project.val(),
           key: project.key
         };
-        currentpost.push(obj);
-        this.setState({
-          projects: currentpost,
-          posts: ""
-        });
+
+        let email = firebase.auth().currentUser.email;
+        const role = localStorage.getItem("role") && localStorage.getItem("role").replace(/['"]+/g, "");
+
+        if (project.val().createdBy == email || role == 'Admin') {
+          currentpost.push(obj);
+          this.setState({
+            projects: currentpost,
+            posts: ""
+          });
+        }
       });
   }
   handleest_dev_effortsChange = e => {
@@ -1157,6 +1163,7 @@ class TaskTable extends React.Component {
       cus_paid_on
     } = this.state;
     var userId = firebase.auth().currentUser.uid;
+    const email = firebase.auth().currentUser.email
     const ref = firebase.database().ref("Tasks/");
     ref
       .push({
@@ -1180,7 +1187,8 @@ class TaskTable extends React.Component {
         act_cus_efforts: act_cus_efforts,
         rate_unit_cus: rate_unit_cus,
         cus_efforts_amt: cus_efforts_amt,
-        cus_paid_on: cus_paid_on
+        cus_paid_on: cus_paid_on,
+        createdBy: email
       })
       .catch(error => {
         console.log("Error during user creating on firebase", error);
@@ -1276,7 +1284,7 @@ class TaskTable extends React.Component {
             var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log('Upload is ' + progress + '% done');
 
-            if(progress == 100){
+            if (progress == 100) {
               alert('image is uploaded')
             }
 
@@ -1404,7 +1412,7 @@ class TaskTable extends React.Component {
                   marginLeft: "77%"
                 }}
               >
-                <input type="file" name="myFile" onChange={this.handleFileChange} />
+                {/* <input type="file" name="myFile" onChange={this.handleFileChange} /> */}
 
                 <button type="button" onClick={this.handleMessaging}>
                   Post Comment
