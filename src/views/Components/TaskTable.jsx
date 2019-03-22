@@ -217,13 +217,13 @@ const toolbarStyles = theme => ({
   highlight:
     theme.palette.type === "light"
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark
+      },
   spacer: {
     flex: "1 1 100%"
   },
@@ -250,19 +250,19 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-          <Button
-            variant="contained"
-            onClick={projecthandleClickOpen}
-            color="primary"
-            id="tableTitle"
-            className={classes.button}
-          >
-            add
+            <Button
+              variant="contained"
+              onClick={projecthandleClickOpen}
+              color="primary"
+              id="tableTitle"
+              className={classes.button}
+            >
+              add
           </Button>
-          // <Typography variant="h6" id="tableTitle">
-          //   Nutrition
-          // </Typography>
-        )}
+            // <Typography variant="h6" id="tableTitle">
+            //   Nutrition
+            // </Typography>
+          )}
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
@@ -273,12 +273,12 @@ let EnhancedTableToolbar = props => {
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
+            <Tooltip title="Filter list">
+              <IconButton aria-label="Filter list">
+                <FilterListIcon />
+              </IconButton>
+            </Tooltip>
+          )}
       </div>
     </Toolbar>
   );
@@ -519,8 +519,8 @@ let CustomTable = ({ ...props }) => {
                         }}
                       />
                     ) : (
-                      prop.all_projects.ProjectCode
-                    )}
+                        prop.all_projects.ProjectCode
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -542,8 +542,8 @@ let CustomTable = ({ ...props }) => {
                         }}
                       />
                     ) : (
-                      prop.all_projects.category
-                    )}
+                        prop.all_projects.category
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -564,15 +564,15 @@ let CustomTable = ({ ...props }) => {
                         <Select
                           onChange={handleDevPaidCodeChange}
                           value={DevPaid}
-                          // displayEmpty
+                        // displayEmpty
                         >
                           <MenuItem value={"Open"}>Open</MenuItem>
                           <MenuItem value={"Close"}>Close</MenuItem>
                         </Select>
                       </FormControl>
                     ) : (
-                      prop.all_projects.status
-                    )}
+                        prop.all_projects.status
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -651,55 +651,55 @@ let CustomTable = ({ ...props }) => {
                     </TableCell>
                   ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {prop.all_projects.est_cus_efforts}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {prop.all_projects.est_cus_efforts}
+                      </TableCell>
+                    ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {prop.all_projects.act_cus_efforts}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {prop.all_projects.act_cus_efforts}
+                      </TableCell>
+                    ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {prop.all_projects.rate_unit_cus}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {prop.all_projects.rate_unit_cus}
+                      </TableCell>
+                    ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {prop.all_projects.cus_efforts_amt}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {prop.all_projects.cus_efforts_amt}
+                      </TableCell>
+                    ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {prop.all_projects.cus_paid_on}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {prop.all_projects.cus_paid_on}
+                      </TableCell>
+                    ) : null}
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
@@ -714,20 +714,20 @@ let CustomTable = ({ ...props }) => {
                           asd={key}
                         />
                       ) : (
-                        <EditButton
-                          openUpdateProject={openUpdateProject}
-                          _param={prop}
-                          v={prop.key}
-                          asd={key}
-                        />
-                      )
+                          <EditButton
+                            openUpdateProject={openUpdateProject}
+                            _param={prop}
+                            v={prop.key}
+                            asd={key}
+                          />
+                        )
                     ) : null}
                     {role == "Admin" || role == "Product Owner" ?
-                    <DeleteButton
-                      deleteUser={deleteUser}
-                      asd={prop.key}
-                      v={key}
-                    />:null}
+                      <DeleteButton
+                        deleteUser={deleteUser}
+                        asd={prop.key}
+                        v={key}
+                      /> : null}
                   </TableCell>
                 </TableRow>
               );
@@ -754,15 +754,15 @@ class EditButton extends React.Component {
             <Check color="success" />
           </Button>
         ) : (
-          <Button
-            onClick={() => this.props.openUpdateProject(_param)}
-            edit={true}
-            color="success"
-            simple
-          >
-            <Edit color="success" />
-          </Button>
-        )}
+            <Button
+              onClick={() => this.props.openUpdateProject(_param)}
+              edit={true}
+              color="success"
+              simple
+            >
+              <Edit color="success" />
+            </Button>
+          )}
       </div>
     );
   }
@@ -1253,6 +1253,66 @@ class TaskTable extends React.Component {
     });
   };
 
+  handleFileChange(event) {
+    const { target } = event;
+    const { files } = target;
+    if (files && files[0]) {
+      var reader = new FileReader();
+      reader.onload = event => {
+        // Create the file metadata
+        var metadata = {
+          contentType: 'image/jpeg'
+        };
+
+        var storageRef = firebase.storage().ref();
+
+        // Upload file and metadata to the object 'images/mountains.jpg'
+        var uploadTask = storageRef.child('images/' + files[0].name).put(files[0], metadata);
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.then( // or 'state_changed'
+          function (snapshot) {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+
+            if(progress == 100){
+              alert('image is uploaded')
+            }
+
+            // switch (snapshot.state) {
+            //   case firebase.storage.TaskState.PAUSED: // or 'paused'
+            //     console.log('Upload is paused');
+            //     break;
+            //   case firebase.storage.TaskState.RUNNING: // or 'running'
+            //     console.log('Upload is running');
+            //     break;
+            // }
+          }, function (error) {
+            switch (error.code) {
+              case 'storage/unauthorized':
+                // User doesn't have permission to access the object
+                break;
+
+              case 'storage/canceled':
+                // User canceled the upload
+                break;
+
+              case 'storage/unknown':
+                // Unknown error occurred, inspect error.serverResponse
+                break;
+            }
+          }, function () {
+            // Upload completed successfully, now we can get the download URL
+            uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+              console.log('File available at', downloadURL);
+            });
+          });
+      }
+    };
+    reader.readAsDataURL(files[0]);
+  }
+
   render() {
     const {
       ProjectCode,
@@ -1344,6 +1404,8 @@ class TaskTable extends React.Component {
                   marginLeft: "77%"
                 }}
               >
+                <input type="file" name="myFile" onChange={this.handleFileChange} />
+
                 <button type="button" onClick={this.handleMessaging}>
                   Post Comment
                 </button>
