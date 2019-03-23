@@ -409,7 +409,6 @@ let CustomTable = ({ ...props }) => {
         >
           {tableData &&
             tableData.map((prop, key) => {
-              debugger;
               var rowColor = "";
               var rowColored = false;
               if (prop.color !== undefined) {
@@ -522,7 +521,6 @@ let CustomTable = ({ ...props }) => {
 
 class EditButton extends React.Component {
   render() {
-    debugger;
     const { _param, _route, asd, v } = this.props;
     console.log("parm", _param);
     return (
@@ -551,7 +549,6 @@ class EditButton extends React.Component {
 
 class DeleteButton extends React.Component {
   render() {
-    debugger;
     const { asd, v } = this.props;
     console.log("key", asd);
     return (
@@ -643,12 +640,30 @@ class Tables extends React.Component {
       .ref("Projects")
       .on("child_added", project => {
         let currentpost = this.state.projects;
-
         let obj = {
           all_projects: project.val(),
           key: project.key
         };
-        currentpost.push(obj);
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        console.log('Logged In User --> ', currentUser);
+        if(currentUser) {
+          if(currentUser.type === 'Consultant') {
+            let isExist = obj.all_projects.assignedMembers.find(x => x.email == currentUser.email);
+            if(isExist) {
+              currentpost.push(obj);
+            }
+          }
+          else if(currentUser.type === 'Product Owner') {
+            let isExist = obj.all_projects.assignedMembers.find(x => x.email == currentUser.email);
+            if(isExist) {
+              currentpost.push(obj);
+            }
+          }
+          else {
+            currentpost.push(obj);
+          }
+        } 
+        
         this.setState({
           projects: currentpost,
           posts: ""
@@ -670,7 +685,6 @@ class Tables extends React.Component {
   handleCustomerChange = e => {
     this.state.allcustomers &&
       this.state.allcustomers.map(user => {
-        debugger;
         if (e.target.value == user.all_customers.customer) {
           this.setState({
             assignee: user.all_customers.users
@@ -751,7 +765,6 @@ class Tables extends React.Component {
     // const {allcustomers}=this.state
   }
   deleteCustomer = (key, index) => {
-    debugger;
     console.log("key", key, index);
     let fetchpost = this.state.projects;
     firebase
@@ -760,7 +773,6 @@ class Tables extends React.Component {
       .child(key)
       .remove()
       .then(() => {
-        debugger;
         fetchpost.splice(index, 1);
         this.setState({
           projects: fetchpost
@@ -786,7 +798,6 @@ class Tables extends React.Component {
     }
   };
   updateProject = (e, key) => {
-    debugger;
     e.preventDefault();
     const {
       newProjectName,
@@ -856,7 +867,6 @@ class Tables extends React.Component {
     } = this.state;
     var userId = firebase.auth().currentUser.uid;
     const ref = firebase.database().ref("Projects/");
-    debugger;
     ref
       .push({
         uid: userId,
@@ -893,9 +903,7 @@ class Tables extends React.Component {
     // this.showProjects();
   };
   handleChangeMultiple = event => {
-    debugger;
     // this.state.assignee.map(user => {
-    //   debugger;
     //   if (event.target.value == user.name) {
     //     this.setState({
     //       selectedassignee: user
@@ -924,7 +932,6 @@ class Tables extends React.Component {
       allcustomers,
       _param
     } = this.state;
-    debugger;
     // const assignees = allcustomers;
     const { classes } = this.props;
     console.log("asas", this.state.selectedassignee);
@@ -1201,7 +1208,6 @@ class Tables extends React.Component {
               >
                 {allcustomers &&
                   allcustomers.map((prop, key) => {
-                    debugger;
                     return (
                       <MenuItem value={prop.all_customers.customer}>
                         {prop.all_customers.customer}
@@ -1238,7 +1244,6 @@ class Tables extends React.Component {
                 // input={<OutlinedInput labelWidth={80} name="age" id="outlined-age-simple" />}
               >
                 {this.state.assignee.map(name => {
-                  debugger;
                   return (
                     <MenuItem
                       key={name.name}

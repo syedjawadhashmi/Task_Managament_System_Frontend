@@ -367,7 +367,8 @@ let CustomTable = ({ ...props }) => {
     handleADevEffortsCodeChange,
     DevPaid,
     ADevEffort,
-    handleDevPaidCodeChange
+    handleDevPaidCodeChange,
+    onSelectBox
   } = props;
   const roles = localStorage.getItem("role");
   const role = roles.slice(1, roles.length - 1);
@@ -418,6 +419,7 @@ let CustomTable = ({ ...props }) => {
     ];
   } else {
     var tableHead = [
+      '',
       "#",
       "Project Code",
       "Dev / Support",
@@ -493,11 +495,22 @@ let CustomTable = ({ ...props }) => {
                   key={prop.key}
                   hover={hover}
                   className={tableRowClasses}
-                  onClick={() => handleClickOpen(prop.key)}
+                  
                 >
+                <TableCell>
+                    {(prop.all_projects.status === 'Close') ?
+                  <Checkbox
+                  // indeterminate={numSelected > 0 && numSelected < rowCount}
+                  // checked={numSelected === rowCount}
+                   onChange={() => onSelectBox(prop)}
+                  />: ''  
+                  }
+                  </TableCell>
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
+                    
                   >
                     {key}
                   </TableCell>
@@ -870,6 +883,7 @@ class TaskTable extends React.Component {
     comments: [],
     from: "",
     childKey: "",
+    printInvoiceObj: {},
     est_dev_efforts: "",
     act_dev_efforts: "",
     rate_unit_dev: "",
@@ -1073,26 +1087,64 @@ class TaskTable extends React.Component {
         });
       });
   };
-  createPDF = () => {
-    var col = [
-      { title: "Name", dataKey: "name" },
-      { title: "Age", dataKey: "age" },
-      { title: "Marks", dataKey: "marks" }
+  handlePdf = (td) => {
+    let col, row = [];
+    col = [
+      { title: 'Dascription', dataKey: 'customer' },
+      { title: 'Project', dataKey: 'ProjectCode' },
+      { title: 'Assigned', dataKey: 'assign' }
     ];
-    var row = [
-      { name: "Ata", age: "23", marks: "234" },
-      { name: "Ata", age: "23", marks: "234" },
-      { name: "Ata", age: "23", marks: "234" },
-      { name: "Ata", age: "23", marks: "234" },
-      { name: "Ata", age: "23", marks: "234" }
-    ];
-
-    var doc = new jsPDF("p", "pt");
+    row.push({
+      customer: td.all_projects.customer,
+      ProjectCode: td.all_projects.ProjectCode,
+      assign: td.all_projects.assigned,
+    });
+    var doc = new jsPDF('p', 'pt');
+    doc.setFontSize(22);
+    doc.setTextColor(102,178,255);
+    doc.text(20, 20, 'SysBrillance');
+    doc.setFontSize(15);
+    doc.setTextColor(0, 0, 0);
+    doc.text(500, 20, 'Invoice');
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(500, 30, 'SysBrillance');
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(500, 40, 'United Arab Emirates');
+    doc.line(600, 50, 10, 50);
+    doc.setFontSize(10);
+    doc.setTextColor(220, 220, 220);
+    doc.text(20, 70, 'BILL TO');
+    doc.setTextColor(0, 0, 0);
+    doc.text(430,70,'InvoiceNumber: '+ td.all_projects.number);
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(20, 80, td.all_projects.customer);
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(20, 90, 'My address');
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(430, 90, 'Invoice Date: February 15, 2019');
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(20, 100, 'Dubai etc, etc');
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(430, 100, 'Payment Due: February 15, 2019');
     doc.setFontSize(20);
     doc.setTextColor(40);
-    doc.autoTable(col, row);
-    doc.save("Test.pdf");
-  };
+    doc.autoTable(col, row, {
+      startY: 110,
+    });
+    doc.save('invoice.pdf')
+  }
+
+  handleSelectCheckBox = (prop, e) => {
+    this.state.printInvoiceObj = prop;
+    console.log(this.state.printInvoiceObj);
+  }
 
   openUpdateProject = _param => {
     debugger;
@@ -1401,14 +1453,15 @@ class TaskTable extends React.Component {
           Add
         </Button>
         <Button
-          onClick={this.createPDF}
+          onClick={() => this.handlePdf(this.state.printInvoiceObj)}
           variant="contained"
           color="primary"
           style={{ fontSize: 10, margin: 10 }}
         >
-          Create PDF
+          Create Invoice
         </Button>
         <CustomTable
+          onSelectBox={this.handleSelectCheckBox}
           handleClickOpen={this.handleClickOpen}
           handleEDevEffortsCodeChange={this.handleEDevEffortsCodeChange}
           handleADevEffortsCodeChange={this.handleADevEffortsCodeChange}
