@@ -37,7 +37,8 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import Avatar from "@material-ui/core/Avatar";
-import profile from "../../assets/img/faces/avatar.jpg";
+import profile from "../../assets/img/default-avatar.png";
+import PDFIcon from "../../assets/img/pdficon.png";
 import firebase from "../../constant/api/firebase";
 import Datetime from "react-datetime";
 import tableStyle from "assets/jss/material-dashboard-pro-react/components/tableStyle";
@@ -49,6 +50,13 @@ import { Link } from "react-router-dom";
 import Input from "@material-ui/core/Input";
 import * as jsPDF from "jspdf";
 import "jspdf-autotable";
+import AttachFile from '@material-ui/icons/AttachFile';
+import MessageIcon from '@material-ui/icons/MessageRounded';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+import InputAdornment from '@material-ui/core/InputAdornment';
+import EditIcon from '@material-ui/icons/Edit';
+
 const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -219,13 +227,13 @@ const toolbarStyles = theme => ({
   highlight:
     theme.palette.type === "light"
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark
+      },
   spacer: {
     flex: "1 1 100%"
   },
@@ -252,19 +260,19 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-          <Button
-            variant="contained"
-            onClick={projecthandleClickOpen}
-            color="primary"
-            id="tableTitle"
-            className={classes.button}
-          >
-            add
+            <Button
+              variant="contained"
+              onClick={projecthandleClickOpen}
+              color="primary"
+              id="tableTitle"
+              className={classes.button}
+            >
+              add
           </Button>
-          // <Typography variant="h6" id="tableTitle">
-          //   Nutrition
-          // </Typography>
-        )}
+            // <Typography variant="h6" id="tableTitle">
+            //   Nutrition
+            // </Typography>
+          )}
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
@@ -275,12 +283,12 @@ let EnhancedTableToolbar = props => {
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
+            <Tooltip title="Filter list">
+              <IconButton aria-label="Filter list">
+                <FilterListIcon />
+              </IconButton>
+            </Tooltip>
+          )}
       </div>
     </Toolbar>
   );
@@ -534,8 +542,8 @@ let CustomTable = ({ ...props }) => {
                         }}
                       />
                     ) : (
-                      prop.all_projects.ProjectCode
-                    )}
+                        prop.all_projects.ProjectCode
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -557,8 +565,8 @@ let CustomTable = ({ ...props }) => {
                         }}
                       />
                     ) : (
-                      prop.all_projects.category
-                    )}
+                        prop.all_projects.category
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -579,15 +587,15 @@ let CustomTable = ({ ...props }) => {
                         <Select
                           onChange={handleDevPaidCodeChange}
                           value={DevPaid}
-                          // displayEmpty
+                        // displayEmpty
                         >
                           <MenuItem value={"Open"}>Open</MenuItem>
                           <MenuItem value={"Close"}>Close</MenuItem>
                         </Select>
                       </FormControl>
                     ) : (
-                      prop.all_projects.status
-                    )}
+                        prop.all_projects.status
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -666,79 +674,79 @@ let CustomTable = ({ ...props }) => {
                     </TableCell>
                   ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {prop.all_projects.est_cus_efforts}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {prop.all_projects.est_cus_efforts}
+                      </TableCell>
+                    ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {prop.all_projects.act_cus_efforts}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {prop.all_projects.act_cus_efforts}
+                      </TableCell>
+                    ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {prop.all_projects.rate_unit_cus}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {prop.all_projects.rate_unit_cus}
+                      </TableCell>
+                    ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {prop.all_projects.cus_efforts_amt}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {prop.all_projects.cus_efforts_amt}
+                      </TableCell>
+                    ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {prop.all_projects.cus_paid_on}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {prop.all_projects.cus_paid_on}
+                      </TableCell>
+                    ) : null}
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
                     {role == "Admin" ||
-                    prop.all_projects.createdBy ==
+                      prop.all_projects.createdBy ==
                       firebase.auth().currentUser.email ? (
-                      editing == prop.key ? (
-                        <EditButton
-                          updateTask={updateTask}
-                          edit={true}
-                          _param={prop}
-                          v={prop.key}
-                          asd={key}
-                        />
-                      ) : (
-                        <EditButton
-                          openUpdateProject={openUpdateProject}
-                          _param={prop}
-                          v={prop.key}
-                          asd={key}
-                        />
-                      )
-                    ) : null}
+                        editing == prop.key ? (
+                          <EditButton
+                            updateTask={updateTask}
+                            edit={true}
+                            _param={prop}
+                            v={prop.key}
+                            asd={key}
+                          />
+                        ) : (
+                            <EditButton
+                              openUpdateProject={openUpdateProject}
+                              _param={prop}
+                              v={prop.key}
+                              asd={key}
+                            />
+                          )
+                      ) : null}
                     {role == "Admin" || role == "Product Owner" ? (
                       <DeleteButton
                         deleteUser={deleteUser}
@@ -772,15 +780,15 @@ class EditButton extends React.Component {
             <Check color="success" />
           </Button>
         ) : (
-          <Button
-            onClick={() => this.props.openUpdateProject(_param)}
-            edit={true}
-            color="success"
-            simple
-          >
-            <Edit color="success" />
-          </Button>
-        )}
+            <Button
+              onClick={() => this.props.openUpdateProject(_param)}
+              edit={true}
+              color="success"
+              simple
+            >
+              <Edit color="success" />
+            </Button>
+          )}
       </div>
     );
   }
@@ -893,12 +901,21 @@ class TaskTable extends React.Component {
     act_cus_efforts: "",
     rate_unit_cus: "",
     cus_efforts_amt: "",
-    cus_paid_on: ""
+    cus_paid_on: "",
+    loading: false,
+    completed: 0
   };
   componentDidMount() {
     this.showTasks();
     this.all_customer();
+
+    // this.timer = setInterval(this.progress, 1000);
   }
+
+  componentWillUnmount() {
+    // clearInterval(this.timer);
+  }
+
   showTasks() {
     firebase
       .database()
@@ -1037,6 +1054,17 @@ class TaskTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   handleClickOpen = key => {
+    this.setState({ comments: [] })
+    let comments = []
+    var ref = firebase.database().ref("Comments");
+    let self = this
+    ref.orderByChild('taskId').equalTo(key).on("child_added", function (snapshot) {
+      console.log('ABID SHAKA', snapshot.val());
+      comments.push(snapshot.val());
+      self.setState({ comments: comments });
+      console.log('JAWAD', self.state.comments)
+    });
+
     this.setState({
       open: true,
       childKey: key
@@ -1312,102 +1340,98 @@ class TaskTable extends React.Component {
   };
 
   handleMessaging = e => {
-    const usr_name = localStorage.getItem("user");
+    if (!this.state.text) {
+      alert('Please enter a comment first!');
+      return false
+    }
+    const email = firebase.auth().currentUser.email;
     console.log(this.state.childKey);
 
     const ref = firebase
       .database()
-      .ref(`Tasks`)
-      .child(this.state.childKey);
-    if (usr_name) {
-      this.state.comments.push({
-        from: usr_name,
-        text: this.state.text,
-        timestamp: new Date()
-      });
-    }
+      .ref(`Comments`)
+    // .child(this.state.childKey);
     ref
-      .update({
-        comments: this.state.comments
+      .push({
+        from: email,
+        text: this.state.text,
+        type: 'text',
+        createdAt: Date.now(),
+        taskId: this.state.childKey
       })
       .catch(error => {
         alert("Something went wrong");
       });
 
-    alert("Successfully post comment");
+    // alert("Successfully post comment");
     this.setState({
       text: ""
     });
   };
 
   handleFileChange(event) {
+    this.setState({ loading: true })
     const { target } = event;
     const { files } = target;
+    let self = this;
+
     if (files && files[0]) {
       var reader = new FileReader();
       reader.onload = event => {
-        // Create the file metadata
+        console.log('mime type', files[0].type)
+        let mimeType = files[0].type;
+
         var metadata = {
-          contentType: "image/jpeg"
+          contentType: mimeType
         };
 
         var storageRef = firebase.storage().ref();
 
-        // Upload file and metadata to the object 'images/mountains.jpg'
-        var uploadTask = storageRef
-          .child("images/" + files[0].name)
-          .put(files[0], metadata);
+        let folder = mimeType.split('/')[0] == 'image' ? 'image/' : 'docs/'
 
-        // Listen for state changes, errors, and completion of the upload.
-        uploadTask.then(
-          // or 'state_changed'
-          function(snapshot) {
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            var progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
+        var uploadTask = storageRef.child(`${folder}` + files[0].name).put(files[0], metadata);
 
-            if (progress == 100) {
-              alert("image is uploaded");
-            }
+        uploadTask.on('state_changed', function (snapshot) {
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          self.progress(progress)
+          console.log('Upload is ' + progress + '% done');
+        }, function (error) {
+        }, function () {
 
-            // switch (snapshot.state) {
-            //   case firebase.storage.TaskState.PAUSED: // or 'paused'
-            //     console.log('Upload is paused');
-            //     break;
-            //   case firebase.storage.TaskState.RUNNING: // or 'running'
-            //     console.log('Upload is running');
-            //     break;
-            // }
-          },
-          function(error) {
-            switch (error.code) {
-              case "storage/unauthorized":
-                // User doesn't have permission to access the object
-                break;
+          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            const email = firebase.auth().currentUser.email;
+            let taskId = self.state.childKey
 
-              case "storage/canceled":
-                // User canceled the upload
-                break;
-
-              case "storage/unknown":
-                // Unknown error occurred, inspect error.serverResponse
-                break;
-            }
-          },
-          function() {
-            // Upload completed successfully, now we can get the download URL
-            uploadTask.snapshot.ref
-              .getDownloadURL()
-              .then(function(downloadURL) {
-                console.log("File available at", downloadURL);
-              });
-          }
-        );
+            const ref = firebase
+              .database()
+              .ref(`Comments`)
+            ref
+              .push({
+                from: email,
+                type: mimeType,
+                url: downloadURL,
+                createdAt: new Date(),
+                taskId: taskId
+              }).
+              then((res) => {
+                self.setState({ loading: false })
+                console.log('Comment Added !!')
+              })
+              .catch(err => {
+                console.log('ERROR !!!')
+              })
+            console.log('File available at', downloadURL);
+          });
+        });
       };
     }
     reader.readAsDataURL(files[0]);
   }
+
+  progress = (progress) => {
+    const { completed } = this.state;
+    this.setState({ completed: completed >= 100 ? 0 : completed + progress });
+  };
 
   render() {
     const {
@@ -1437,6 +1461,7 @@ class TaskTable extends React.Component {
     } = this.state;
     // const assignees = allcustomers;
     const { classes } = this.props;
+    const { loading } = this.state
     console.log("asas", this.state.selectedassignee);
     debugger;
     const roles = localStorage.getItem("role");
@@ -1479,17 +1504,18 @@ class TaskTable extends React.Component {
           onClose={this.handleClose}
           aria-labelledby="customized-dialog-title"
           open={this.state.open}
+          maxWidth='md'
         >
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
-            <Icon style={{ paddingTop: 5 }}>comment</Icon>Comments
-            <p style={{ fontSize: "x-small" }}>Hawaji Tourism</p>
+            <Icon style={{ paddingTop: 5 }}>comment </Icon>
+            Comments
           </DialogTitle>
           <DialogContent>
             <FormControl className={classes.margin}>
-              <InputBase
+              {/* <InputBase
                 id="bootstrap-input"
                 placeholder={
-                  "Enter your comments here, and @mention people to grab their attention."
+                  "Write a comment"
                 }
                 value={this.state.text}
                 classes={{
@@ -1497,25 +1523,57 @@ class TaskTable extends React.Component {
                   input: classes.bootstrapInput
                 }}
                 onChange={this.handleInputChange}
-              />
-              <div
-                style={{
-                  backgroundColor: "#eee",
-                  color: "rgb(180, 182, 187)",
-                  padding: 5,
-                  width: 120,
-                  textAlign: "center",
-                  marginTop: 5,
-                  marginLeft: "77%"
-                }}
-              >
-                {/* <input type="file" name="myFile" onChange={this.handleFileChange} /> */}
+              /> */}
 
-                <button type="button" onClick={this.handleMessaging}>
-                  Post Comment
-                </button>
+              <TextField
+                id="outlined-simple-start-adornment"
+                className={classNames(classes.margin, classes.textField)}
+                variant="outlined"
+                label="Write a comment"
+                value={this.state.text}
+                onChange={this.handleInputChange}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start"><EditIcon /></InputAdornment>,
+                }}
+              />
+
+              <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', margin: 20, float: 'right' }}>
+
+                <div>
+                  <label id="#bb" style={{ color: 'black' }}>
+                    <i className="material-icons" >attach_file</i>
+                    <input type="file" name="myFile" style={{ display: 'none' }} disabled={loading ? true : false} onChange={this.handleFileChange.bind(this)} />
+                  </label>
+                </div>
+
+                <div>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.handleMessaging}>
+                    Send
+                  <MessageIcon />
+                  </Button>
+                </div>
+
+                {
+                  this.state.completed < 100 ?
+                    <div>
+                      <CircularProgress
+                        className={classes.progress}
+                        variant="static"
+                        value={this.state.completed}
+                        style={{ marginLeft: 10 }}
+                        size={30} />
+                    </div>
+                    :
+                    null
+                }
+
               </div>
-              {this.state.comments.map(c => (
+
+              {this.state.comments.slice(0).reverse().map(c => (
                 <div
                   style={{
                     display: "flex",
@@ -1530,26 +1588,39 @@ class TaskTable extends React.Component {
                   <Paper className={classes.root} elevation={1}>
                     <Typography
                       style={{
-                        margin: 10
+                        margin: 10,
+                        fontSize: 13
                       }}
                       variant="h6"
                       component="h4"
                     >
-                      {c.from} <span style={{ fontSize: 12 }}> Now</span>
+                      {c.from}
+                      {/* <span style={{ fontSize: 12 }}> Now</span> */}
                     </Typography>
-                    <Typography style={{ margin: 10 }} component="p">
-                      {c.text}
-                      {/* <p
-                        style={{
-                          color: "rgb(0, 0, 255)"
-                        }}
-                      >
-                        @Alan Wright
-                      </p> */}
+                    {
+                      c.type.split('/')[0] == 'application' ?
+                        <div style={{ margin: 10 }}>
+                          {/* <img src={PDFIcon} width={100} height={100} /> */}
+                          <a target="blank" href={c.url}>
+                            <img src={PDFIcon} width={100} height={100} />
+                          </a>
+                        </div>
+                        :
+                        c.type.split('/')[0] == 'image' ?
+                          <div style={{ margin: 10 }}>
+                            <img src={c.url} width={100} height={100} />
+                          </div>
+                          :
+                          <Typography style={{ margin: 10 }} component="p">
+                            {c.text}
+                          </Typography>
+                    }
+                    <Typography style={{ margin: 10, fontSize: 9 }} component="p">
+                      {Date(c.createdAt)}
                     </Typography>
-                    <Button>
+                    {/* <Button>
                       <Icon>reply</Icon>reply
-                    </Button>
+                    </Button> */}
                   </Paper>
                   {/* UserName:<h5>{c.from}</h5>Post:<p>{c.text}</p> */}
                 </div>
