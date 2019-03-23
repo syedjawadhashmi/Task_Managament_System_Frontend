@@ -525,6 +525,7 @@ let CustomTable = ({ ...props }) => {
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                   >
                     {editing == prop.key ? (
                       <CustomInput
@@ -548,6 +549,7 @@ let CustomTable = ({ ...props }) => {
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                   >
                     {editing == prop.key ? (
                       <CustomInput
@@ -571,12 +573,14 @@ let CustomTable = ({ ...props }) => {
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                   >
                     {prop.all_projects.ticketSummary}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                   >
                     {editing == prop.key ? (
                       <FormControl
@@ -600,36 +604,42 @@ let CustomTable = ({ ...props }) => {
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                   >
                     {prop.all_projects.number}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                   >
                     {prop.all_projects.lastUpdated}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                   >
                     {prop.all_projects.assigned}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                   >
                     {prop.all_projects.priority}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                   >
                     {prop.all_projects.deadline}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                   >
                     {prop.all_projects.customer}
                   </TableCell>
@@ -637,6 +647,7 @@ let CustomTable = ({ ...props }) => {
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                     >
                       {prop.all_projects.est_dev_efforts}
                     </TableCell>
@@ -645,6 +656,7 @@ let CustomTable = ({ ...props }) => {
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                     >
                       {prop.all_projects.act_dev_efforts}
                     </TableCell>
@@ -653,6 +665,7 @@ let CustomTable = ({ ...props }) => {
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                     >
                       {prop.all_projects.rate_unit_dev}
                     </TableCell>
@@ -661,6 +674,7 @@ let CustomTable = ({ ...props }) => {
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                     >
                       {prop.all_projects.dev_efforts_amt}
                     </TableCell>
@@ -669,6 +683,7 @@ let CustomTable = ({ ...props }) => {
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                     >
                       {prop.all_projects.dev_paid_on}
                     </TableCell>
@@ -679,6 +694,7 @@ let CustomTable = ({ ...props }) => {
                       <TableCell
                         className={classes.tableCell}
                         colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                       >
                         {prop.all_projects.est_cus_efforts}
                       </TableCell>
@@ -689,6 +705,7 @@ let CustomTable = ({ ...props }) => {
                       <TableCell
                         className={classes.tableCell}
                         colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                       >
                         {prop.all_projects.act_cus_efforts}
                       </TableCell>
@@ -699,6 +716,7 @@ let CustomTable = ({ ...props }) => {
                       <TableCell
                         className={classes.tableCell}
                         colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                       >
                         {prop.all_projects.rate_unit_cus}
                       </TableCell>
@@ -709,6 +727,7 @@ let CustomTable = ({ ...props }) => {
                       <TableCell
                         className={classes.tableCell}
                         colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                       >
                         {prop.all_projects.cus_efforts_amt}
                       </TableCell>
@@ -719,6 +738,7 @@ let CustomTable = ({ ...props }) => {
                       <TableCell
                         className={classes.tableCell}
                         colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                       >
                         {prop.all_projects.cus_paid_on}
                       </TableCell>
@@ -726,6 +746,7 @@ let CustomTable = ({ ...props }) => {
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
+                    onClick={() => handleClickOpen(prop.key)}
                   >
                     {role == "Admin" ||
                       prop.all_projects.createdBy ==
