@@ -773,6 +773,27 @@ let CustomTable = ({ ...props }) => {
                             />
                           )
                       ) : null}
+                      {
+                        (role === "Consultant" &&
+                        prop.all_projects.createdBy == firebase.auth().currentUser.email) ? (
+                          editing == prop.key ? (
+                            <EditButton
+                              updateTask={updateTask}
+                              edit={true}
+                              _param={prop}
+                              v={prop.key}
+                              asd={key}
+                            />
+                          ) : (
+                              <EditButton
+                                openUpdateProject={openUpdateProject}
+                                _param={prop}
+                                v={prop.key}
+                                asd={key}
+                              />
+                            )
+                        ) : null
+                      }
                     {role == "Admin" || role == "Product Owner" ? (
                       <DeleteButton
                         deleteUser={deleteUser}
@@ -1538,6 +1559,7 @@ class TaskTable extends React.Component {
     const roles = localStorage.getItem("role");
     const role = roles.slice(1, roles.length - 1);
     const tableData = projects;
+    console.log('Table Data ', tableData);
     return (
       <Paper className={classes.root}>
         { (role === 'Admin' || role === 'Product Owner') ?
