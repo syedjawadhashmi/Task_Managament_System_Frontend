@@ -311,6 +311,8 @@ class Sidebar extends React.Component {
       bgColor,
       rtlActive
     } = this.props;
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
     const itemText =
       classes.itemText +
       " " +
@@ -367,7 +369,7 @@ class Sidebar extends React.Component {
               onClick={() => this.openCollapse("openAvatar")}
             >
               <ListItemText
-                primary={rtlActive ? "تانيا أندرو" : "Tania Andrew"}
+                primary={rtlActive ? "تانيا أندرو" : currentUser.email}
                 secondary={
                   <b
                     className={

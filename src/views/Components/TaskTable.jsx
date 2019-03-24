@@ -507,17 +507,17 @@ let CustomTable = ({ ...props }) => {
                 >
                   <TableCell>
                     {(prop.all_projects.status === 'Close') ?
-                  <Checkbox
-                  // indeterminate={false}
-                  // disabled={true}
-                  // checked={numSelected === rowCount}
-                   onChange={(e) => onSelectBox(prop, e)}
-                  />: 
-                  <Checkbox
-                  // indeterminate={false}
-                  disabled={true}
-                  />
-                  }
+                      <Checkbox
+                        // indeterminate={false}
+                        // disabled={true}
+                        // checked={numSelected === rowCount}
+                        onChange={(e) => onSelectBox(prop, e)}
+                      /> :
+                      <Checkbox
+                        // indeterminate={false}
+                        disabled={true}
+                      />
+                    }
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -751,7 +751,7 @@ let CustomTable = ({ ...props }) => {
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
-                    // onClick={() => handleClickOpen(prop.key)}
+                  // onClick={() => handleClickOpen(prop.key)}
                   >
                     {role == "Admin" ||
                       prop.all_projects.createdBy ==
@@ -773,8 +773,8 @@ let CustomTable = ({ ...props }) => {
                             />
                           )
                       ) : null}
-                      {
-                        (role === "Consultant" &&
+                    {
+                      (role === "Consultant" &&
                         prop.all_projects.createdBy == firebase.auth().currentUser.email) ? (
                           editing == prop.key ? (
                             <EditButton
@@ -793,7 +793,7 @@ let CustomTable = ({ ...props }) => {
                               />
                             )
                         ) : null
-                      }
+                    }
                     {role == "Admin" || role == "Product Owner" ? (
                       <DeleteButton
                         deleteUser={deleteUser}
@@ -957,11 +957,11 @@ class TaskTable extends React.Component {
     checkBoxChecked: false
   };
   componentDidMount() {
+    this.getCustomers();
     this.showTasks();
     this.all_customer();
     this.getDevelopers();
     this.getProjects();
-    this.getCustomers();
     // this.timer = setInterval(this.progress, 1000);
   }
 
@@ -984,29 +984,29 @@ class TaskTable extends React.Component {
 
   getProjects() { //getting Projects for Project Code in Add Task
     firebase
-    .database()
-    .ref("Projects")
-    .on("child_added", project => {
-      let projects = this.state.allProjects;
+      .database()
+      .ref("Projects")
+      .on("child_added", project => {
+        let projects = this.state.allProjects;
         projects.push(project.val());
         this.setState({
           allProjects: projects
         });
-    });
+      });
   };
 
   getCustomers() { // getting customers from firebase for add task customer dropdowns
     firebase
-    .database()
-    .ref("Customer")
-    .on("child_added", customer => {
-      console.log('Customers ', customer.val());
-      let customers = this.state.allCustomers;
-      customers.push(customer.val());
+      .database()
+      .ref("Customer")
+      .on("child_added", customer => {
+        console.log('Customers ', customer.val());
+        let customers = this.state.allCustomers;
+        customers.push(customer.val());
         this.setState({
           allCustomers: customers
         });
-    });
+      });
   };
 
   showTasks() {
@@ -1026,7 +1026,11 @@ class TaskTable extends React.Component {
           localStorage.getItem("role") &&
           localStorage.getItem("role").replace(/['"]+/g, "");
 
-        if (project.val().createdBy == email || role == "Admin" || (role == "Developer" && project.val().assigned == email)) {
+        let customer = this.state.allCustomers.find(x => (x.email == project.val().customer));
+        let isExist = customer.users.find(x => (x.email == email));
+        
+
+        if (project.val().createdBy == email || role == "Admin" || (role == "Developer" && project.val().assigned == email) || isExist) {
           currentpost.push(obj);
           this.setState({
             projects: currentpost,
@@ -1562,28 +1566,28 @@ class TaskTable extends React.Component {
     console.log('Table Data ', tableData);
     return (
       <Paper className={classes.root}>
-        { (role === 'Admin' || role === 'Product Owner') ?
-        <Button
-        onClick={this.projecthandleClickOpen}
-        variant="contained"
-        color="primary"
-        style={{ fontSize: 10, margin: 10 }}
-      >
-        Add
+        {(role === 'Admin' || role === 'Product Owner') ?
+          <Button
+            onClick={this.projecthandleClickOpen}
+            variant="contained"
+            color="primary"
+            style={{ fontSize: 10, margin: 10 }}
+          >
+            Add
       </Button> :
-        null
+          null
         }
         {role === 'Admin' ?
-      <Button
-      disabled={!this.state.checkBoxChecked}
-      onClick={() => this.handlePdf(this.state.printInvoiceObj)}
-      variant="contained"
-      color="primary"
-      style={{ fontSize: 10, margin: 10 }}
-    >
-      Create Invoice
-    </Button>: null  
-      }
+          <Button
+            disabled={!this.state.checkBoxChecked}
+            onClick={() => this.handlePdf(this.state.printInvoiceObj)}
+            variant="contained"
+            color="primary"
+            style={{ fontSize: 10, margin: 10 }}
+          >
+            Create Invoice
+    </Button> : null
+        }
         <CustomTable
           onSelectBox={this.handleSelectCheckBox}
           handleClickOpen={this.handleClickOpen}
@@ -1780,11 +1784,11 @@ class TaskTable extends React.Component {
                     />
                   }
                 >
-                {this.state.allProjects.map(project => {
-                 return(
-                  <MenuItem value={project.ProjectCode}>{project.ProjectCode}</MenuItem>
-                 ); 
-                })}                  
+                  {this.state.allProjects.map(project => {
+                    return (
+                      <MenuItem value={project.ProjectCode}>{project.ProjectCode}</MenuItem>
+                    );
+                  })}
                 </Select>
               </FormControl>
               <FormControl
@@ -1923,10 +1927,10 @@ class TaskTable extends React.Component {
               >
                 {
                   this.state.allDevs.map((prop, key) => {
-                    return(
+                    return (
                       <MenuItem value={prop}>{prop.name}</MenuItem>
                     )
-                })
+                  })
                 }
               </Select>
             </FormControl>
@@ -2004,14 +2008,14 @@ class TaskTable extends React.Component {
                     />
                   }
                 >
-                {
-                  this.state.allCustomers.map(c => {
-                    return(
-                      <MenuItem value={c}>{c.customer}</MenuItem>
-                    );
-                  })
-                }
-                  
+                  {
+                    this.state.allCustomers.map(c => {
+                      return (
+                        <MenuItem value={c}>{c.customer}</MenuItem>
+                      );
+                    })
+                  }
+
                 </Select>
               </FormControl>
             </FormControl>
