@@ -220,13 +220,13 @@ const toolbarStyles = theme => ({
   highlight:
     theme.palette.type === "light"
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark
+      },
   spacer: {
     flex: "1 1 100%"
   },
@@ -253,19 +253,19 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-          <Button
-            variant="contained"
-            onClick={projecthandleClickOpen}
-            color="primary"
-            id="tableTitle"
-            className={classes.button}
-          >
-            add
+            <Button
+              variant="contained"
+              onClick={projecthandleClickOpen}
+              color="primary"
+              id="tableTitle"
+              className={classes.button}
+            >
+              add
           </Button>
-          // <Typography variant="h6" id="tableTitle">
-          //   Nutrition
-          // </Typography>
-        )}
+            // <Typography variant="h6" id="tableTitle">
+            //   Nutrition
+            // </Typography>
+          )}
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
@@ -276,12 +276,12 @@ let EnhancedTableToolbar = props => {
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
+            <Tooltip title="Filter list">
+              <IconButton aria-label="Filter list">
+                <FilterListIcon />
+              </IconButton>
+            </Tooltip>
+          )}
       </div>
     </Toolbar>
   );
@@ -375,7 +375,9 @@ let CustomTable = ({ ...props }) => {
     "Project Actual End Date",
     "Actions"
   ];
-  console.log("eee", tableData);
+
+  let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -498,12 +500,15 @@ let CustomTable = ({ ...props }) => {
                     className={classes.tableCell}
                     colSpan={project.colspan}
                   >
-                    <EditButton
-                      openUpdateProject={openUpdateProject}
-                      _param={prop}
-                      asd={prop.key}
-                      v={key}
-                    />
+                    {
+                      project.createdBy == currentUser.email &&
+                      <EditButton
+                        openUpdateProject={openUpdateProject}
+                        _param={prop}
+                        asd={prop.key}
+                        v={key}
+                      />
+                    }
                     <DeleteButton
                       deleteUser={deleteUser}
                       asd={prop.key}
@@ -646,24 +651,26 @@ class Tables extends React.Component {
         };
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         console.log('Logged In User --> ', currentUser);
-        if(currentUser) {
-          if(currentUser.type === 'Consultant') {
-            let isExist = obj.all_projects.assignedMembers.find(x => x.email == currentUser.email);
-            if(isExist) {
+        if (currentUser) {
+          if (currentUser.type === 'Consultant') {
+            let isExist = obj.all_projects.assignedMembers.find(x => (x.email == currentUser.email));
+            let isCreated = obj.all_projects.createdBy == currentUser.email;
+            if (isExist || isCreated) {
               currentpost.push(obj);
             }
           }
-          else if(currentUser.type === 'Product Owner') {
+          else if (currentUser.type === 'Product Owner') {
             let isExist = obj.all_projects.assignedMembers.find(x => x.email == currentUser.email);
-            if(isExist) {
+            let isCreated = obj.all_projects.createdBy == currentUser.email;
+            if (isExist || isCreated) {
               currentpost.push(obj);
             }
           }
           else {
             currentpost.push(obj);
           }
-        } 
-        
+        }
+
         this.setState({
           projects: currentpost,
           posts: ""
@@ -692,7 +699,7 @@ class Tables extends React.Component {
           console.log('Assigneee', user.all_customers.users);
         }
       });
-      
+
     this.setState({
       customer: e.target.value
       // assignee: e.target.value.users
@@ -868,6 +875,7 @@ class Tables extends React.Component {
       assigneename
     } = this.state;
     var userId = firebase.auth().currentUser.uid;
+    let email = firebase.auth().currentUser.email;
     const ref = firebase.database().ref("Projects/");
     ref
       .push({
@@ -878,6 +886,7 @@ class Tables extends React.Component {
         rate_unit: rate_unit,
         customer: customer,
         currency: currency,
+        createdBy: email,
         projectStartDate: projectStartDate,
         projectEstimationEndDate: projectEstimationEndDate,
         projectActualEndDate: projectActualEndDate,
@@ -1243,7 +1252,7 @@ class Tables extends React.Component {
                     name="Country"
                   />
                 }
-                // input={<OutlinedInput labelWidth={80} name="age" id="outlined-age-simple" />}
+              // input={<OutlinedInput labelWidth={80} name="age" id="outlined-age-simple" />}
               >
                 {this.state.assignee.map(name => {
                   return (
