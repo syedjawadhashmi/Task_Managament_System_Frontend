@@ -10,7 +10,7 @@ var config = {
   messagingSenderId: "291723151868"
 };
 
- // Initialize Firebase
+// Initialize Firebase
 //  var config = {
 //   apiKey: "AIzaSyDj9i8jnZBL6igPuonwcSdKoQTdb0e6MnI",
 //   authDomain: "labtask-2.firebaseapp.com",

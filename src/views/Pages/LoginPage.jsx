@@ -48,7 +48,7 @@ class LoginPage extends React.Component {
   handleLogin = () => {
     const { user_name, password } = this.state;
     debugger
-    console.log("login pressed",this.props);
+    console.log("login pressed", this.props);
     firebase
       .auth()
       .signInWithEmailAndPassword(user_name, password)
@@ -56,10 +56,10 @@ class LoginPage extends React.Component {
         let self = this;
         const user = res.user;
         var token = "";
-        firebase.auth().onAuthStateChanged(function(user) {
+        firebase.auth().onAuthStateChanged(function (user) {
           debugger
           if (user && window.location.pathname == "/auth/login-page") {
-            user.getIdToken().then(function(idToken) {
+            user.getIdToken().then(function (idToken) {
               token = idToken;
               localStorage.setItem("user", user_name);
               localStorage.setItem("currentUser", JSON.stringify(user));
@@ -68,19 +68,35 @@ class LoginPage extends React.Component {
               ref
                 .orderByChild("email")
                 .equalTo(`${user.email}`)
-                .on("child_added", function(snapshot) {
+                .on("child_added", function (snapshot) {
                   let currentUser = snapshot.val();
                   let role = snapshot.val().type;
                   localStorage.setItem("currentUser", JSON.stringify(currentUser));
                   localStorage.setItem("role", JSON.stringify(role));
-                  self.props.history.push("/admin/customer-page");
+                  switch (role) {
+                    case 'Developer':
+                      self.props.history.push("/admin/task-page");
+                      break;
+
+                    case 'Product Owner':
+                      self.props.history.push("/admin/project-page");
+                      break;
+
+                    case 'Consultant':
+                      self.props.history.push("/admin/project-page");
+                      break;
+
+                    default:
+                      self.props.history.push("/admin/customer-page");
+                      break;
+                  }
                   alert("login success");
                 });
               console.log("idToken", token);
             });
           }
         });
-       
+
       })
       .catch(error => {
         console.log("error", error);
@@ -116,7 +132,7 @@ class LoginPage extends React.Component {
   componentDidMount() {
     // we add a hidden class to the card and after 700 ms we delete it and the transition appears
     this.timeOutFunction = setTimeout(
-      function() {
+      function () {
         this.setState({ cardAnimaton: "" });
       }.bind(this),
       700

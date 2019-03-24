@@ -689,8 +689,10 @@ class Tables extends React.Component {
           this.setState({
             assignee: user.all_customers.users
           });
+          console.log('Assigneee', user.all_customers.users);
         }
       });
+      
     this.setState({
       customer: e.target.value
       // assignee: e.target.value.users
@@ -1250,7 +1252,7 @@ class Tables extends React.Component {
                       value={name}
                       style={getStyles(name, this)}
                     >
-                      {name.name}
+                      {name.name} ({name.type})
                     </MenuItem>
                   );
                 })}

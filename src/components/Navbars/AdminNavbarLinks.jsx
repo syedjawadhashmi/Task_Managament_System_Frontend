@@ -12,6 +12,7 @@ import Paper from "@material-ui/core/Paper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Hidden from "@material-ui/core/Hidden";
 import Poppers from "@material-ui/core/Popper";
+import firebase from "../../constant/api/firebase";
 
 // @material-ui/icons
 import Notifications from "@material-ui/icons/Notifications";
@@ -37,6 +38,10 @@ class HeaderLinks extends React.Component {
   };
   handleClose = () => {
     this.setState({ open: false });
+    firebase.auth().signOut().then(function() {
+      window.location.href = '/auth/login-page'
+    }, function(error) {
+    });
   };
   render() {
     const { classes, rtlActive } = this.props;
