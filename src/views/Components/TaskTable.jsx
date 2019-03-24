@@ -500,10 +500,15 @@ let CustomTable = ({ ...props }) => {
                 <TableCell>
                     {(prop.all_projects.status === 'Close') ?
                   <Checkbox
-                  // indeterminate={numSelected > 0 && numSelected < rowCount}
+                  // indeterminate={false}
+                  // disabled={true}
                   // checked={numSelected === rowCount}
                    onChange={() => onSelectBox(prop)}
-                  />: ''  
+                  />: 
+                  <Checkbox
+                  // indeterminate={false}
+                  disabled={true}
+                  />
                   }
                   </TableCell>
                   <TableCell
