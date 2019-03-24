@@ -1371,7 +1371,7 @@ class TaskTable extends React.Component {
         ProjectCode: ProjectCode,
         status: status,
         category: category,
-        customer: customer,
+        customer: customer.email,
         priority: priority,
         number: number,
         assigned: assignedDev,
