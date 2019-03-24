@@ -503,22 +503,22 @@ let CustomTable = ({ ...props }) => {
                   key={prop.key}
                   hover={hover}
                   className={tableRowClasses}
-                  
+
                 >
-                <TableCell>
+                  <TableCell>
                     {(prop.all_projects.status === 'Close') ?
-                  <Checkbox
-                  // indeterminate={numSelected > 0 && numSelected < rowCount}
-                  // checked={numSelected === rowCount}
-                   onChange={() => onSelectBox(prop)}
-                  />: ''  
-                  }
+                      <Checkbox
+                        // indeterminate={numSelected > 0 && numSelected < rowCount}
+                        // checked={numSelected === rowCount}
+                        onChange={() => onSelectBox(prop)}
+                      /> : ''
+                    }
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                     onClick={() => handleClickOpen(prop.key)}
-                    
+
                   >
                     {key}
                   </TableCell>
@@ -647,7 +647,7 @@ let CustomTable = ({ ...props }) => {
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
+                      onClick={() => handleClickOpen(prop.key)}
                     >
                       {prop.all_projects.est_dev_efforts}
                     </TableCell>
@@ -656,7 +656,7 @@ let CustomTable = ({ ...props }) => {
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
+                      onClick={() => handleClickOpen(prop.key)}
                     >
                       {prop.all_projects.act_dev_efforts}
                     </TableCell>
@@ -665,7 +665,7 @@ let CustomTable = ({ ...props }) => {
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
+                      onClick={() => handleClickOpen(prop.key)}
                     >
                       {prop.all_projects.rate_unit_dev}
                     </TableCell>
@@ -674,7 +674,7 @@ let CustomTable = ({ ...props }) => {
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
+                      onClick={() => handleClickOpen(prop.key)}
                     >
                       {prop.all_projects.dev_efforts_amt}
                     </TableCell>
@@ -683,7 +683,7 @@ let CustomTable = ({ ...props }) => {
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
+                      onClick={() => handleClickOpen(prop.key)}
                     >
                       {prop.all_projects.dev_paid_on}
                     </TableCell>
@@ -694,7 +694,7 @@ let CustomTable = ({ ...props }) => {
                       <TableCell
                         className={classes.tableCell}
                         colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
+                        onClick={() => handleClickOpen(prop.key)}
                       >
                         {prop.all_projects.est_cus_efforts}
                       </TableCell>
@@ -705,7 +705,7 @@ let CustomTable = ({ ...props }) => {
                       <TableCell
                         className={classes.tableCell}
                         colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
+                        onClick={() => handleClickOpen(prop.key)}
                       >
                         {prop.all_projects.act_cus_efforts}
                       </TableCell>
@@ -716,7 +716,7 @@ let CustomTable = ({ ...props }) => {
                       <TableCell
                         className={classes.tableCell}
                         colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
+                        onClick={() => handleClickOpen(prop.key)}
                       >
                         {prop.all_projects.rate_unit_cus}
                       </TableCell>
@@ -727,7 +727,7 @@ let CustomTable = ({ ...props }) => {
                       <TableCell
                         className={classes.tableCell}
                         colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
+                        onClick={() => handleClickOpen(prop.key)}
                       >
                         {prop.all_projects.cus_efforts_amt}
                       </TableCell>
@@ -738,7 +738,7 @@ let CustomTable = ({ ...props }) => {
                       <TableCell
                         className={classes.tableCell}
                         colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
+                        onClick={() => handleClickOpen(prop.key)}
                       >
                         {prop.all_projects.cus_paid_on}
                       </TableCell>
@@ -924,17 +924,32 @@ class TaskTable extends React.Component {
     cus_efforts_amt: "",
     cus_paid_on: "",
     loading: false,
-    completed: 0
+    completed: 0,
+    allDevs: []
   };
   componentDidMount() {
     this.showTasks();
     this.all_customer();
-
+    this.getDevelopers()
     // this.timer = setInterval(this.progress, 1000);
   }
 
   componentWillUnmount() {
     // clearInterval(this.timer);
+  }
+
+  getDevelopers() {
+    firebase
+      .database()
+      .ref("Developer")
+      .on("child_added", developer => {
+        console.log('developers', developer.val())
+        let devs = this.state.allDevs;
+        devs.push(developer.val());
+        this.setState({
+          allDevs: devs
+        });
+      })
   }
 
   showTasks() {
@@ -954,7 +969,7 @@ class TaskTable extends React.Component {
           localStorage.getItem("role") &&
           localStorage.getItem("role").replace(/['"]+/g, "");
 
-        if (project.val().createdBy == email || role == "Admin") {
+        if (project.val().createdBy == email || role == "Admin" || (role == "Developer" && project.val().assigned == email)) {
           currentpost.push(obj);
           this.setState({
             projects: currentpost,
@@ -1007,15 +1022,12 @@ class TaskTable extends React.Component {
   };
   handleEDevEffortsCodeChange = e => {
     this.setState({ EDevEfforts: e.target.value });
-    debugger;
   };
   handleDevPaidCodeChange = e => {
     this.setState({ DevPaid: e.target.value });
-    debugger;
   };
   handleADevEffortsCodeChange = e => {
     this.setState({ ADevEffort: e.target.value });
-    debugger;
   };
   handlecustomerChange = e => {
     this.setState({
@@ -1150,7 +1162,7 @@ class TaskTable extends React.Component {
     });
     var doc = new jsPDF('p', 'pt');
     doc.setFontSize(22);
-    doc.setTextColor(102,178,255);
+    doc.setTextColor(102, 178, 255);
     doc.text(20, 20, 'SysBrillance');
     doc.setFontSize(15);
     doc.setTextColor(0, 0, 0);
@@ -1166,7 +1178,7 @@ class TaskTable extends React.Component {
     doc.setTextColor(220, 220, 220);
     doc.text(20, 70, 'BILL TO');
     doc.setTextColor(0, 0, 0);
-    doc.text(430,70,'InvoiceNumber: '+ td.all_projects.number);
+    doc.text(430, 70, 'InvoiceNumber: ' + td.all_projects.number);
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
     doc.text(20, 80, td.all_projects.customer);
@@ -1196,7 +1208,6 @@ class TaskTable extends React.Component {
   }
 
   openUpdateProject = _param => {
-    debugger;
     this.setState({ editing: _param.key });
     // this.projecthandleClickOpen();
     // if (_param !== "") {
@@ -1215,7 +1226,6 @@ class TaskTable extends React.Component {
     // }
   };
   updateTask = (e, key) => {
-    debugger;
     // e.preventDefault();
     const {
       EDevEfforts,
@@ -1290,6 +1300,7 @@ class TaskTable extends React.Component {
       cus_efforts_amt,
       cus_paid_on
     } = this.state;
+    const assignedDev = assigned.email
     var userId = firebase.auth().currentUser.uid;
     const email = firebase.auth().currentUser.email;
     const ref = firebase.database().ref("Tasks/");
@@ -1303,7 +1314,7 @@ class TaskTable extends React.Component {
         customer: customer,
         priority: priority,
         number: number,
-        assigned: assigned,
+        assigned: assignedDev,
         deadline: deadline,
         lastUpdated: lastUpdated,
         est_dev_efforts: est_dev_efforts,
@@ -1484,7 +1495,6 @@ class TaskTable extends React.Component {
     const { classes } = this.props;
     const { loading } = this.state
     console.log("asas", this.state.selectedassignee);
-    debugger;
     const roles = localStorage.getItem("role");
     const role = roles.slice(1, roles.length - 1);
     const tableData = projects;
@@ -1840,8 +1850,13 @@ class TaskTable extends React.Component {
                   />
                 }
               >
-                <MenuItem value={"Developer 1"}>Developer 1</MenuItem>
-                <MenuItem value={"Developer 2"}>Developer 2</MenuItem>
+                {
+                  this.state.allDevs.map((prop, key) => {
+                    return(
+                      <MenuItem value={prop}>{prop.name}</MenuItem>
+                    )
+                })
+                }
               </Select>
             </FormControl>
             <FormControl
