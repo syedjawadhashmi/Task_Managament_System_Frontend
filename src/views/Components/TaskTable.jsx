@@ -1027,7 +1027,7 @@ class TaskTable extends React.Component {
           localStorage.getItem("role").replace(/['"]+/g, "");
 
         let customer = this.state.allCustomers.find(x => (x.email == project.val().customer));
-        let isExist = customer.users.find(x => (x.email == email));
+        let isExist = customer && customer.users.find(x => (x.email == email));
         
 
         if (project.val().createdBy == email || role == "Admin" || (role == "Developer" && project.val().assigned == email) || isExist) {
