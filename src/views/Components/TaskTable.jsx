@@ -45,17 +45,18 @@ import tableStyle from "assets/jss/material-dashboard-pro-react/components/table
 import TextField from "@material-ui/core/TextField";
 import Edit from "@material-ui/icons/Edit";
 import Check from "@material-ui/icons/Check";
+import Comments from "@material-ui/icons/Comment";
 import Close from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
 import Input from "@material-ui/core/Input";
 import * as jsPDF from "jspdf";
 import "jspdf-autotable";
-import AttachFile from '@material-ui/icons/AttachFile';
-import MessageIcon from '@material-ui/icons/MessageRounded';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import AttachFile from "@material-ui/icons/AttachFile";
+import MessageIcon from "@material-ui/icons/MessageRounded";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-import InputAdornment from '@material-ui/core/InputAdornment';
-import EditIcon from '@material-ui/icons/Edit';
+import InputAdornment from "@material-ui/core/InputAdornment";
+import EditIcon from "@material-ui/icons/Edit";
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -227,13 +228,13 @@ const toolbarStyles = theme => ({
   highlight:
     theme.palette.type === "light"
       ? {
-        color: theme.palette.secondary.main,
-        backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-      }
+          color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+        }
       : {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.secondary.dark
-      },
+          color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.dark
+        },
   spacer: {
     flex: "1 1 100%"
   },
@@ -260,19 +261,19 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-            <Button
-              variant="contained"
-              onClick={projecthandleClickOpen}
-              color="primary"
-              id="tableTitle"
-              className={classes.button}
-            >
-              add
+          <Button
+            variant="contained"
+            onClick={projecthandleClickOpen}
+            color="primary"
+            id="tableTitle"
+            className={classes.button}
+          >
+            add
           </Button>
-            // <Typography variant="h6" id="tableTitle">
-            //   Nutrition
-            // </Typography>
-          )}
+          // <Typography variant="h6" id="tableTitle">
+          //   Nutrition
+          // </Typography>
+        )}
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
@@ -283,12 +284,12 @@ let EnhancedTableToolbar = props => {
             </IconButton>
           </Tooltip>
         ) : (
-            <Tooltip title="Filter list">
-              <IconButton aria-label="Filter list">
-                <FilterListIcon />
-              </IconButton>
-            </Tooltip>
-          )}
+          <Tooltip title="Filter list">
+            <IconButton aria-label="Filter list">
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        )}
       </div>
     </Toolbar>
   );
@@ -370,18 +371,41 @@ let CustomTable = ({ ...props }) => {
     openUpdateProject,
     editing,
     updateTask,
-    EDevEfforts,
-    handleEDevEffortsCodeChange,
+    UProjectCode,
+    handleUProjectCodeCodeChange,
     handleADevEffortsCodeChange,
     DevPaid,
     ADevEffort,
     handleDevPaidCodeChange,
-    onSelectBox
+    onSelectBox,
+    allProjects,
+    allDevs,
+    allCustomers,
+
+    handleUTicketSummaryCodeChange,
+    UTicketSummary,
+    handleUDev_SupportCodeChange,
+    UDev_Support,
+    handleUStatusCodeChange,
+    UStatus,
+    handleUNumberCodeChange,
+    UNumber,
+    handleULastUpdatedCodeChange,
+    ULastUpdated,
+    handleUDevCodeChange,
+    UDev,
+    handleUPriorityCodeChange,
+    UPriority,
+    handleUDeadlineCodeChange,
+    UDeadline,
+    handleUCustomerCodeChange,
+    UCustomer
   } = props;
   const roles = localStorage.getItem("role");
   const role = roles.slice(1, roles.length - 1);
   if (role == "Admin") {
     var tableHead = [
+      "Select",
       "#",
       "Project Code",
       "Dev / Support",
@@ -407,6 +431,7 @@ let CustomTable = ({ ...props }) => {
     ];
   } else if (role == "Developer") {
     var tableHead = [
+      "Select",
       "#",
       "Project Code",
       "Dev / Support",
@@ -427,7 +452,7 @@ let CustomTable = ({ ...props }) => {
     ];
   } else {
     var tableHead = [
-      ' ',
+      "Select",
       "#",
       "Project Code",
       "Dev / Support",
@@ -497,95 +522,42 @@ let CustomTable = ({ ...props }) => {
                 [classes.tableStripedRow]: striped && key % 2 === 0
               });
               let that = this;
+
+              let UProjectCode1 =
+                UProjectCode == ""
+                  ? prop.all_projects.ProjectCode
+                  : UProjectCode;
               // console.log('props_data', prop.key)
               return (
                 <TableRow
                   key={prop.key}
                   hover={hover}
                   className={tableRowClasses}
-
                 >
                   <TableCell>
-                    {(prop.all_projects.status === 'Close') ?
+                    {prop.all_projects.status === "Close" ? (
                       <Checkbox
                         // indeterminate={false}
                         // disabled={true}
                         // checked={numSelected === rowCount}
-                        onChange={(e) => onSelectBox(prop, e)}
-                      /> :
+                        onChange={e => onSelectBox(prop, e)}
+                      />
+                    ) : (
                       <Checkbox
                         // indeterminate={false}
                         disabled={true}
                       />
-                    }
+                    )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
-
                   >
                     {key}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
-                  >
-                    {editing == prop.key ? (
-                      <CustomInput
-                        id="required"
-                        md={12}
-                        lg={12}
-                        labelText="Project Code"
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        onChange={handleEDevEffortsCodeChange}
-                        value={EDevEfforts}
-                        inputProps={{
-                          type: "text"
-                        }}
-                      />
-                    ) : (
-                        prop.all_projects.ProjectCode
-                      )}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
-                  >
-                    {editing == prop.key ? (
-                      <CustomInput
-                        id="required"
-                        md={12}
-                        lg={12}
-                        labelText="Dev Efforts"
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        onChange={handleADevEffortsCodeChange}
-                        value={ADevEffort}
-                        inputProps={{
-                          type: "text"
-                        }}
-                      />
-                    ) : (
-                        prop.all_projects.category
-                      )}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
-                  >
-                    {prop.all_projects.ticketSummary}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
                   >
                     {editing == prop.key ? (
                       <FormControl
@@ -594,206 +566,570 @@ let CustomTable = ({ ...props }) => {
                         variant="outlined"
                       >
                         <Select
-                          onChange={handleDevPaidCodeChange}
-                          value={DevPaid}
-                        // displayEmpty
+                          onChange={handleUProjectCodeCodeChange}
+                          value={UProjectCode1}
+                          // displayEmpty
+                        >
+                          {allProjects.map(project => {
+                            return (
+                              <MenuItem value={project.ProjectCode}>
+                                {project.ProjectCode}
+                              </MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                    ) : (
+                      prop.all_projects.ProjectCode
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.key ? (
+                      <FormControl
+                        style={{ marginTop: 10 }}
+                        className={[classes.formControl, "form-control"]}
+                        variant="outlined"
+                      >
+                        <Select
+                          onChange={handleUDev_SupportCodeChange}
+                          value={
+                            UDev_Support == ""
+                              ? prop.all_projects.category
+                              : UDev_Support
+                          }
+                          // displayEmpty
+                        >
+                          <MenuItem value={"Dev"}>Dev</MenuItem>
+                          <MenuItem value={"Support"}>Support</MenuItem>
+                        </Select>
+                      </FormControl>
+                    ) : (
+                      prop.all_projects.category
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.key ? (
+                      <CustomInput
+                        id="required"
+                        md={12}
+                        lg={12}
+                        labelText="Ticket Summary"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        onChange={handleUTicketSummaryCodeChange}
+                        value={
+                          UTicketSummary == ""
+                            ? prop.all_projects.ticketSummary
+                            : UTicketSummary
+                        }
+                        inputProps={{
+                          type: "text"
+                        }}
+                      />
+                    ) : (
+                      prop.all_projects.ticketSummary
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.key ? (
+                      <FormControl
+                        style={{ marginTop: 10 }}
+                        className={[classes.formControl, "form-control"]}
+                        variant="outlined"
+                      >
+                        <Select
+                          onChange={handleUStatusCodeChange}
+                          value={UStatus == "" ? "asd" : "UStatus"}
+                          // displayEmpty
                         >
                           <MenuItem value={"Open"}>Open</MenuItem>
                           <MenuItem value={"Close"}>Close</MenuItem>
                         </Select>
                       </FormControl>
                     ) : (
-                        prop.all_projects.status
+                      prop.all_projects.status
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.key ? (
+                      <CustomInput
+                        id="required"
+                        md={12}
+                        lg={12}
+                        labelText="Number"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        onChange={handleUNumberCodeChange}
+                        value={
+                          UNumber == "" ? prop.all_projects.number : UNumber
+                        }
+                        inputProps={{
+                          type: "text"
+                        }}
+                      />
+                    ) : (
+                      prop.all_projects.number
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.key ? (
+                      <CustomInput
+                        id="required"
+                        md={12}
+                        lg={12}
+                        labelText="Last Updated"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        onChange={handleULastUpdatedCodeChange}
+                        value={
+                          ULastUpdated == ""
+                            ? prop.all_projects.lastUpdated
+                            : ULastUpdated
+                        }
+                        inputProps={{
+                          type: "text"
+                        }}
+                      />
+                    ) : (
+                      prop.all_projects.lastUpdated
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.key ? (
+                      <FormControl
+                        style={{ marginTop: 10 }}
+                        className={[classes.formControl, "form-control"]}
+                        variant="outlined"
+                      >
+                        <Select
+                          onChange={handleUDevCodeChange}
+                          value={UDev == "" ? prop.all_projects.assigned : UDev}
+                        >
+                          {allDevs.map((prop, key) => {
+                            return (
+                              <MenuItem value={prop}>{prop.name}</MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                    ) : (
+                      prop.all_projects.assigned
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.key ? (
+                      <FormControl
+                        style={{ marginTop: 10 }}
+                        className={[classes.formControl, "form-control"]}
+                        variant="outlined"
+                      >
+                        <Select
+                          onChange={handleUPriorityCodeChange}
+                          value={
+                            UPriority == ""
+                              ? prop.all_projects.priority
+                              : UPriority
+                          }
+                          // displayEmpty
+                        >
+                          <MenuItem value={"High"}>High</MenuItem>
+                          <MenuItem value={"Medium"}>Medium</MenuItem>
+                          <MenuItem value={"Low"}>Low</MenuItem>
+                        </Select>
+                      </FormControl>
+                    ) : (
+                      prop.all_projects.priority
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.key ? (
+                      <CustomInput
+                        id="required"
+                        md={12}
+                        lg={12}
+                        labelText="Deadline"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        onChange={handleUDeadlineCodeChange}
+                        value={
+                          UDeadline == ""
+                            ? prop.all_projects.deadline
+                            : UDeadline
+                        }
+                        inputProps={{
+                          type: "text"
+                        }}
+                      />
+                    ) : (
+                      prop.all_projects.deadline
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className={classes.tableCell}
+                    colSpan={prop.colspan}
+                  >
+                    {editing == prop.key ? (
+                      <FormControl
+                        style={{ marginTop: 10 }}
+                        className={[classes.formControl, "form-control"]}
+                        variant="outlined"
+                      >
+                        <Select
+                          onChange={handleUCustomerCodeChange}
+                          value={
+                            UCustomer ? prop.all_projects.customer : UCustomer
+                          }
+                          // displayEmpty
+                        >
+                          {allCustomers.map(c => {
+                            return <MenuItem value={c}>{c.customer}</MenuItem>;
+                          })}
+                        </Select>
+                      </FormControl>
+                    ) : (
+                      prop.all_projects.customer
+                    )}
+                  </TableCell>
+                  {role == "Admin" || role == "Developer" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {editing == prop.key ? (
+                        <CustomInput
+                          id="required"
+                          md={12}
+                          lg={12}
+                          labelText="EDEfforts"
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          // onChange={handleADevEffortsCodeChange}
+                          // value={ADevEffort}
+                          inputProps={{
+                            type: "text"
+                          }}
+                        />
+                      ) : (
+                        prop.all_projects.est_dev_efforts
                       )}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
-                  >
-                    {prop.all_projects.number}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
-                  >
-                    {prop.all_projects.lastUpdated}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
-                  >
-                    {prop.all_projects.assigned}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
-                  >
-                    {prop.all_projects.priority}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
-                  >
-                    {prop.all_projects.deadline}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                    onClick={() => handleClickOpen(prop.key)}
-                  >
-                    {prop.all_projects.customer}
-                  </TableCell>
-                  {role == "Admin" || role == "Developer" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                      onClick={() => handleClickOpen(prop.key)}
-                    >
-                      {prop.all_projects.est_dev_efforts}
                     </TableCell>
                   ) : null}
                   {role == "Admin" || role == "Developer" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
-                      onClick={() => handleClickOpen(prop.key)}
                     >
-                      {prop.all_projects.act_dev_efforts}
+                      {editing == prop.key ? (
+                        <CustomInput
+                          id="required"
+                          md={12}
+                          lg={12}
+                          labelText="ADEfforts"
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          // onChange={handleADevEffortsCodeChange}
+                          // value={ADevEffort}
+                          inputProps={{
+                            type: "text"
+                          }}
+                        />
+                      ) : (
+                        prop.all_projects.act_dev_efforts
+                      )}
                     </TableCell>
                   ) : null}
                   {role == "Admin" || role == "Developer" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
-                      onClick={() => handleClickOpen(prop.key)}
                     >
-                      {prop.all_projects.rate_unit_dev}
+                      {editing == prop.key ? (
+                        <CustomInput
+                          id="required"
+                          md={12}
+                          lg={12}
+                          labelText="RUDEV"
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          // onChange={handleADevEffortsCodeChange}
+                          // value={ADevEffort}
+                          inputProps={{
+                            type: "text"
+                          }}
+                        />
+                      ) : (
+                        prop.all_projects.rate_unit_dev
+                      )}
                     </TableCell>
                   ) : null}
                   {role == "Admin" || role == "Developer" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
-                      onClick={() => handleClickOpen(prop.key)}
                     >
-                      {prop.all_projects.dev_efforts_amt}
+                      {editing == prop.key ? (
+                        <CustomInput
+                          id="required"
+                          md={12}
+                          lg={12}
+                          labelText="DEAmount"
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          // onChange={handleADevEffortsCodeChange}
+                          // value={ADevEffort}
+                          inputProps={{
+                            type: "text"
+                          }}
+                        />
+                      ) : (
+                        prop.all_projects.dev_efforts_amt
+                      )}
                     </TableCell>
                   ) : null}
                   {role == "Admin" || role == "Developer" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
-                      onClick={() => handleClickOpen(prop.key)}
                     >
-                      {prop.all_projects.dev_paid_on}
+                      {editing == prop.key ? (
+                        <CustomInput
+                          id="required"
+                          md={12}
+                          lg={12}
+                          labelText="DPaidOn"
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          // onChange={handleADevEffortsCodeChange}
+                          // value={ADevEffort}
+                          inputProps={{
+                            type: "text"
+                          }}
+                        />
+                      ) : (
+                        prop.all_projects.dev_paid_on
+                      )}
                     </TableCell>
                   ) : null}
                   {role == "Admin" ||
-                    role == "Product Owner" ||
-                    role == "Consultant" ? (
-                      <TableCell
-                        className={classes.tableCell}
-                        colSpan={prop.colspan}
-                        onClick={() => handleClickOpen(prop.key)}
-                      >
-                        {prop.all_projects.est_cus_efforts}
-                      </TableCell>
-                    ) : null}
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {editing == prop.key ? (
+                        <CustomInput
+                          id="required"
+                          md={12}
+                          lg={12}
+                          labelText="ECEfforts"
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          // onChange={handleADevEffortsCodeChange}
+                          // value={ADevEffort}
+                          inputProps={{
+                            type: "text"
+                          }}
+                        />
+                      ) : (
+                        prop.all_projects.est_cus_efforts
+                      )}
+                    </TableCell>
+                  ) : null}
                   {role == "Admin" ||
-                    role == "Product Owner" ||
-                    role == "Consultant" ? (
-                      <TableCell
-                        className={classes.tableCell}
-                        colSpan={prop.colspan}
-                        onClick={() => handleClickOpen(prop.key)}
-                      >
-                        {prop.all_projects.act_cus_efforts}
-                      </TableCell>
-                    ) : null}
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {editing == prop.key ? (
+                        <CustomInput
+                          id="required"
+                          md={12}
+                          lg={12}
+                          labelText="ACEfforts"
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          // onChange={handleADevEffortsCodeChange}
+                          // value={ADevEffort}
+                          inputProps={{
+                            type: "text"
+                          }}
+                        />
+                      ) : (
+                        prop.all_projects.act_cus_efforts
+                      )}
+                    </TableCell>
+                  ) : null}
                   {role == "Admin" ||
-                    role == "Product Owner" ||
-                    role == "Consultant" ? (
-                      <TableCell
-                        className={classes.tableCell}
-                        colSpan={prop.colspan}
-                        onClick={() => handleClickOpen(prop.key)}
-                      >
-                        {prop.all_projects.rate_unit_cus}
-                      </TableCell>
-                    ) : null}
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {editing == prop.key ? (
+                        <CustomInput
+                          id="required"
+                          md={12}
+                          lg={12}
+                          labelText="RUCustomer"
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          // onChange={handleADevEffortsCodeChange}
+                          // value={ADevEffort}
+                          inputProps={{
+                            type: "text"
+                          }}
+                        />
+                      ) : (
+                        prop.all_projects.rate_unit_cus
+                      )}
+                    </TableCell>
+                  ) : null}
                   {role == "Admin" ||
-                    role == "Product Owner" ||
-                    role == "Consultant" ? (
-                      <TableCell
-                        className={classes.tableCell}
-                        colSpan={prop.colspan}
-                        onClick={() => handleClickOpen(prop.key)}
-                      >
-                        {prop.all_projects.cus_efforts_amt}
-                      </TableCell>
-                    ) : null}
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {editing == prop.key ? (
+                        <CustomInput
+                          id="required"
+                          md={12}
+                          lg={12}
+                          labelText="CEAmount"
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          // onChange={handleADevEffortsCodeChange}
+                          // value={ADevEffort}
+                          inputProps={{
+                            type: "text"
+                          }}
+                        />
+                      ) : (
+                        prop.all_projects.cus_efforts_amt
+                      )}
+                    </TableCell>
+                  ) : null}
                   {role == "Admin" ||
-                    role == "Product Owner" ||
-                    role == "Consultant" ? (
-                      <TableCell
-                        className={classes.tableCell}
-                        colSpan={prop.colspan}
-                        onClick={() => handleClickOpen(prop.key)}
-                      >
-                        {prop.all_projects.cus_paid_on}
-                      </TableCell>
-                    ) : null}
+                  role == "Product Owner" ||
+                  role == "Consultant" ? (
+                    <TableCell
+                      className={classes.tableCell}
+                      colSpan={prop.colspan}
+                    >
+                      {editing == prop.key ? (
+                        <CustomInput
+                          id="required"
+                          md={12}
+                          lg={12}
+                          labelText="CPaidOn"
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          // onChange={handleADevEffortsCodeChange}
+                          // value={ADevEffort}
+                          inputProps={{
+                            type: "text"
+                          }}
+                        />
+                      ) : (
+                        prop.all_projects.cus_paid_on
+                      )}
+                    </TableCell>
+                  ) : null}
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
-                  // onClick={() => handleClickOpen(prop.key)}
                   >
+                    <Button
+                      edit={true}
+                      color="success"
+                      onClick={() => handleClickOpen(prop.key)}
+                      simple
+                    >
+                      <Comments color="success" />
+                    </Button>
                     {role == "Admin" ||
-                      prop.all_projects.createdBy ==
+                    prop.all_projects.createdBy ==
                       firebase.auth().currentUser.email ? (
-                        editing == prop.key ? (
-                          <EditButton
-                            updateTask={updateTask}
-                            edit={true}
-                            _param={prop}
-                            v={prop.key}
-                            asd={key}
-                          />
-                        ) : (
-                            <EditButton
-                              openUpdateProject={openUpdateProject}
-                              _param={prop}
-                              v={prop.key}
-                              asd={key}
-                            />
-                          )
-                      ) : null}
-                    {
-                      (role === "Consultant" &&
-                        prop.all_projects.createdBy == firebase.auth().currentUser.email) ? (
-                          editing == prop.key ? (
-                            <EditButton
-                              updateTask={updateTask}
-                              edit={true}
-                              _param={prop}
-                              v={prop.key}
-                              asd={key}
-                            />
-                          ) : (
-                              <EditButton
-                                openUpdateProject={openUpdateProject}
-                                _param={prop}
-                                v={prop.key}
-                                asd={key}
-                              />
-                            )
-                        ) : null
-                    }
+                      editing == prop.key ? (
+                        <EditButton
+                          updateTask={updateTask}
+                          edit={true}
+                          _param={prop}
+                          v={prop.key}
+                          asd={key}
+                        />
+                      ) : (
+                        <EditButton
+                          openUpdateProject={openUpdateProject}
+                          _param={prop}
+                          v={prop.key}
+                          asd={key}
+                        />
+                      )
+                    ) : null}
+                    {role === "Consultant" &&
+                    prop.all_projects.createdBy ==
+                      firebase.auth().currentUser.email ? (
+                      editing == prop.key ? (
+                        <EditButton
+                          updateTask={updateTask}
+                          edit={true}
+                          _param={prop}
+                          v={prop.key}
+                          asd={key}
+                        />
+                      ) : (
+                        <EditButton
+                          openUpdateProject={openUpdateProject}
+                          _param={prop}
+                          v={prop.key}
+                          asd={key}
+                        />
+                      )
+                    ) : null}
                     {role == "Admin" || role == "Product Owner" ? (
                       <DeleteButton
                         deleteUser={deleteUser}
@@ -827,15 +1163,15 @@ class EditButton extends React.Component {
             <Check color="success" />
           </Button>
         ) : (
-            <Button
-              onClick={() => this.props.openUpdateProject(_param)}
-              edit={true}
-              color="success"
-              simple
-            >
-              <Edit color="success" />
-            </Button>
-          )}
+          <Button
+            onClick={() => this.props.openUpdateProject(_param)}
+            edit={true}
+            color="success"
+            simple
+          >
+            <Edit color="success" />
+          </Button>
+        )}
       </div>
     );
   }
@@ -923,7 +1259,7 @@ class TaskTable extends React.Component {
     assigneename: [],
     selectedassignee: [],
     editing: "",
-    EDevEfforts: "",
+    UProjectCode: "",
     ADevEffort: "",
     DevPaid: "",
     ticketSummary: "",
@@ -954,14 +1290,23 @@ class TaskTable extends React.Component {
     allDevs: [],
     allProjects: [],
     allCustomers: [],
-    checkBoxChecked: false
+    checkBoxChecked: false,
+    UTicketSummary: "",
+    UDev_Support: "",
+    UStatus: "",
+    UNumber: "",
+    ULastUpdated: "",
+    UDev: "",
+    UPriority: "",
+    UDeadline: "",
+    UCustomer: ""
   };
   componentDidMount() {
-    this.getCustomers();
     this.showTasks();
     this.all_customer();
     this.getDevelopers();
     this.getProjects();
+    this.getCustomers();
     // this.timer = setInterval(this.progress, 1000);
   }
 
@@ -979,10 +1324,11 @@ class TaskTable extends React.Component {
         this.setState({
           allDevs: devs
         });
-      })
+      });
   }
 
-  getProjects() { //getting Projects for Project Code in Add Task
+  getProjects() {
+    //getting Projects for Project Code in Add Task
     firebase
       .database()
       .ref("Projects")
@@ -993,21 +1339,22 @@ class TaskTable extends React.Component {
           allProjects: projects
         });
       });
-  };
+  }
 
-  getCustomers() { // getting customers from firebase for add task customer dropdowns
+  getCustomers() {
+    // getting customers from firebase for add task customer dropdowns
     firebase
       .database()
       .ref("Customer")
       .on("child_added", customer => {
-        console.log('Customers ', customer.val());
+        console.log("Customers ", customer.val());
         let customers = this.state.allCustomers;
         customers.push(customer.val());
         this.setState({
           allCustomers: customers
         });
       });
-  };
+  }
 
   showTasks() {
     firebase
@@ -1026,11 +1373,11 @@ class TaskTable extends React.Component {
           localStorage.getItem("role") &&
           localStorage.getItem("role").replace(/['"]+/g, "");
 
-        let customer = this.state.allCustomers.find(x => (x.email == project.val().customer));
-        let isExist = customer && customer.users.find(x => (x.email == email));
-        
-
-        if (project.val().createdBy == email || role == "Admin" || (role == "Developer" && project.val().assigned == email) || isExist) {
+        if (
+          project.val().createdBy == email ||
+          role == "Admin" ||
+          (role == "Developer" && project.val().assigned == email)
+        ) {
           currentpost.push(obj);
           this.setState({
             projects: currentpost,
@@ -1081,8 +1428,8 @@ class TaskTable extends React.Component {
   handlecategoryChange = e => {
     this.setState({ category: e.target.value });
   };
-  handleEDevEffortsCodeChange = e => {
-    this.setState({ EDevEfforts: e.target.value });
+  handleUProjectCodeCodeChange = e => {
+    this.setState({ UProjectCode: e.target.value });
   };
   handleDevPaidCodeChange = e => {
     this.setState({ DevPaid: e.target.value });
@@ -1145,19 +1492,50 @@ class TaskTable extends React.Component {
     this.setState({ ProductOwner: e.target.value });
   };
 
+  handleUTicketSummaryCodeChange = e => {
+    this.setState({ UTicketSummary: e.target.value });
+  };
+  handleUDev_SupportCodeChange = e => {
+    this.setState({ UDev_Support: e.target.value });
+  };
+  handleUStatusCodeChange = e => {
+    this.setState({ UStatus: e.target.value });
+  };
+  handleUNumberCodeChange = e => {
+    this.setState({ UNumber: e.target.value });
+  };
+  handleULastUpdatedCodeChange = e => {
+    this.setState({ ULastUpdated: e.target.value });
+  };
+  handleUDevCodeChange = e => {
+    this.setState({ UDev: e.target.value });
+  };
+  handleUPriorityCodeChange = e => {
+    this.setState({ UPriority: e.target.value });
+  };
+  handleUDeadlineCodeChange = e => {
+    this.setState({ UDeadline: e.target.value });
+  };
+  handleUCustomerCodeChange = e => {
+    this.setState({ UCustomer: e.target.value });
+  };
+
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   handleClickOpen = key => {
-    this.setState({ comments: [] })
-    let comments = []
+    this.setState({ comments: [] });
+    let comments = [];
     var ref = firebase.database().ref("Comments");
-    let self = this
-    ref.orderByChild('taskId').equalTo(key).on("child_added", function (snapshot) {
-      console.log('ABID SHAKA', snapshot.val());
-      comments.push(snapshot.val());
-      self.setState({ comments: comments });
-      console.log('JAWAD', self.state.comments)
-    });
+    let self = this;
+    ref
+      .orderByChild("taskId")
+      .equalTo(key)
+      .on("child_added", function(snapshot) {
+        console.log("ABID SHAKA", snapshot.val());
+        comments.push(snapshot.val());
+        self.setState({ comments: comments });
+        console.log("JAWAD", self.state.comments);
+      });
 
     this.setState({
       open: true,
@@ -1209,59 +1587,60 @@ class TaskTable extends React.Component {
         });
       });
   };
-  handlePdf = (td) => {
-    let col, row = [];
+  handlePdf = td => {
+    let col,
+      row = [];
     col = [
-      { title: 'Dascription', dataKey: 'customer' },
-      { title: 'Project', dataKey: 'ProjectCode' },
-      { title: 'Assigned', dataKey: 'assign' }
+      { title: "Dascription", dataKey: "customer" },
+      { title: "Project", dataKey: "ProjectCode" },
+      { title: "Assigned", dataKey: "assign" }
     ];
     row.push({
       customer: td.all_projects.customer,
       ProjectCode: td.all_projects.ProjectCode,
-      assign: td.all_projects.assigned,
+      assign: td.all_projects.assigned
     });
-    var doc = new jsPDF('p', 'pt');
+    var doc = new jsPDF("p", "pt");
     doc.setFontSize(22);
     doc.setTextColor(102, 178, 255);
-    doc.text(20, 20, 'SysBrillance');
+    doc.text(20, 20, "SysBrillance");
     doc.setFontSize(15);
     doc.setTextColor(0, 0, 0);
-    doc.text(500, 20, 'Invoice');
+    doc.text(500, 20, "Invoice");
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
-    doc.text(500, 30, 'SysBrillance');
+    doc.text(500, 30, "SysBrillance");
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
-    doc.text(500, 40, 'United Arab Emirates');
+    doc.text(500, 40, "United Arab Emirates");
     doc.line(600, 50, 10, 50);
     doc.setFontSize(10);
     doc.setTextColor(220, 220, 220);
-    doc.text(20, 70, 'BILL TO');
+    doc.text(20, 70, "BILL TO");
     doc.setTextColor(0, 0, 0);
-    doc.text(430, 70, 'InvoiceNumber: ' + td.all_projects.number);
+    doc.text(430, 70, "InvoiceNumber: " + td.all_projects.number);
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
     doc.text(20, 80, td.all_projects.customer);
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
-    doc.text(20, 90, 'My address');
+    doc.text(20, 90, "My address");
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
-    doc.text(430, 90, 'Invoice Date: February 15, 2019');
+    doc.text(430, 90, "Invoice Date: February 15, 2019");
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
-    doc.text(20, 100, 'Dubai etc, etc');
+    doc.text(20, 100, "Dubai etc, etc");
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
-    doc.text(430, 100, 'Payment Due: February 15, 2019');
+    doc.text(430, 100, "Payment Due: February 15, 2019");
     doc.setFontSize(20);
     doc.setTextColor(40);
     doc.autoTable(col, row, {
-      startY: 110,
+      startY: 110
     });
-    doc.save('invoice.pdf')
-  }
+    doc.save("invoice.pdf");
+  };
 
   handleSelectCheckBox = (prop, e) => {
     this.setState({
@@ -1269,7 +1648,7 @@ class TaskTable extends React.Component {
       checkBoxChecked: e.target.checked
     });
     console.log(this.state.checkBoxChecked);
-  }
+  };
 
   openUpdateProject = _param => {
     this.setState({ editing: _param.key });
@@ -1292,7 +1671,7 @@ class TaskTable extends React.Component {
   updateTask = (e, key) => {
     // e.preventDefault();
     const {
-      EDevEfforts,
+      UProjectCode,
       ADevEffort,
       DevPaid,
       est_dev_efforts,
@@ -1311,7 +1690,7 @@ class TaskTable extends React.Component {
       .database()
       .ref("Tasks/" + key)
       .update({
-        ProjectCode: EDevEfforts,
+        ProjectCode: UProjectCode,
         status: DevPaid
         // est_dev_efforts: est_dev_efforts,
         // act_dev_efforts: act_dev_efforts,
@@ -1364,7 +1743,7 @@ class TaskTable extends React.Component {
       cus_efforts_amt,
       cus_paid_on
     } = this.state;
-    const assignedDev = assigned.email
+    const assignedDev = assigned.email;
     var userId = firebase.auth().currentUser.uid;
     const email = firebase.auth().currentUser.email;
     const ref = firebase.database().ref("Tasks/");
@@ -1437,21 +1816,19 @@ class TaskTable extends React.Component {
 
   handleMessaging = e => {
     if (!this.state.text) {
-      alert('Please enter a comment first!');
-      return false
+      alert("Please enter a comment first!");
+      return false;
     }
     const email = firebase.auth().currentUser.email;
     console.log(this.state.childKey);
 
-    const ref = firebase
-      .database()
-      .ref(`Comments`)
+    const ref = firebase.database().ref(`Comments`);
     // .child(this.state.childKey);
     ref
       .push({
         from: email,
         text: this.state.text,
-        type: 'text',
+        type: "text",
         createdAt: Date.now(),
         taskId: this.state.childKey
       })
@@ -1466,7 +1843,7 @@ class TaskTable extends React.Component {
   };
 
   handleFileChange(event) {
-    this.setState({ loading: true })
+    this.setState({ loading: true });
     const { target } = event;
     const { files } = target;
     let self = this;
@@ -1474,7 +1851,7 @@ class TaskTable extends React.Component {
     if (files && files[0]) {
       var reader = new FileReader();
       reader.onload = event => {
-        console.log('mime type', files[0].type)
+        console.log("mime type", files[0].type);
         let mimeType = files[0].type;
 
         var metadata = {
@@ -1483,48 +1860,54 @@ class TaskTable extends React.Component {
 
         var storageRef = firebase.storage().ref();
 
-        let folder = mimeType.split('/')[0] == 'image' ? 'image/' : 'docs/'
+        let folder = mimeType.split("/")[0] == "image" ? "image/" : "docs/";
 
-        var uploadTask = storageRef.child(`${folder}` + files[0].name).put(files[0], metadata);
+        var uploadTask = storageRef
+          .child(`${folder}` + files[0].name)
+          .put(files[0], metadata);
 
-        uploadTask.on('state_changed', function (snapshot) {
-          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          self.progress(progress)
-          console.log('Upload is ' + progress + '% done');
-        }, function (error) {
-        }, function () {
+        uploadTask.on(
+          "state_changed",
+          function(snapshot) {
+            var progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            self.progress(progress);
+            console.log("Upload is " + progress + "% done");
+          },
+          function(error) {},
+          function() {
+            uploadTask.snapshot.ref
+              .getDownloadURL()
+              .then(function(downloadURL) {
+                const email = firebase.auth().currentUser.email;
+                let taskId = self.state.childKey;
 
-          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-            const email = firebase.auth().currentUser.email;
-            let taskId = self.state.childKey
-
-            const ref = firebase
-              .database()
-              .ref(`Comments`)
-            ref
-              .push({
-                from: email,
-                type: mimeType,
-                url: downloadURL,
-                createdAt: new Date(),
-                taskId: taskId
-              }).
-              then((res) => {
-                self.setState({ loading: false })
-                console.log('Comment Added !!')
-              })
-              .catch(err => {
-                console.log('ERROR !!!')
-              })
-            console.log('File available at', downloadURL);
-          });
-        });
+                const ref = firebase.database().ref(`Comments`);
+                ref
+                  .push({
+                    from: email,
+                    type: mimeType,
+                    url: downloadURL,
+                    createdAt: new Date(),
+                    taskId: taskId
+                  })
+                  .then(res => {
+                    self.setState({ loading: false });
+                    console.log("Comment Added !!");
+                  })
+                  .catch(err => {
+                    console.log("ERROR !!!");
+                  });
+                console.log("File available at", downloadURL);
+              });
+          }
+        );
       };
     }
     reader.readAsDataURL(files[0]);
   }
 
-  progress = (progress) => {
+  progress = progress => {
     const { completed } = this.state;
     this.setState({ completed: completed >= 100 ? 0 : completed + progress });
   };
@@ -1558,15 +1941,15 @@ class TaskTable extends React.Component {
     // const roles = localStorage.getItem("role");
     // const assignees = allcustomers;
     const { classes } = this.props;
-    const { loading } = this.state
+    const { loading } = this.state;
     console.log("asas", this.state.selectedassignee);
     const roles = localStorage.getItem("role");
     const role = roles.slice(1, roles.length - 1);
     const tableData = projects;
-    console.log('Table Data ', tableData);
+    console.log("Table Data ", tableData);
     return (
       <Paper className={classes.root}>
-        {(role === 'Admin' || role === 'Product Owner') ?
+        {role === "Admin" || role === "Product Owner" ? (
           <Button
             onClick={this.projecthandleClickOpen}
             variant="contained"
@@ -1574,10 +1957,9 @@ class TaskTable extends React.Component {
             style={{ fontSize: 10, margin: 10 }}
           >
             Add
-      </Button> :
-          null
-        }
-        {role === 'Admin' ?
+          </Button>
+        ) : null}
+        {role === "Admin" ? (
           <Button
             disabled={!this.state.checkBoxChecked}
             onClick={() => this.handlePdf(this.state.printInvoiceObj)}
@@ -1586,28 +1968,49 @@ class TaskTable extends React.Component {
             style={{ fontSize: 10, margin: 10 }}
           >
             Create Invoice
-    </Button> : null
-        }
+          </Button>
+        ) : null}
         <CustomTable
           onSelectBox={this.handleSelectCheckBox}
           handleClickOpen={this.handleClickOpen}
-          handleEDevEffortsCodeChange={this.handleEDevEffortsCodeChange}
           handleADevEffortsCodeChange={this.handleADevEffortsCodeChange}
           handleDevPaidCodeChange={this.handleDevPaidCodeChange}
           ADevEffort={this.state.ADevEffort}
           DevPaid={this.state.DevPaid}
-          EDevEfforts={this.state.EDevEfforts}
+          handleUProjectCodeCodeChange={this.handleUProjectCodeCodeChange}
+          UProjectCode={this.state.UProjectCode}
           tableData={tableData}
           editing={this.state.editing}
           deleteUser={this.deleteCustomer}
           updateTask={this.updateTask}
           openUpdateProject={this.openUpdateProject}
+          allProjects={this.state.allProjects}
+          allDevs={this.state.allDevs}
+          allCustomers={this.state.allCustomers}
+          handleUTicketSummaryCodeChange={this.handleUTicketSummaryCodeChange}
+          UTicketSummary={this.state.UTicketSummary}
+          handleUDev_SupportCodeChange={this.handleUDev_SupportCodeChange}
+          UDev_Support={this.state.UDev_Support}
+          handleUStatusCodeChange={this.handleUStatusCodeChange}
+          UStatus={this.state.UStatus}
+          handleUNumberCodeChange={this.handleUNumberCodeChange}
+          UNumber={this.state.UNumber}
+          handleULastUpdatedCodeChange={this.handleULastUpdatedCodeChange}
+          ULastUpdated={this.state.ULastUpdated}
+          handleUDevCodeChange={this.handleUDevCodeChange}
+          UDev={this.state.UDev}
+          handleUPriorityCodeChange={this.handleUPriorityCodeChange}
+          UPriority={this.state.UPriority}
+          handleUDeadlineCodeChange={this.handleUDeadlineCodeChange}
+          UDeadline={this.state.UDeadline}
+          handleUCustomerCodeChange={this.handleUCustomerCodeChange}
+          UCustomer={this.state.UCustomer}
         />
         <Dialog
           onClose={this.handleClose}
           aria-labelledby="customized-dialog-title"
           open={this.state.open}
-          maxWidth='md'
+          maxWidth="md"
         >
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
             <Icon style={{ paddingTop: 5 }}>comment </Icon>
@@ -1636,16 +2039,33 @@ class TaskTable extends React.Component {
                 value={this.state.text}
                 onChange={this.handleInputChange}
                 InputProps={{
-                  startAdornment: <InputAdornment position="start"><EditIcon /></InputAdornment>,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <EditIcon />
+                    </InputAdornment>
+                  )
                 }}
               />
 
-              <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', margin: 20, float: 'right' }}>
-
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  margin: 20,
+                  float: "right"
+                }}
+              >
                 <div>
-                  <label id="#bb" style={{ color: 'black' }}>
-                    <i className="material-icons" >attach_file</i>
-                    <input type="file" name="myFile" style={{ display: 'none' }} disabled={loading ? true : false} onChange={this.handleFileChange.bind(this)} />
+                  <label id="#bb" style={{ color: "black" }}>
+                    <i className="material-icons">attach_file</i>
+                    <input
+                      type="file"
+                      name="myFile"
+                      style={{ display: "none" }}
+                      disabled={loading ? true : false}
+                      onChange={this.handleFileChange.bind(this)}
+                    />
                   </label>
                 </div>
 
@@ -1654,80 +2074,82 @@ class TaskTable extends React.Component {
                     variant="contained"
                     color="primary"
                     className={classes.button}
-                    onClick={this.handleMessaging}>
+                    onClick={this.handleMessaging}
+                  >
                     Send
-                  <MessageIcon />
+                    <MessageIcon />
                   </Button>
                 </div>
 
-                {
-                  this.state.completed < 100 ?
-                    <div>
-                      <CircularProgress
-                        className={classes.progress}
-                        variant="static"
-                        value={this.state.completed}
-                        style={{ marginLeft: 10 }}
-                        size={30} />
-                    </div>
-                    :
-                    null
-                }
-
+                {this.state.completed < 100 ? (
+                  <div>
+                    <CircularProgress
+                      className={classes.progress}
+                      variant="static"
+                      value={this.state.completed}
+                      style={{ marginLeft: 10 }}
+                      size={30}
+                    />
+                  </div>
+                ) : null}
               </div>
 
-              {this.state.comments.slice(0).reverse().map(c => (
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row"
-                  }}
-                >
-                  <Avatar
-                    alt="Remy Sharp"
-                    src={profile}
-                    className={classes.avatar}
-                  />
-                  <Paper className={classes.root} elevation={1}>
-                    <Typography
-                      style={{
-                        margin: 10,
-                        fontSize: 13
-                      }}
-                      variant="h6"
-                      component="h4"
-                    >
-                      {c.from}
-                      {/* <span style={{ fontSize: 12 }}> Now</span> */}
-                    </Typography>
-                    {
-                      c.type.split('/')[0] == 'application' ?
+              {this.state.comments
+                .slice(0)
+                .reverse()
+                .map(c => (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row"
+                    }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={profile}
+                      className={classes.avatar}
+                    />
+                    <Paper className={classes.root} elevation={1}>
+                      <Typography
+                        style={{
+                          margin: 10,
+                          fontSize: 13
+                        }}
+                        variant="h6"
+                        component="h4"
+                      >
+                        {c.from}
+                        {/* <span style={{ fontSize: 12 }}> Now</span> */}
+                      </Typography>
+                      {c.type.split("/")[0] == "application" ? (
                         <div style={{ margin: 10 }}>
                           {/* <img src={PDFIcon} width={100} height={100} /> */}
                           <a target="blank" href={c.url}>
                             <img src={PDFIcon} width={100} height={100} />
                           </a>
                         </div>
-                        :
-                        c.type.split('/')[0] == 'image' ?
-                          <div style={{ margin: 10 }}>
-                            <img src={c.url} width={100} height={100} />
-                          </div>
-                          :
-                          <Typography style={{ margin: 10 }} component="p">
-                            {c.text}
-                          </Typography>
-                    }
-                    <Typography style={{ margin: 10, fontSize: 9 }} component="p">
-                      {Date(c.createdAt)}
-                    </Typography>
-                    {/* <Button>
+                      ) : c.type.split("/")[0] == "image" ? (
+                        <div style={{ margin: 10 }}>
+                          <img src={c.url} width={100} height={100} />
+                        </div>
+                      ) : (
+                        <Typography style={{ margin: 10 }} component="p">
+                          {c.text}
+                        </Typography>
+                      )}
+                      <Typography
+                        style={{ margin: 10, fontSize: 9 }}
+                        component="p"
+                      >
+                        {Date(c.createdAt)}
+                      </Typography>
+                      {/* <Button>
                       <Icon>reply</Icon>reply
                     </Button> */}
-                  </Paper>
-                  {/* UserName:<h5>{c.from}</h5>Post:<p>{c.text}</p> */}
-                </div>
-              ))}
+                    </Paper>
+                    {/* UserName:<h5>{c.from}</h5>Post:<p>{c.text}</p> */}
+                  </div>
+                ))}
             </FormControl>
           </DialogContent>
           <DialogActions>
@@ -1786,7 +2208,9 @@ class TaskTable extends React.Component {
                 >
                   {this.state.allProjects.map(project => {
                     return (
-                      <MenuItem value={project.ProjectCode}>{project.ProjectCode}</MenuItem>
+                      <MenuItem value={project.ProjectCode}>
+                        {project.ProjectCode}
+                      </MenuItem>
                     );
                   })}
                 </Select>
@@ -1925,13 +2349,9 @@ class TaskTable extends React.Component {
                   />
                 }
               >
-                {
-                  this.state.allDevs.map((prop, key) => {
-                    return (
-                      <MenuItem value={prop}>{prop.name}</MenuItem>
-                    )
-                  })
-                }
+                {this.state.allDevs.map((prop, key) => {
+                  return <MenuItem value={prop}>{prop.name}</MenuItem>;
+                })}
               </Select>
             </FormControl>
             <FormControl
@@ -2008,14 +2428,9 @@ class TaskTable extends React.Component {
                     />
                   }
                 >
-                  {
-                    this.state.allCustomers.map(c => {
-                      return (
-                        <MenuItem value={c}>{c.customer}</MenuItem>
-                      );
-                    })
-                  }
-
+                  {this.state.allCustomers.map(c => {
+                    return <MenuItem value={c}>{c.customer}</MenuItem>;
+                  })}
                 </Select>
               </FormControl>
             </FormControl>
