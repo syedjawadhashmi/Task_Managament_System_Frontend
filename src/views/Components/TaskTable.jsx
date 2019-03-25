@@ -381,7 +381,6 @@ let CustomTable = ({ ...props }) => {
     allProjects,
     allDevs,
     allCustomers,
-
     handleUTicketSummaryCodeChange,
     UTicketSummary,
     handleUDev_SupportCodeChange,
@@ -399,7 +398,28 @@ let CustomTable = ({ ...props }) => {
     handleUDeadlineCodeChange,
     UDeadline,
     handleUCustomerCodeChange,
-    UCustomer
+    UCustomer,
+
+    handleUEDEffortsCodeChange,
+    UEDEfforts,
+    handleUADEffortsCodeChange,
+    UADEfforts,
+    handleURUDEVCodeChange,
+    URUDEV,
+    handleUDEAmountCodeChange,
+    UDEAmount,
+    handleUDPaidOnCodeChange,
+    UDPaidOn,
+    handleUECEffortsCodeChange,
+    UECEfforts,
+    handleUACEffortsCodeChange,
+    UACEfforts,
+    handleURUCustomerCodeChange,
+    URUCustomer,
+    handleUCEAmountCodeChange,
+    UCEAmount,
+    handleUCPaidOnCodeChange,
+    UCPaidOn
   } = props;
   const roles = localStorage.getItem("role");
   const role = roles.slice(1, roles.length - 1);
@@ -527,6 +547,55 @@ let CustomTable = ({ ...props }) => {
                 UProjectCode == ""
                   ? prop.all_projects.ProjectCode
                   : UProjectCode;
+              let UDev_Support1 =
+                UDev_Support == "" ? prop.all_projects.category : UDev_Support;
+              let UTicketSummary1 =
+                UTicketSummary == ""
+                  ? prop.all_projects.ticketSummary
+                  : UTicketSummary;
+              let UStatus1 = UStatus == "" ? prop.all_projects.status : UStatus;
+              let UNumber1 = UNumber == "" ? prop.all_projects.number : UNumber;
+              let ULastUpdated1 =
+                ULastUpdated == ""
+                  ? prop.all_projects.lastUpdated
+                  : ULastUpdated;
+              let UDev1 = UDev == "" ? prop.all_projects.assigned : UDev;
+              let UPriority1 =
+                UPriority == "" ? prop.all_projects.priority : UPriority;
+              let UDeadline1 =
+                UDeadline == "" ? prop.all_projects.deadline : UDeadline;
+              let UCustomer1 =
+                UCustomer == "" ? prop.all_projects.customer : UCustomer;
+              let UEDEfforts1 =
+                UEDEfforts == ""
+                  ? prop.all_projects.est_dev_efforts
+                  : UEDEfforts;
+              let UADEfforts1 =
+                UADEfforts == ""
+                  ? prop.all_projects.act_dev_efforts
+                  : UADEfforts;
+              let URUDEV1 =
+                URUDEV == "" ? prop.all_projects.rate_unit_dev : URUDEV;
+              let UDEAmount1 =
+                UDEAmount == "" ? prop.all_projects.dev_efforts_amt : UDEAmount;
+              let UDPaidOn1 =
+                UDPaidOn == "" ? prop.all_projects.dev_paid_on : UDPaidOn;
+              let UECEfforts1 =
+                UECEfforts == ""
+                  ? prop.all_projects.est_cus_efforts
+                  : UECEfforts;
+              let UACEfforts1 =
+                UACEfforts == ""
+                  ? prop.all_projects.act_cus_efforts
+                  : UACEfforts;
+              let URUCustomer1 =
+                URUCustomer == ""
+                  ? prop.all_projects.rate_unit_cus
+                  : URUCustomer;
+              let UCEAmount1 =
+                UCEAmount == "" ? prop.all_projects.cus_efforts_amt : UCEAmount;
+              let UCPaidOn1 =
+                UCPaidOn == "" ? prop.all_projects.cus_paid_on : UCPaidOn;
               // console.log('props_data', prop.key)
               return (
                 <TableRow
@@ -595,11 +664,7 @@ let CustomTable = ({ ...props }) => {
                       >
                         <Select
                           onChange={handleUDev_SupportCodeChange}
-                          value={
-                            UDev_Support == ""
-                              ? prop.all_projects.category
-                              : UDev_Support
-                          }
+                          value={UDev_Support1}
                           // displayEmpty
                         >
                           <MenuItem value={"Dev"}>Dev</MenuItem>
@@ -624,11 +689,7 @@ let CustomTable = ({ ...props }) => {
                           fullWidth: true
                         }}
                         onChange={handleUTicketSummaryCodeChange}
-                        value={
-                          UTicketSummary == ""
-                            ? prop.all_projects.ticketSummary
-                            : UTicketSummary
-                        }
+                        value={UTicketSummary1}
                         inputProps={{
                           type: "text"
                         }}
@@ -649,7 +710,7 @@ let CustomTable = ({ ...props }) => {
                       >
                         <Select
                           onChange={handleUStatusCodeChange}
-                          value={UStatus == "" ? "asd" : "UStatus"}
+                          value={UStatus1}
                           // displayEmpty
                         >
                           <MenuItem value={"Open"}>Open</MenuItem>
@@ -674,9 +735,7 @@ let CustomTable = ({ ...props }) => {
                           fullWidth: true
                         }}
                         onChange={handleUNumberCodeChange}
-                        value={
-                          UNumber == "" ? prop.all_projects.number : UNumber
-                        }
+                        value={UNumber1}
                         inputProps={{
                           type: "text"
                         }}
@@ -699,11 +758,7 @@ let CustomTable = ({ ...props }) => {
                           fullWidth: true
                         }}
                         onChange={handleULastUpdatedCodeChange}
-                        value={
-                          ULastUpdated == ""
-                            ? prop.all_projects.lastUpdated
-                            : ULastUpdated
-                        }
+                        value={ULastUpdated1}
                         inputProps={{
                           type: "text"
                         }}
@@ -722,13 +777,10 @@ let CustomTable = ({ ...props }) => {
                         className={[classes.formControl, "form-control"]}
                         variant="outlined"
                       >
-                        <Select
-                          onChange={handleUDevCodeChange}
-                          value={UDev == "" ? prop.all_projects.assigned : UDev}
-                        >
+                        <Select onChange={handleUDevCodeChange} value={UDev1}>
                           {allDevs.map((prop, key) => {
                             return (
-                              <MenuItem value={prop}>{prop.name}</MenuItem>
+                              <MenuItem value={prop.name}>{prop.name}</MenuItem>
                             );
                           })}
                         </Select>
@@ -749,11 +801,7 @@ let CustomTable = ({ ...props }) => {
                       >
                         <Select
                           onChange={handleUPriorityCodeChange}
-                          value={
-                            UPriority == ""
-                              ? prop.all_projects.priority
-                              : UPriority
-                          }
+                          value={UPriority1}
                           // displayEmpty
                         >
                           <MenuItem value={"High"}>High</MenuItem>
@@ -779,11 +827,7 @@ let CustomTable = ({ ...props }) => {
                           fullWidth: true
                         }}
                         onChange={handleUDeadlineCodeChange}
-                        value={
-                          UDeadline == ""
-                            ? prop.all_projects.deadline
-                            : UDeadline
-                        }
+                        value={UDeadline1}
                         inputProps={{
                           type: "text"
                         }}
@@ -804,13 +848,16 @@ let CustomTable = ({ ...props }) => {
                       >
                         <Select
                           onChange={handleUCustomerCodeChange}
-                          value={
-                            UCustomer ? prop.all_projects.customer : UCustomer
-                          }
+                          value={UCustomer1}
                           // displayEmpty
                         >
                           {allCustomers.map(c => {
-                            return <MenuItem value={c}>{c.customer}</MenuItem>;
+                            debugger
+                            return (
+                              <MenuItem value={c.customer}>
+                                {c.customer}
+                              </MenuItem>
+                            );
                           })}
                         </Select>
                       </FormControl>
@@ -832,8 +879,8 @@ let CustomTable = ({ ...props }) => {
                           formControlProps={{
                             fullWidth: true
                           }}
-                          // onChange={handleADevEffortsCodeChange}
-                          // value={ADevEffort}
+                          onChange={handleUEDEffortsCodeChange}
+                          value={UEDEfforts1}
                           inputProps={{
                             type: "text"
                           }}
@@ -857,8 +904,8 @@ let CustomTable = ({ ...props }) => {
                           formControlProps={{
                             fullWidth: true
                           }}
-                          // onChange={handleADevEffortsCodeChange}
-                          // value={ADevEffort}
+                          onChange={handleUADEffortsCodeChange}
+                          value={UADEfforts1}
                           inputProps={{
                             type: "text"
                           }}
@@ -882,8 +929,8 @@ let CustomTable = ({ ...props }) => {
                           formControlProps={{
                             fullWidth: true
                           }}
-                          // onChange={handleADevEffortsCodeChange}
-                          // value={ADevEffort}
+                          onChange={handleURUDEVCodeChange}
+                          value={URUDEV1}
                           inputProps={{
                             type: "text"
                           }}
@@ -907,8 +954,8 @@ let CustomTable = ({ ...props }) => {
                           formControlProps={{
                             fullWidth: true
                           }}
-                          // onChange={handleADevEffortsCodeChange}
-                          // value={ADevEffort}
+                          onChange={handleUDEAmountCodeChange}
+                          value={UDEAmount1}
                           inputProps={{
                             type: "text"
                           }}
@@ -932,8 +979,8 @@ let CustomTable = ({ ...props }) => {
                           formControlProps={{
                             fullWidth: true
                           }}
-                          // onChange={handleADevEffortsCodeChange}
-                          // value={ADevEffort}
+                          onChange={handleUDPaidOnCodeChange}
+                          value={UDPaidOn1}
                           inputProps={{
                             type: "text"
                           }}
@@ -959,8 +1006,8 @@ let CustomTable = ({ ...props }) => {
                           formControlProps={{
                             fullWidth: true
                           }}
-                          // onChange={handleADevEffortsCodeChange}
-                          // value={ADevEffort}
+                          onChange={handleUECEffortsCodeChange}
+                          value={UECEfforts1}
                           inputProps={{
                             type: "text"
                           }}
@@ -986,8 +1033,8 @@ let CustomTable = ({ ...props }) => {
                           formControlProps={{
                             fullWidth: true
                           }}
-                          // onChange={handleADevEffortsCodeChange}
-                          // value={ADevEffort}
+                          onChange={handleUACEffortsCodeChange}
+                          value={UACEfforts1}
                           inputProps={{
                             type: "text"
                           }}
@@ -1013,8 +1060,8 @@ let CustomTable = ({ ...props }) => {
                           formControlProps={{
                             fullWidth: true
                           }}
-                          // onChange={handleADevEffortsCodeChange}
-                          // value={ADevEffort}
+                          onChange={handleURUCustomerCodeChange}
+                          value={URUCustomer1}
                           inputProps={{
                             type: "text"
                           }}
@@ -1040,8 +1087,8 @@ let CustomTable = ({ ...props }) => {
                           formControlProps={{
                             fullWidth: true
                           }}
-                          // onChange={handleADevEffortsCodeChange}
-                          // value={ADevEffort}
+                          onChange={handleUCEAmountCodeChange}
+                          value={UCEAmount1}
                           inputProps={{
                             type: "text"
                           }}
@@ -1067,8 +1114,8 @@ let CustomTable = ({ ...props }) => {
                           formControlProps={{
                             fullWidth: true
                           }}
-                          // onChange={handleADevEffortsCodeChange}
-                          // value={ADevEffort}
+                          onChange={handleUCPaidOnCodeChange}
+                          value={UCPaidOn1}
                           inputProps={{
                             type: "text"
                           }}
@@ -1299,7 +1346,17 @@ class TaskTable extends React.Component {
     UDev: "",
     UPriority: "",
     UDeadline: "",
-    UCustomer: ""
+    UCustomer: "",
+    UEDEfforts: "",
+    UADEfforts: "",
+    URUDEV: "",
+    UDEAmount: "",
+    UDPaidOn: "",
+    UECEfforts: "",
+    UACEfforts: "",
+    URUCustomer: "",
+    UCEAmount: "",
+    UCPaidOn: ""
   };
   componentDidMount() {
     this.showTasks();
@@ -1372,11 +1429,15 @@ class TaskTable extends React.Component {
         const role =
           localStorage.getItem("role") &&
           localStorage.getItem("role").replace(/['"]+/g, "");
-
+        let customer = this.state.allCustomers.find(
+          x => x.email == project.val().customer
+        );
+        let isExist = customer && customer.users.find(x => x.email == email);
         if (
           project.val().createdBy == email ||
           role == "Admin" ||
-          (role == "Developer" && project.val().assigned == email)
+          (role == "Developer" && project.val().assigned == email) ||
+          isExist
         ) {
           currentpost.push(obj);
           this.setState({
@@ -1518,6 +1579,36 @@ class TaskTable extends React.Component {
   };
   handleUCustomerCodeChange = e => {
     this.setState({ UCustomer: e.target.value });
+  };
+  handleUEDEffortsCodeChange = e => {
+    this.setState({ UEDEfforts: e.target.value });
+  };
+  handleUADEffortsCodeChange = e => {
+    this.setState({ UADEfforts: e.target.value });
+  };
+  handleURUDEVCodeChange = e => {
+    this.setState({ URUDEV: e.target.value });
+  };
+  handleUDEAmountCodeChange = e => {
+    this.setState({ UDEAmount: e.target.value });
+  };
+  handleUDPaidOnCodeChange = e => {
+    this.setState({ UDPaidOn: e.target.value });
+  };
+  handleUECEffortsCodeChange = e => {
+    this.setState({ UECEfforts: e.target.value });
+  };
+  handleUACEffortsCodeChange = e => {
+    this.setState({ UACEfforts: e.target.value });
+  };
+  handleURUCustomerCodeChange = e => {
+    this.setState({ URUCustomer: e.target.value });
+  };
+  handleUCEAmountCodeChange = e => {
+    this.setState({ UCEAmount: e.target.value });
+  };
+  handleUCPaidOnCodeChange = e => {
+    this.setState({ UCPaidOn: e.target.value });
   };
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
@@ -1672,43 +1763,75 @@ class TaskTable extends React.Component {
     // e.preventDefault();
     const {
       UProjectCode,
-      ADevEffort,
-      DevPaid,
-      est_dev_efforts,
-      act_dev_efforts,
-      rate_unit_dev,
-      dev_efforts_amt,
-      dev_paid_on,
-      est_cus_efforts,
-      act_cus_efforts,
-      rate_unit_cus,
-      cus_efforts_amt,
-      cus_paid_on
+      UTicketSummary,
+      UDev_Support,
+      UStatus,
+      UNumber,
+      ULastUpdated,
+      UDev,
+      UPriority,
+      UDeadline,
+      UCustomer,
+      UEDEfforts,
+      UADEfforts,
+      URUDEV,
+      UDEAmount,
+      UDPaidOn,
+      UECEfforts,
+      UACEfforts,
+      URUCustomer,
+      UCEAmount,
+      UCPaidOn
     } = this.state;
 
     firebase
       .database()
       .ref("Tasks/" + key)
       .update({
+        ticketSummary: UTicketSummary,
         ProjectCode: UProjectCode,
-        status: DevPaid
-        // est_dev_efforts: est_dev_efforts,
-        // act_dev_efforts: act_dev_efforts,
-        // rate_unit_dev: rate_unit_dev,
-        // dev_efforts_amt: dev_efforts_amt,
-        // dev_paid_on: dev_paid_on,
-        // est_cus_efforts: est_cus_efforts,
-        // act_cus_efforts: act_cus_efforts,
-        // rate_unit_cus: rate_unit_cus,
-        // cus_efforts_amt: cus_efforts_amt,
-        // cus_paid_on: cus_paid_on
+        customer: UCustomer,
+        status: UStatus,
+        category: UDev_Support,
+        priority: UPriority,
+        number: UNumber,
+        assigned: UDev,
+        deadline: UDeadline,
+        lastUpdated: ULastUpdated,
+        est_dev_efforts: UEDEfforts,
+        act_dev_efforts: UADEfforts,
+        rate_unit_dev: URUDEV,
+        dev_efforts_amt: UDEAmount,
+        dev_paid_on: UDPaidOn,
+        est_cus_efforts: UECEfforts,
+        act_cus_efforts: UACEfforts,
+        rate_unit_cus: URUCustomer,
+        cus_efforts_amt: UCEAmount,
+        cus_paid_on: UCPaidOn
       })
       .then(() => {
         alert("Task updated successfully");
         this.setState({
-          DevPaid: "",
-          ADevEffort: "",
-          EDevEfforts: "",
+          UProjectCode: "",
+          UTicketSummary: "",
+          UDev_Support: "",
+          UStatus: "",
+          UNumber: "",
+          ULastUpdated: "",
+          UDev: "",
+          UPriority: "",
+          UDeadline: "",
+          UCustomer: "",
+          UEDEfforts: "",
+          UADEfforts: "",
+          URUDEV: "",
+          UDEAmount: "",
+          UDPaidOn: "",
+          UECEfforts: "",
+          UACEfforts: "",
+          URUCustomer: "",
+          UCEAmount: "",
+          UCPaidOn: "",
           editing: "",
           projects: []
         });
@@ -2005,6 +2128,26 @@ class TaskTable extends React.Component {
           UDeadline={this.state.UDeadline}
           handleUCustomerCodeChange={this.handleUCustomerCodeChange}
           UCustomer={this.state.UCustomer}
+          handleUEDEffortsCodeChange={this.handleUEDEffortsCodeChange}
+          UEDEfforts={this.state.UEDEfforts}
+          handleUADEffortsCodeChange={this.handleUADEffortsCodeChange}
+          UADEfforts={this.state.UADEfforts}
+          handleURUDEVCodeChange={this.handleURUDEVCodeChange}
+          URUDEV={this.state.URUDEV}
+          handleUDEAmountCodeChange={this.handleUDEAmountCodeChange}
+          UDEAmount={this.state.UDEAmount}
+          handleUDPaidOnCodeChange={this.handleUDPaidOnCodeChange}
+          UDPaidOn={this.state.UDPaidOn}
+          handleUECEffortsCodeChange={this.handleUECEffortsCodeChange}
+          UECEfforts={this.state.UECEfforts}
+          handleUACEffortsCodeChange={this.handleUACEffortsCodeChange}
+          UACEfforts={this.state.UACEfforts}
+          handleURUCustomerCodeChange={this.handleURUCustomerCodeChange}
+          URUCustomer={this.state.URUCustomer}
+          handleUCEAmountCodeChange={this.handleUCEAmountCodeChange}
+          UCEAmount={this.state.UCEAmount}
+          handleUCPaidOnCodeChange={this.handleUCPaidOnCodeChange}
+          UCPaidOn={this.state.UCPaidOn}
         />
         <Dialog
           onClose={this.handleClose}
