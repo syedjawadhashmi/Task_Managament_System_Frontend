@@ -472,7 +472,23 @@ let CustomTable = ({ ...props }) => {
       "Developer Paid on",
       "Action"
     ];
-  } else {
+  } else if(role == "Consultant") {
+    var tableHead = [
+      "Select",
+      "#",
+      "Project Code",
+      "Dev / Support",
+      "Ticket Summary",
+      "Status",
+      "Number",
+      "Last Updated",
+      "Assigned",
+      "Priority",
+      "Deadline",
+      "Customer",
+      "Action"
+    ];
+  }  else {
     var tableHead = [
       "Select",
       "#",
@@ -1191,7 +1207,7 @@ let CustomTable = ({ ...props }) => {
                             />
                           )
                       ) : null}
-                    {role == "Admin" || role == "Product Owner" ? (
+                    {role == "Admin" ? (
                       <DeleteButton
                         deleteUser={deleteUser}
                         asd={prop.key}
