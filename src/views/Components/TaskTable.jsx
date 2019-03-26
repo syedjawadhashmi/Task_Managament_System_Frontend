@@ -1494,12 +1494,22 @@ class TaskTable extends React.Component {
   };
   handleProjectCodeChange = e => {
     this.setState({ ProjectCode: e.target.value });
+    if(this.state.category && e.target.value) {
+      this.setState({
+        number: `${e.target.value}-${this.state.category}- ${Math.floor(Math.random() * 1000)}`
+      });
+    }
   };
   handlestatusChange = e => {
     this.setState({ status: e.target.value });
   };
   handlecategoryChange = e => {
     this.setState({ category: e.target.value });
+    if(this.state.ProjectCode && e.target.value) {
+      this.setState({
+        number: `${this.state.ProjectCode}-${e.target.value}- ${Math.floor(Math.random() * 1000)}`
+      });
+    }
   };
   handleUProjectCodeCodeChange = e => {
     this.setState({ UProjectCode: e.target.value });
@@ -2449,6 +2459,7 @@ class TaskTable extends React.Component {
             </FormControl>
             <FormControl fullWidth style={{ marginTop: 10 }}>
               <CustomInput
+                disabled={true}
                 id="required"
                 labelText="Number"
                 formControlProps={{
@@ -2457,7 +2468,7 @@ class TaskTable extends React.Component {
                 value={number}
                 onChange={this.handlenumberChange}
                 inputProps={{
-                  type: "number"
+                  type: "text"
                 }}
               />
             </FormControl>
