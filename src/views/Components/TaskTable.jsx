@@ -527,7 +527,7 @@ let CustomTable = ({ ...props }) => {
         >
           {tableData &&
             tableData.map((prop, key) => {
-              // debugger
+              debugger
               var rowColor = "";
               var rowColored = false;
               if (prop.color !== undefined) {
@@ -596,6 +596,12 @@ let CustomTable = ({ ...props }) => {
                 UCEAmount == "" ? prop.all_projects.cus_efforts_amt : UCEAmount;
               let UCPaidOn1 =
                 UCPaidOn == "" ? prop.all_projects.cus_paid_on : UCPaidOn;
+
+                let date = new Date(prop.all_projects.lastUpdated).getDate()
+                let month = new Date(prop.all_projects.lastUpdated).getMonth() + 1
+                let year = new Date(prop.all_projects.lastUpdated).getFullYear()
+                let lastUpdatedDate = `${date}/${month}/${year}`
+
               // console.log('props_data', prop.key)
               return (
                 <TableRow
@@ -628,29 +634,31 @@ let CustomTable = ({ ...props }) => {
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
-                    {editing == prop.key ? (
-                      <FormControl
-                        style={{ marginTop: 10 }}
-                        className={[classes.formControl, "form-control"]}
-                        variant="outlined"
-                      >
-                        <Select
-                          onChange={handleUProjectCodeCodeChange}
-                          value={UProjectCode1}
-                        // displayEmpty
-                        >
-                          {allProjects.map(project => {
-                            return (
-                              <MenuItem value={project.ProjectCode}>
-                                {project.ProjectCode}
-                              </MenuItem>
-                            );
-                          })}
-                        </Select>
-                      </FormControl>
-                    ) : (
+                    {
+                    //   editing == prop.key ? (
+                    //   <FormControl
+                    //     style={{ marginTop: 10 }}
+                    //     className={[classes.formControl, "form-control"]}
+                    //     variant="outlined"
+                    //   >
+                    //     <Select
+                    //       onChange={handleUProjectCodeCodeChange}
+                    //       value={UProjectCode1}
+                    //     // displayEmpty
+                    //     >
+                    //       {allProjects.map(project => {
+                    //         return (
+                    //           <MenuItem value={project.ProjectCode}>
+                    //             {project.ProjectCode}
+                    //           </MenuItem>
+                    //         );
+                    //       })}
+                    //     </Select>
+                    //   </FormControl>
+                    // ) : (
                         prop.all_projects.ProjectCode
-                      )}
+                      // )
+                      }
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -748,24 +756,28 @@ let CustomTable = ({ ...props }) => {
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
-                    {editing == prop.key ? (
-                      <CustomInput
-                        id="required"
-                        md={12}
-                        lg={12}
-                        labelText="Last Updated"
-                        formControlProps={{
-                          fullWidth: true
-                        }}
-                        onChange={handleULastUpdatedCodeChange}
-                        value={ULastUpdated1}
-                        inputProps={{
-                          type: "text"
-                        }}
-                      />
-                    ) : (
-                        prop.all_projects.lastUpdated
-                      )}
+                    {
+                    // (
+                      // <CustomInput
+                      // disabled
+                      //   id="required"
+                      //   md={12}
+                      //   lg={12}
+                      //   labelText="Last Updated"
+                      //   formControlProps={{
+                      //     fullWidth: true
+                      //   }}
+                      //   onChange={handleULastUpdatedCodeChange}
+                      //   value={ULastUpdated1}
+                      //   inputProps={{
+                      //     type: "text"
+                      //   }}
+                      // />
+                    // ) : (
+                        // prop.all_projects.lastUpdated
+                        lastUpdatedDate
+                      // )
+                      }
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -840,7 +852,7 @@ let CustomTable = ({ ...props }) => {
                     className={classes.tableCell}
                     colSpan={prop.colspan}
                   >
-                    {editing == prop.key ? (
+                    {/* {editing == prop.key ? (
                       <FormControl
                         style={{ marginTop: 10 }}
                         className={[classes.formControl, "form-control"]}
@@ -861,9 +873,9 @@ let CustomTable = ({ ...props }) => {
                           })}
                         </Select>
                       </FormControl>
-                    ) : (
-                        prop.all_projects.customer
-                      )}
+                    ) : ( */}
+                        {prop.all_projects.customer}
+                      {/* )} */}
                   </TableCell>
                   {role == "Admin" || role == "Developer" ? (
                     <TableCell
@@ -1198,6 +1210,7 @@ class EditButton extends React.Component {
   render() {
     const { edit, _param, _route, asd, v } = this.props;
     console.log("parm", _param);
+    debugger
     return (
       <div>
         {edit ? (
@@ -1482,7 +1495,9 @@ class TaskTable extends React.Component {
     this.setState({ ticketSummary: e.target.value });
   };
   handleProjectCodeChange = e => {
-    this.setState({ ProjectCode: e.target.value });
+    let companyEmail = e.target.value.customer
+    let selectedCustomer = this.state.allCustomers.find(cust => cust.email == companyEmail)
+    this.setState({ ProjectCode: e.target.value, customer: selectedCustomer });
   };
   handlestatusChange = e => {
     this.setState({ status: e.target.value });
@@ -1747,22 +1762,35 @@ class TaskTable extends React.Component {
   };
 
   openUpdateProject = _param => {
+    debugger
+    console.log('jiye mutahida', _param)
     this.setState({ editing: _param.key });
     // this.projecthandleClickOpen();
-    // if (_param !== "") {
-    //   this.setState({
-    //     newProjectName: _param.newProjectName,
-    //     ProjectCode: _param.ProjectCode,
-    //     Rate: _param.Rate,
-    //     rate_unit: _param.rate_unit,
-    //     customer: _param.customer,
-    //     currency: _param.currency,
-    //     projectStartDate: _param.projectStartDate,
-    //     projectEstimationEndDate: _param.projectEstimationEndDate,
-    //     projectActualEndDate: _param.projectActualEndDate,
-    //     _param: _param
-    //   });
-    // }
+    _param =  _param.all_projects
+    if (_param !== "") {
+      this.setState({
+        UProjectCode: _param.ProjectCode,
+      UTicketSummary: _param.ticketSummary,
+      UDev_Support: _param.category,
+      UStatus: _param.status,
+      UNumber: _param.number,
+      ULastUpdated: Date.now(),
+      UDev: _param.assigned,
+      UPriority: _param.priority,
+      UDeadline: _param.deadline,
+      UCustomer: _param.customer,
+      UEDEfforts: _param.est_dev_efforts,
+      UADEfforts: _param.act_dev_efforts,
+      URUDEV: _param.rate_unit_dev,
+      UDEAmount: _param.est_dev_efforts,
+      UDPaidOn: _param.dev_paid_on,
+      UECEfforts: _param.est_cus_efforts,
+      UACEfforts: _param.act_cus_efforts,
+      URUCustomer: _param.rate_unit_cus,
+      UCEAmount: _param.cus_efforts_amt,
+      UCPaidO: _param.cus_paid_on
+      });
+    }
   };
   updateTask = (e, key) => {
     // e.preventDefault();
@@ -1788,6 +1816,8 @@ class TaskTable extends React.Component {
       UCEAmount,
       UCPaidOn
     } = this.state;
+
+    debugger
 
     firebase
       .database()
@@ -1879,7 +1909,7 @@ class TaskTable extends React.Component {
       .push({
         uid: userId,
         ticketSummary: ticketSummary,
-        ProjectCode: ProjectCode,
+        ProjectCode: ProjectCode.ProjectCode,
         status: status,
         category: category,
         customer: customer.email,
@@ -1887,7 +1917,7 @@ class TaskTable extends React.Component {
         number: number,
         assigned: assignedDev,
         deadline: deadline,
-        lastUpdated: lastUpdated,
+        lastUpdated: Date.now(),
         est_dev_efforts: est_dev_efforts,
         act_dev_efforts: act_dev_efforts,
         rate_unit_dev: rate_unit_dev,
@@ -2450,7 +2480,7 @@ class TaskTable extends React.Component {
                 >
                   {this.state.allProjects.map(project => {
                     return (
-                      <MenuItem value={project.ProjectCode}>
+                      <MenuItem value={project}>
                         {project.ProjectCode}
                       </MenuItem>
                     );
@@ -2546,7 +2576,7 @@ class TaskTable extends React.Component {
                 }}
               />
             </FormControl>
-            <FormControl
+            {/* <FormControl
               style={{ marginTop: 10 }}
               className={[classes.formControl, "form-control"]}
               variant="outlined"
@@ -2563,7 +2593,7 @@ class TaskTable extends React.Component {
                   type: "text"
                 }}
               />
-            </FormControl>
+            </FormControl> */}
             <FormControl
               style={{ marginTop: 10 }}
               className={[classes.formControl, "form-control"]}
@@ -2643,7 +2673,7 @@ class TaskTable extends React.Component {
                   }}
                 />
               </FormControl>
-              <FormControl
+              {/* <FormControl
                 style={{ marginTop: 10 }}
                 className={[classes.formControl, "form-control"]}
                 variant="outlined"
@@ -2674,7 +2704,22 @@ class TaskTable extends React.Component {
                     return <MenuItem value={c}>{c.customer}</MenuItem>;
                   })}
                 </Select>
+              </FormControl> */}
+
+              <FormControl>
+
+                <TextField
+                  disabled
+                  id="outlined-disabled"
+                  label={'Customer'}
+                  value={customer ? customer.customer : 'Customer'}
+                  className={classes.textField}
+                  margin="normal"
+                  variant="outlined"
+                />
               </FormControl>
+
+
             </FormControl>
             {role == "Admin" ? (
               <FormControl fullWidth style={{ marginTop: 10 }}>

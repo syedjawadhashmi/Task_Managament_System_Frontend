@@ -692,7 +692,7 @@ class Tables extends React.Component {
   handleCustomerChange = e => {
     this.state.allcustomers &&
       this.state.allcustomers.map(user => {
-        if (e.target.value == user.all_customers.customer) {
+        if (e.target.value == user.all_customers.email) {
           this.setState({
             assignee: user.all_customers.users
           });
@@ -1220,7 +1220,7 @@ class Tables extends React.Component {
                 {allcustomers &&
                   allcustomers.map((prop, key) => {
                     return (
-                      <MenuItem value={prop.all_customers.customer}>
+                      <MenuItem value={prop.all_customers.email}>
                         {prop.all_customers.customer}
                       </MenuItem>
                     );
@@ -1299,7 +1299,7 @@ class Tables extends React.Component {
                   allcustomers.map((prop, key) => {
                     if (
                       this.state.customer ==
-                      prop.all_customers.customer + prop.all_customers.type
+                      prop.all_customers.email + prop.all_customers.type
                     ) {
                       return (
                         <MenuItem value={prop.all_customers.currency}>
