@@ -431,7 +431,7 @@ let CustomTable = ({ ...props }) => {
       "Dev / Support",
       "Ticket Summary",
       "Status",
-      "Number",
+      "Task Code",
       "Last Updated",
       "Assigned",
       "Priority",
@@ -457,7 +457,7 @@ let CustomTable = ({ ...props }) => {
       "Dev / Support",
       "Ticket Summary",
       "Status",
-      "Number",
+      "Task Code",
       "Last Updated",
       "Assigned",
       "Priority",
@@ -478,7 +478,7 @@ let CustomTable = ({ ...props }) => {
       "Dev / Support",
       "Ticket Summary",
       "Status",
-      "Number",
+      "Task Code",
       "Last Updated",
       "Assigned",
       "Priority",
@@ -1498,12 +1498,23 @@ class TaskTable extends React.Component {
     let companyEmail = e.target.value.customer
     let selectedCustomer = this.state.allCustomers.find(cust => cust.email == companyEmail)
     this.setState({ ProjectCode: e.target.value, customer: selectedCustomer, rate_unit_cus: 'Hourly' });
+    if(this.state.category && e.target.value) {
+      this.setState({
+        number: `${e.target.value.ProjectCode}-${this.state.category}- ${Math.floor(Math.random() * 1000)}`
+      });
+    }
   };
   handlestatusChange = e => {
     this.setState({ status: e.target.value });
   };
   handlecategoryChange = e => {
     this.setState({ category: e.target.value });
+    console.log(this.state.ProjectCode);
+    if(this.state.ProjectCode && e.target.value) {
+      this.setState({
+        number: `${this.state.ProjectCode.ProjectCode}-${e.target.value}- ${Math.floor(Math.random() * 1000)}`
+      });
+    }
   };
   handleUProjectCodeCodeChange = e => {
     this.setState({ UProjectCode: e.target.value });
@@ -2564,15 +2575,16 @@ class TaskTable extends React.Component {
             </FormControl>
             <FormControl fullWidth style={{ marginTop: 10 }}>
               <CustomInput
+                disabled={true}
                 id="required"
-                labelText="Number"
+                labelText="Task Code"
                 formControlProps={{
                   fullWidth: true
                 }}
                 value={number}
                 onChange={this.handlenumberChange}
                 inputProps={{
-                  type: "number"
+                  type: "text"
                 }}
               />
             </FormControl>
