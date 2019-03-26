@@ -56,7 +56,7 @@ class CustomerList extends React.Component {
           });
         }
 
-        const found = obj.all_customers.users.some(el => el.email === email);
+        const found = obj.all_customers.users && obj.all_customers.users.some(el => el.email === email);
         if (found) {
           currentpost.push(obj);
 

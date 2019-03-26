@@ -228,13 +228,13 @@ const toolbarStyles = theme => ({
   highlight:
     theme.palette.type === "light"
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark
+      },
   spacer: {
     flex: "1 1 100%"
   },
@@ -261,19 +261,19 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-          <Button
-            variant="contained"
-            onClick={projecthandleClickOpen}
-            color="primary"
-            id="tableTitle"
-            className={classes.button}
-          >
-            add
+            <Button
+              variant="contained"
+              onClick={projecthandleClickOpen}
+              color="primary"
+              id="tableTitle"
+              className={classes.button}
+            >
+              add
           </Button>
-          // <Typography variant="h6" id="tableTitle">
-          //   Nutrition
-          // </Typography>
-        )}
+            // <Typography variant="h6" id="tableTitle">
+            //   Nutrition
+            // </Typography>
+          )}
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
@@ -284,12 +284,12 @@ let EnhancedTableToolbar = props => {
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
+            <Tooltip title="Filter list">
+              <IconButton aria-label="Filter list">
+                <FilterListIcon />
+              </IconButton>
+            </Tooltip>
+          )}
       </div>
     </Toolbar>
   );
@@ -612,11 +612,11 @@ let CustomTable = ({ ...props }) => {
                         onChange={e => onSelectBox(prop, e)}
                       />
                     ) : (
-                      <Checkbox
-                        // indeterminate={false}
-                        disabled={true}
-                      />
-                    )}
+                        <Checkbox
+                          // indeterminate={false}
+                          disabled={true}
+                        />
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -637,7 +637,7 @@ let CustomTable = ({ ...props }) => {
                         <Select
                           onChange={handleUProjectCodeCodeChange}
                           value={UProjectCode1}
-                          // displayEmpty
+                        // displayEmpty
                         >
                           {allProjects.map(project => {
                             return (
@@ -649,8 +649,8 @@ let CustomTable = ({ ...props }) => {
                         </Select>
                       </FormControl>
                     ) : (
-                      prop.all_projects.ProjectCode
-                    )}
+                        prop.all_projects.ProjectCode
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -665,15 +665,15 @@ let CustomTable = ({ ...props }) => {
                         <Select
                           onChange={handleUDev_SupportCodeChange}
                           value={UDev_Support1}
-                          // displayEmpty
+                        // displayEmpty
                         >
                           <MenuItem value={"Dev"}>Dev</MenuItem>
                           <MenuItem value={"Support"}>Support</MenuItem>
                         </Select>
                       </FormControl>
                     ) : (
-                      prop.all_projects.category
-                    )}
+                        prop.all_projects.category
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -695,8 +695,8 @@ let CustomTable = ({ ...props }) => {
                         }}
                       />
                     ) : (
-                      prop.all_projects.ticketSummary
-                    )}
+                        prop.all_projects.ticketSummary
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -711,15 +711,15 @@ let CustomTable = ({ ...props }) => {
                         <Select
                           onChange={handleUStatusCodeChange}
                           value={UStatus1}
-                          // displayEmpty
+                        // displayEmpty
                         >
                           <MenuItem value={"Open"}>Open</MenuItem>
                           <MenuItem value={"Close"}>Close</MenuItem>
                         </Select>
                       </FormControl>
                     ) : (
-                      prop.all_projects.status
-                    )}
+                        prop.all_projects.status
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -741,8 +741,8 @@ let CustomTable = ({ ...props }) => {
                         }}
                       />
                     ) : (
-                      prop.all_projects.number
-                    )}
+                        prop.all_projects.number
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -764,8 +764,8 @@ let CustomTable = ({ ...props }) => {
                         }}
                       />
                     ) : (
-                      prop.all_projects.lastUpdated
-                    )}
+                        prop.all_projects.lastUpdated
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -786,8 +786,8 @@ let CustomTable = ({ ...props }) => {
                         </Select>
                       </FormControl>
                     ) : (
-                      prop.all_projects.assigned
-                    )}
+                        prop.all_projects.assigned
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -802,7 +802,7 @@ let CustomTable = ({ ...props }) => {
                         <Select
                           onChange={handleUPriorityCodeChange}
                           value={UPriority1}
-                          // displayEmpty
+                        // displayEmpty
                         >
                           <MenuItem value={"High"}>High</MenuItem>
                           <MenuItem value={"Medium"}>Medium</MenuItem>
@@ -810,8 +810,8 @@ let CustomTable = ({ ...props }) => {
                         </Select>
                       </FormControl>
                     ) : (
-                      prop.all_projects.priority
-                    )}
+                        prop.all_projects.priority
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -833,8 +833,8 @@ let CustomTable = ({ ...props }) => {
                         }}
                       />
                     ) : (
-                      prop.all_projects.deadline
-                    )}
+                        prop.all_projects.deadline
+                      )}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -849,7 +849,7 @@ let CustomTable = ({ ...props }) => {
                         <Select
                           onChange={handleUCustomerCodeChange}
                           value={UCustomer1}
-                          // displayEmpty
+                        // displayEmpty
                         >
                           {allCustomers.map(c => {
                             debugger
@@ -862,8 +862,8 @@ let CustomTable = ({ ...props }) => {
                         </Select>
                       </FormControl>
                     ) : (
-                      prop.all_projects.customer
-                    )}
+                        prop.all_projects.customer
+                      )}
                   </TableCell>
                   {role == "Admin" || role == "Developer" ? (
                     <TableCell
@@ -886,8 +886,8 @@ let CustomTable = ({ ...props }) => {
                           }}
                         />
                       ) : (
-                        prop.all_projects.est_dev_efforts
-                      )}
+                          prop.all_projects.est_dev_efforts
+                        )}
                     </TableCell>
                   ) : null}
                   {role == "Admin" || role == "Developer" ? (
@@ -911,8 +911,8 @@ let CustomTable = ({ ...props }) => {
                           }}
                         />
                       ) : (
-                        prop.all_projects.act_dev_efforts
-                      )}
+                          prop.all_projects.act_dev_efforts
+                        )}
                     </TableCell>
                   ) : null}
                   {role == "Admin" || role == "Developer" ? (
@@ -936,8 +936,8 @@ let CustomTable = ({ ...props }) => {
                           }}
                         />
                       ) : (
-                        prop.all_projects.rate_unit_dev
-                      )}
+                          prop.all_projects.rate_unit_dev
+                        )}
                     </TableCell>
                   ) : null}
                   {role == "Admin" || role == "Developer" ? (
@@ -961,8 +961,8 @@ let CustomTable = ({ ...props }) => {
                           }}
                         />
                       ) : (
-                        prop.all_projects.dev_efforts_amt
-                      )}
+                          prop.all_projects.dev_efforts_amt
+                        )}
                     </TableCell>
                   ) : null}
                   {role == "Admin" || role == "Developer" ? (
@@ -986,145 +986,145 @@ let CustomTable = ({ ...props }) => {
                           }}
                         />
                       ) : (
-                        prop.all_projects.dev_paid_on
-                      )}
+                          prop.all_projects.dev_paid_on
+                        )}
                     </TableCell>
                   ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {editing == prop.key ? (
-                        <CustomInput
-                          id="required"
-                          md={12}
-                          lg={12}
-                          labelText="ECEfforts"
-                          formControlProps={{
-                            fullWidth: true
-                          }}
-                          onChange={handleUECEffortsCodeChange}
-                          value={UECEfforts1}
-                          inputProps={{
-                            type: "text"
-                          }}
-                        />
-                      ) : (
-                        prop.all_projects.est_cus_efforts
-                      )}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {editing == prop.key ? (
+                          <CustomInput
+                            id="required"
+                            md={12}
+                            lg={12}
+                            labelText="ECEfforts"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                            onChange={handleUECEffortsCodeChange}
+                            value={UECEfforts1}
+                            inputProps={{
+                              type: "text"
+                            }}
+                          />
+                        ) : (
+                            prop.all_projects.est_cus_efforts
+                          )}
+                      </TableCell>
+                    ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {editing == prop.key ? (
-                        <CustomInput
-                          id="required"
-                          md={12}
-                          lg={12}
-                          labelText="ACEfforts"
-                          formControlProps={{
-                            fullWidth: true
-                          }}
-                          onChange={handleUACEffortsCodeChange}
-                          value={UACEfforts1}
-                          inputProps={{
-                            type: "text"
-                          }}
-                        />
-                      ) : (
-                        prop.all_projects.act_cus_efforts
-                      )}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {editing == prop.key ? (
+                          <CustomInput
+                            id="required"
+                            md={12}
+                            lg={12}
+                            labelText="ACEfforts"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                            onChange={handleUACEffortsCodeChange}
+                            value={UACEfforts1}
+                            inputProps={{
+                              type: "text"
+                            }}
+                          />
+                        ) : (
+                            prop.all_projects.act_cus_efforts
+                          )}
+                      </TableCell>
+                    ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {editing == prop.key ? (
-                        <CustomInput
-                          id="required"
-                          md={12}
-                          lg={12}
-                          labelText="RUCustomer"
-                          formControlProps={{
-                            fullWidth: true
-                          }}
-                          onChange={handleURUCustomerCodeChange}
-                          value={URUCustomer1}
-                          inputProps={{
-                            type: "text"
-                          }}
-                        />
-                      ) : (
-                        prop.all_projects.rate_unit_cus
-                      )}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {editing == prop.key ? (
+                          <CustomInput
+                            id="required"
+                            md={12}
+                            lg={12}
+                            labelText="RUCustomer"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                            onChange={handleURUCustomerCodeChange}
+                            value={URUCustomer1}
+                            inputProps={{
+                              type: "text"
+                            }}
+                          />
+                        ) : (
+                            prop.all_projects.rate_unit_cus
+                          )}
+                      </TableCell>
+                    ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {editing == prop.key ? (
-                        <CustomInput
-                          id="required"
-                          md={12}
-                          lg={12}
-                          labelText="CEAmount"
-                          formControlProps={{
-                            fullWidth: true
-                          }}
-                          onChange={handleUCEAmountCodeChange}
-                          value={UCEAmount1}
-                          inputProps={{
-                            type: "text"
-                          }}
-                        />
-                      ) : (
-                        prop.all_projects.cus_efforts_amt
-                      )}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {editing == prop.key ? (
+                          <CustomInput
+                            id="required"
+                            md={12}
+                            lg={12}
+                            labelText="CEAmount"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                            onChange={handleUCEAmountCodeChange}
+                            value={UCEAmount1}
+                            inputProps={{
+                              type: "text"
+                            }}
+                          />
+                        ) : (
+                            prop.all_projects.cus_efforts_amt
+                          )}
+                      </TableCell>
+                    ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
-                    <TableCell
-                      className={classes.tableCell}
-                      colSpan={prop.colspan}
-                    >
-                      {editing == prop.key ? (
-                        <CustomInput
-                          id="required"
-                          md={12}
-                          lg={12}
-                          labelText="CPaidOn"
-                          formControlProps={{
-                            fullWidth: true
-                          }}
-                          onChange={handleUCPaidOnCodeChange}
-                          value={UCPaidOn1}
-                          inputProps={{
-                            type: "text"
-                          }}
-                        />
-                      ) : (
-                        prop.all_projects.cus_paid_on
-                      )}
-                    </TableCell>
-                  ) : null}
+                    role == "Product Owner" ||
+                    role == "Consultant" ? (
+                      <TableCell
+                        className={classes.tableCell}
+                        colSpan={prop.colspan}
+                      >
+                        {editing == prop.key ? (
+                          <CustomInput
+                            id="required"
+                            md={12}
+                            lg={12}
+                            labelText="CPaidOn"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                            onChange={handleUCPaidOnCodeChange}
+                            value={UCPaidOn1}
+                            inputProps={{
+                              type: "text"
+                            }}
+                          />
+                        ) : (
+                            prop.all_projects.cus_paid_on
+                          )}
+                      </TableCell>
+                    ) : null}
                   <TableCell
                     className={classes.tableCell}
                     colSpan={prop.colspan}
@@ -1138,45 +1138,45 @@ let CustomTable = ({ ...props }) => {
                       <Comments color="success" />
                     </Button>
                     {role == "Admin" ||
-                    prop.all_projects.createdBy ==
+                      prop.all_projects.createdBy ==
                       firebase.auth().currentUser.email ? (
-                      editing == prop.key ? (
-                        <EditButton
-                          updateTask={updateTask}
-                          edit={true}
-                          _param={prop}
-                          v={prop.key}
-                          asd={key}
-                        />
-                      ) : (
-                        <EditButton
-                          openUpdateProject={openUpdateProject}
-                          _param={prop}
-                          v={prop.key}
-                          asd={key}
-                        />
-                      )
-                    ) : null}
+                        editing == prop.key ? (
+                          <EditButton
+                            updateTask={updateTask}
+                            edit={true}
+                            _param={prop}
+                            v={prop.key}
+                            asd={key}
+                          />
+                        ) : (
+                            <EditButton
+                              openUpdateProject={openUpdateProject}
+                              _param={prop}
+                              v={prop.key}
+                              asd={key}
+                            />
+                          )
+                      ) : null}
                     {role === "Consultant" &&
-                    prop.all_projects.createdBy ==
+                      prop.all_projects.createdBy ==
                       firebase.auth().currentUser.email ? (
-                      editing == prop.key ? (
-                        <EditButton
-                          updateTask={updateTask}
-                          edit={true}
-                          _param={prop}
-                          v={prop.key}
-                          asd={key}
-                        />
-                      ) : (
-                        <EditButton
-                          openUpdateProject={openUpdateProject}
-                          _param={prop}
-                          v={prop.key}
-                          asd={key}
-                        />
-                      )
-                    ) : null}
+                        editing == prop.key ? (
+                          <EditButton
+                            updateTask={updateTask}
+                            edit={true}
+                            _param={prop}
+                            v={prop.key}
+                            asd={key}
+                          />
+                        ) : (
+                            <EditButton
+                              openUpdateProject={openUpdateProject}
+                              _param={prop}
+                              v={prop.key}
+                              asd={key}
+                            />
+                          )
+                      ) : null}
                     {role == "Admin" || role == "Product Owner" ? (
                       <DeleteButton
                         deleteUser={deleteUser}
@@ -1210,15 +1210,15 @@ class EditButton extends React.Component {
             <Check color="success" />
           </Button>
         ) : (
-          <Button
-            onClick={() => this.props.openUpdateProject(_param)}
-            edit={true}
-            color="success"
-            simple
-          >
-            <Edit color="success" />
-          </Button>
-        )}
+            <Button
+              onClick={() => this.props.openUpdateProject(_param)}
+              edit={true}
+              color="success"
+              simple
+            >
+              <Edit color="success" />
+            </Button>
+          )}
       </div>
     );
   }
@@ -1356,7 +1356,8 @@ class TaskTable extends React.Component {
     UACEfforts: "",
     URUCustomer: "",
     UCEAmount: "",
-    UCPaidOn: ""
+    UCPaidOn: "",
+    editComment: false
   };
   componentDidMount() {
     this.showTasks();
@@ -1621,9 +1622,13 @@ class TaskTable extends React.Component {
     ref
       .orderByChild("taskId")
       .equalTo(key)
-      .on("child_added", function(snapshot) {
+      .on("child_added", function (snapshot) {
         console.log("ABID SHAKA", snapshot.val());
-        comments.push(snapshot.val());
+        let CommentObj = {
+          comment: snapshot.val(),
+          key: snapshot.key
+        }
+        comments.push(CommentObj);
         self.setState({ comments: comments });
         console.log("JAWAD", self.state.comments);
       });
@@ -1942,27 +1947,59 @@ class TaskTable extends React.Component {
       alert("Please enter a comment first!");
       return false;
     }
+
     const email = firebase.auth().currentUser.email;
-    console.log(this.state.childKey);
 
     const ref = firebase.database().ref(`Comments`);
     // .child(this.state.childKey);
-    ref
-      .push({
-        from: email,
-        text: this.state.text,
-        type: "text",
-        createdAt: Date.now(),
-        taskId: this.state.childKey
-      })
-      .catch(error => {
-        alert("Something went wrong");
-      });
 
-    // alert("Successfully post comment");
-    this.setState({
-      text: ""
-    });
+    if (!this.state.editComment) {
+      debugger
+      ref
+        .push({
+          from: email,
+          text: this.state.text,
+          type: "text",
+          createdAt: Date.now(),
+          taskId: this.state.childKey
+        })
+        .catch(error => {
+          alert("Something went wrong");
+        });
+
+      // alert("Successfully post comment");
+      this.setState({
+        text: ""
+      });
+    }
+
+    else {
+      let key = this.state.editKey;
+      let text = this.state.text;
+      let self = this
+      firebase
+        .database()
+        .ref("Comments/" + key).update({
+          text: text
+        })
+        .then(res => {
+          self.state.comments.map((comment, index) => {
+            if (comment.key == key) {
+              let editedComment = this.state.comments
+              editedComment[index].comment.text = text
+              this.setState({ comments: editedComment })
+            }
+
+          })
+          this.setState({
+            text: ""
+          });
+        })
+        .catch(err => {
+          alert('Something went wrong')
+        })
+    }
+
   };
 
   handleFileChange(event) {
@@ -1991,17 +2028,17 @@ class TaskTable extends React.Component {
 
         uploadTask.on(
           "state_changed",
-          function(snapshot) {
+          function (snapshot) {
             var progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             self.progress(progress);
             console.log("Upload is " + progress + "% done");
           },
-          function(error) {},
-          function() {
+          function (error) { },
+          function () {
             uploadTask.snapshot.ref
               .getDownloadURL()
-              .then(function(downloadURL) {
+              .then(function (downloadURL) {
                 const email = firebase.auth().currentUser.email;
                 let taskId = self.state.childKey;
 
@@ -2035,6 +2072,39 @@ class TaskTable extends React.Component {
     this.setState({ completed: completed >= 100 ? 0 : completed + progress });
   };
 
+  deleteComment(comment, index) {
+    debugger
+    let key = comment.key
+    let self = this
+    firebase
+      .database()
+      .ref("Comments")
+      .child(key)
+      .remove()
+      .then(() => {
+        self.state.comments.map((comment, index) => {
+          if (comment.key == key) {
+            let comments = self.state.comments
+            comments.splice(index, 1)
+            self.setState({ comments: comments })
+            debugger
+          }
+
+        })
+        // let comments = this.state.comments.slice(0).reverse()
+        // comments.splice(index, 1);
+        // this.setState({
+        //   comments: comments.slice(0).reverse(),
+        //   editComment: false,
+        //   text: ''
+        // });
+      });
+  }
+
+  updateComment(comment) {
+    this.setState({ text: comment.comment.text, editComment: true, editKey: comment.key })
+  }
+
   render() {
     const {
       ProjectCode,
@@ -2065,6 +2135,8 @@ class TaskTable extends React.Component {
     // const assignees = allcustomers;
     const { classes } = this.props;
     const { loading } = this.state;
+    debugger
+
     console.log("asas", this.state.selectedassignee);
     const roles = localStorage.getItem("role");
     const role = roles.slice(1, roles.length - 1);
@@ -2072,7 +2144,7 @@ class TaskTable extends React.Component {
     console.log("Table Data ", tableData);
     return (
       <Paper className={classes.root}>
-        {role === "Admin" || role === "Product Owner" ? (
+        {role === "Admin" || role === "Product Owner" || role === "Consultant" ? (
           <Button
             onClick={this.projecthandleClickOpen}
             variant="contained"
@@ -2219,8 +2291,12 @@ class TaskTable extends React.Component {
                     className={classes.button}
                     onClick={this.handleMessaging}
                   >
-                    Send
-                    <MessageIcon />
+                    {!this.state.editComment ? 'Send' : 'Update'}
+
+                    {
+                      !this.state.editComment ?
+                        <MessageIcon /> : <EditIcon />
+                    }
                   </Button>
                 </div>
 
@@ -2240,7 +2316,7 @@ class TaskTable extends React.Component {
               {this.state.comments
                 .slice(0)
                 .reverse()
-                .map(c => (
+                .map((c, index) => (
                   <div
                     style={{
                       display: "flex",
@@ -2261,31 +2337,54 @@ class TaskTable extends React.Component {
                         variant="h6"
                         component="h4"
                       >
-                        {c.from}
+                        {c.comment.from}
                         {/* <span style={{ fontSize: 12 }}> Now</span> */}
                       </Typography>
-                      {c.type.split("/")[0] == "application" ? (
+                      {c.comment.type.split("/")[0] == "application" ? (
                         <div style={{ margin: 10 }}>
                           {/* <img src={PDFIcon} width={100} height={100} /> */}
                           <a target="blank" href={c.url}>
                             <img src={PDFIcon} width={100} height={100} />
                           </a>
                         </div>
-                      ) : c.type.split("/")[0] == "image" ? (
+                      ) : c.comment.type.split("/")[0] == "image" ? (
                         <div style={{ margin: 10 }}>
-                          <img src={c.url} width={100} height={100} />
+                          <img src={c.comment.url} width={100} height={100} />
                         </div>
                       ) : (
-                        <Typography style={{ margin: 10 }} component="p">
-                          {c.text}
-                        </Typography>
-                      )}
+                            <Typography style={{ margin: 10 }} component="p">
+                              {c.comment.text}
+                            </Typography>
+                          )}
                       <Typography
                         style={{ margin: 10, fontSize: 9 }}
                         component="p"
                       >
-                        {Date(c.createdAt)}
+                        {Date(c.comment.createdAt)}
                       </Typography>
+
+                      {
+                        c.comment.type == 'text' ?
+                          <Button
+                            edit={true}
+                            color="success"
+                            onClick={() => this.updateComment(c)}
+                            simple
+                          >
+                            <Edit color="success" />
+                          </Button>
+                          :
+                          null
+                      }
+
+                      <Button
+                        color="danger"
+                        simple
+                        onClick={() => this.deleteComment(c, index)}
+                      >
+                        <Close color="danger" />
+                      </Button>
+
                       {/* <Button>
                       <Icon>reply</Icon>reply
                     </Button> */}

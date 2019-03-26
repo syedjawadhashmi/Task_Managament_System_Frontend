@@ -212,7 +212,7 @@ class Sidebar extends React.Component {
         );
       }
       if(
-        (prop.name == 'Project' && (this.props.role == 'Product' || this.props.role == 'Product Owner' || this.props.role == 'Consultant')) ||
+        // (prop.name == 'Project' && (this.props.role == 'Product' || this.props.role == 'Product Owner' || this.props.role == 'Consultant')) ||
         (prop.name == 'Task' && (this.props.role == 'Product' || this.props.role == 'Product Owner' || this.props.role == 'Consultant' || this.props.role == 'Developer')) ||
         (this.props.role == 'Admin')        
         ){

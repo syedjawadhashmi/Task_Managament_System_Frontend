@@ -2,12 +2,12 @@ import firebase from "firebase";
 
 // Initialize Firebase
 var config = {
-  apiKey: "AIzaSyBYYIbAaPYbWsSgeKM0Muek-cK8lc9gGv4",
-  authDomain: "todo-list-app-dd6f1.firebaseapp.com",
-  databaseURL: "https://todo-list-app-dd6f1.firebaseio.com",
-  projectId: "todo-list-app-dd6f1",
-  storageBucket: "todo-list-app-dd6f1.appspot.com",
-  messagingSenderId: "291723151868"
+  apiKey: "AIzaSyDvRUOXGGNHVkPDQCdxZjleBtd5fEsWmiI",
+    authDomain: "task-management-3134d.firebaseapp.com",
+    databaseURL: "https://task-management-3134d.firebaseio.com",
+    projectId: "task-management-3134d",
+    storageBucket: "task-management-3134d.appspot.com",
+    messagingSenderId: "62087885009"
 };
 
 // Initialize Firebase
