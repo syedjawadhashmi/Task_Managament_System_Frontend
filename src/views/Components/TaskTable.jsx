@@ -470,6 +470,22 @@ let CustomTable = ({ ...props }) => {
       "Developer Paid on",
       "Action"
     ];
+  } else if(role == "Consultant") {
+    var tableHead = [
+      "Select",
+      "#",
+      "Project Code",
+      "Dev / Support",
+      "Ticket Summary",
+      "Status",
+      "Number",
+      "Last Updated",
+      "Assigned",
+      "Priority",
+      "Deadline",
+      "Customer",
+      "Action"
+    ];
   } else {
     var tableHead = [
       "Select",
