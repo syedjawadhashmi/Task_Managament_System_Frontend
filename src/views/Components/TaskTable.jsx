@@ -1497,7 +1497,7 @@ class TaskTable extends React.Component {
   handleProjectCodeChange = e => {
     let companyEmail = e.target.value.customer
     let selectedCustomer = this.state.allCustomers.find(cust => cust.email == companyEmail)
-    this.setState({ ProjectCode: e.target.value, customer: selectedCustomer });
+    this.setState({ ProjectCode: e.target.value, customer: selectedCustomer, rate_unit_cus: 'Hourly' });
   };
   handlestatusChange = e => {
     this.setState({ status: e.target.value });
@@ -1520,7 +1520,7 @@ class TaskTable extends React.Component {
     });
   };
   handleassignedChange = e => {
-    this.setState({ assigned: e.target.value });
+    this.setState({ assigned: e.target.value, rate_unit_dev: 'Hourly' });
   };
   handlepriorityChange = e => {
     this.setState({ priority: e.target.value });
