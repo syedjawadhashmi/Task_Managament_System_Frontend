@@ -55,16 +55,18 @@ class CustomerList extends React.Component {
             posts: ""
           });
         }
-
-        const found = obj.all_customers.users.some(el => el.email === email);
-        if (found) {
-          currentpost.push(obj);
-
-          this.setState({
-            customers: currentpost,
-            posts: ""
-          });
+        if(obj.all_customers.users) {
+          const found = obj.all_customers.users.some(el => el.email === email);
+          if (found) {
+            currentpost.push(obj);
+  
+            this.setState({
+              customers: currentpost,
+              posts: ""
+            });
+          }
         }
+        
       });
 
     // Binding functions here...!

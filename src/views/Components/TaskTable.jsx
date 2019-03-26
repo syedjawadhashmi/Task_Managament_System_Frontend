@@ -1177,7 +1177,7 @@ let CustomTable = ({ ...props }) => {
                         />
                       )
                     ) : null}
-                    {role == "Admin" || role == "Product Owner" ? (
+                    {role == "Admin" ? (
                       <DeleteButton
                         deleteUser={deleteUser}
                         asd={prop.key}
@@ -2072,7 +2072,7 @@ class TaskTable extends React.Component {
     console.log("Table Data ", tableData);
     return (
       <Paper className={classes.root}>
-        {role === "Admin" || role === "Product Owner" ? (
+        {role === "Admin" || role === "Product Owner" || role === "Consultant" ? (
           <Button
             onClick={this.projecthandleClickOpen}
             variant="contained"
