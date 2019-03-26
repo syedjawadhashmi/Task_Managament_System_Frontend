@@ -57,6 +57,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import InputAdornment from "@material-ui/core/InputAdornment";
 import EditIcon from "@material-ui/icons/Edit";
+import DateTimePicker from 'react-datetime-picker';
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -1007,8 +1008,7 @@ let CustomTable = ({ ...props }) => {
                     </TableCell>
                   ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
+                  role == "Product Owner" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
@@ -1034,8 +1034,7 @@ let CustomTable = ({ ...props }) => {
                     </TableCell>
                   ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
+                  role == "Product Owner" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
@@ -1061,8 +1060,7 @@ let CustomTable = ({ ...props }) => {
                     </TableCell>
                   ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
+                  role == "Product Owner" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
@@ -1088,8 +1086,7 @@ let CustomTable = ({ ...props }) => {
                     </TableCell>
                   ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
+                  role == "Product Owner" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
@@ -1115,8 +1112,7 @@ let CustomTable = ({ ...props }) => {
                     </TableCell>
                   ) : null}
                   {role == "Admin" ||
-                  role == "Product Owner" ||
-                  role == "Consultant" ? (
+                  role == "Product Owner" ? (
                     <TableCell
                       className={classes.tableCell}
                       colSpan={prop.colspan}
@@ -1563,7 +1559,8 @@ class TaskTable extends React.Component {
     this.setState({ number: event.target.value });
   };
   handlelastUpdatedChange = e => {
-    this.setState({ lastUpdated: e.target.value });
+    console.log(e);
+    this.setState({ lastUpdated: e });
   };
   handleChangeProductOwner = e => {
     this.setState({ ProductOwner: e.target.value });
@@ -1583,6 +1580,7 @@ class TaskTable extends React.Component {
   };
   handleULastUpdatedCodeChange = e => {
     this.setState({ ULastUpdated: e.target.value });
+    console.console.log((this.state.ULastUpdated));
   };
   handleUDevCodeChange = e => {
     this.setState({ UDev: e.target.value });
@@ -2468,18 +2466,16 @@ class TaskTable extends React.Component {
               className={[classes.formControl, "form-control"]}
               variant="outlined"
             >
-              <CustomInput
-                id="required"
-                labelText="Last Updated"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                onChange={this.handlelastUpdatedChange}
-                value={lastUpdated}
-                inputProps={{
-                  type: "text"
-                }}
-              />
+            Last Updated
+            <DateTimePicker
+          onChange={this.handlelastUpdatedChange}
+          value={lastUpdated}
+          labelText="Last Updated"
+          id="required"
+          formControlProps={{
+            fullWidth: true
+          }}
+        />
             </FormControl>
             <FormControl
               style={{ marginTop: 10 }}
