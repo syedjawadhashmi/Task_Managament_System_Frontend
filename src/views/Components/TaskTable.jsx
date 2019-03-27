@@ -1386,7 +1386,8 @@ class TaskTable extends React.Component {
     URUCustomer: "",
     UCEAmount: "",
     UCPaidOn: "",
-    editComment: false
+    editComment: false,
+    filterTxt: ''
   };
   componentDidMount() {
     this.showTasks();
@@ -2162,6 +2163,44 @@ class TaskTable extends React.Component {
     this.setState({ text: comment.comment.text, editComment: true, editKey: comment.key })
   }
 
+  handleFilterTxt = (e) => {
+    this.setState({
+      filterTxt: e.target.value
+    });
+  };
+  dateIntoString = (date) => {
+    debugger;
+    var dd = date.getDate();
+    var mm = date.getMonth() + 1; //January is 0!
+
+    var yyyy = date.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    var today = dd + '/' + mm + '/' + yyyy;
+    return today;
+  }
+  searchData = (search) => {
+    this.setState({
+      projects: this.state.projects.filter(x => x.all_projects.category == search || x.all_projects.ProjectCode == search ||
+        x.all_projects.ticketSummary == search || x.all_projects.status == search || x.all_projects.number == search ||
+        this.dateIntoString(x.all_projects.lastUpdated) == search || x.all_projects.priority == search || x.all_projects.deadline == search || 
+        x.all_projects.customer == search || x.all_projects.dev_paid_on == search || x.all_projects.cus_paid_on == search) 
+    });
+  }
+  setInitialState = () => {
+    this.setState({
+      filterTxt: '',
+    });
+    this.state.projects = [];
+    console.log(this.state.projects);
+    this.showTasks();
+    console.log(this.state.projects);
+  }
+
   render() {
     const {
       ProjectCode,
@@ -2222,6 +2261,34 @@ class TaskTable extends React.Component {
             Create Invoice
           </Button>
         ) : null}
+        <CustomInput
+                id="required"
+                labelText="Search"
+                formControlProps={{
+                  // fullWidth: true
+                }}
+                onChange={this.handleFilterTxt}
+                value={this.state.filterTxt}
+                inputProps={{
+                  type: "text"
+                }}
+              />
+              <Button
+            onClick={() => this.searchData(this.state.filterTxt)}
+            variant="contained"
+            color="primary"
+            style={{ fontSize: 10, margin: 10 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => this.setInitialState()}
+            variant="contained"
+            color="primary"
+            style={{ fontSize: 10, margin: 10 }}
+          >
+            Remove
+          </Button>
         <CustomTable
           onSelectBox={this.handleSelectCheckBox}
           handleClickOpen={this.handleClickOpen}
