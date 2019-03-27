@@ -2206,11 +2206,13 @@ class TaskTable extends React.Component {
     return today;
   }
   searchData = (search) => {
+    debugger;
     this.setState({
       projects: this.state.projects.filter(x => x.all_projects.category == search || x.all_projects.ProjectCode == search ||
         x.all_projects.ticketSummary == search || x.all_projects.status == search || x.all_projects.number == search ||
-        this.dateIntoString(x.all_projects.lastUpdated) == search || x.all_projects.priority == search || x.all_projects.deadline == search || 
-        x.all_projects.customer == search || x.all_projects.dev_paid_on == search || x.all_projects.cus_paid_on == search) 
+        x.all_projects.lastUpdated == search || x.all_projects.priority == search || x.all_projects.deadline == search || 
+        x.all_projects.customer == search || x.all_projects.dev_paid_on == search || x.all_projects.cus_paid_on == search ||
+        x.all_projects.assigned == search) 
     });
   }
   setInitialState = () => {
