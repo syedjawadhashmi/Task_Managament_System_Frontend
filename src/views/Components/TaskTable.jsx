@@ -58,6 +58,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import EditIcon from "@material-ui/icons/Edit";
 
+import DateTimePicker from 'react-datetime-picker';
+
 const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -613,10 +615,10 @@ let CustomTable = ({ ...props }) => {
               let UCPaidOn1 =
                 UCPaidOn == "" ? prop.all_projects.cus_paid_on : UCPaidOn;
 
-                let date = new Date(prop.all_projects.lastUpdated).getDate()
-                let month = new Date(prop.all_projects.lastUpdated).getMonth() + 1
-                let year = new Date(prop.all_projects.lastUpdated).getFullYear()
-                let lastUpdatedDate = `${date}/${month}/${year}`
+              let date = new Date(prop.all_projects.lastUpdated).getDate()
+              let month = new Date(prop.all_projects.lastUpdated).getMonth() + 1
+              let year = new Date(prop.all_projects.lastUpdated).getFullYear()
+              let lastUpdatedDate = `${date}/${month}/${year}`
 
               // console.log('props_data', prop.key)
               return (
@@ -651,30 +653,30 @@ let CustomTable = ({ ...props }) => {
                     colSpan={prop.colspan}
                   >
                     {
-                    //   editing == prop.key ? (
-                    //   <FormControl
-                    //     style={{ marginTop: 10 }}
-                    //     className={[classes.formControl, "form-control"]}
-                    //     variant="outlined"
-                    //   >
-                    //     <Select
-                    //       onChange={handleUProjectCodeCodeChange}
-                    //       value={UProjectCode1}
-                    //     // displayEmpty
-                    //     >
-                    //       {allProjects.map(project => {
-                    //         return (
-                    //           <MenuItem value={project.ProjectCode}>
-                    //             {project.ProjectCode}
-                    //           </MenuItem>
-                    //         );
-                    //       })}
-                    //     </Select>
-                    //   </FormControl>
-                    // ) : (
-                        prop.all_projects.ProjectCode
+                      //   editing == prop.key ? (
+                      //   <FormControl
+                      //     style={{ marginTop: 10 }}
+                      //     className={[classes.formControl, "form-control"]}
+                      //     variant="outlined"
+                      //   >
+                      //     <Select
+                      //       onChange={handleUProjectCodeCodeChange}
+                      //       value={UProjectCode1}
+                      //     // displayEmpty
+                      //     >
+                      //       {allProjects.map(project => {
+                      //         return (
+                      //           <MenuItem value={project.ProjectCode}>
+                      //             {project.ProjectCode}
+                      //           </MenuItem>
+                      //         );
+                      //       })}
+                      //     </Select>
+                      //   </FormControl>
+                      // ) : (
+                      prop.all_projects.ProjectCode
                       // )
-                      }
+                    }
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -773,7 +775,7 @@ let CustomTable = ({ ...props }) => {
                     colSpan={prop.colspan}
                   >
                     {
-                    // (
+                      // (
                       // <CustomInput
                       // disabled
                       //   id="required"
@@ -789,11 +791,11 @@ let CustomTable = ({ ...props }) => {
                       //     type: "text"
                       //   }}
                       // />
-                    // ) : (
-                        // prop.all_projects.lastUpdated
-                        lastUpdatedDate
+                      // ) : (
+                      // prop.all_projects.lastUpdated
+                      prop.all_projects.lastUpdated
                       // )
-                      }
+                    }
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -890,8 +892,8 @@ let CustomTable = ({ ...props }) => {
                         </Select>
                       </FormControl>
                     ) : ( */}
-                        {prop.all_projects.customer}
-                      {/* )} */}
+                    {prop.all_projects.customer}
+                    {/* )} */}
                   </TableCell>
                   {role == "Admin" || role == "Developer" ? (
                     <TableCell
@@ -1341,7 +1343,7 @@ class TaskTable extends React.Component {
     ticketSummary: "",
     status: "",
     number: "",
-    lastUpdated: "",
+    lastUpdated: new Date(),
     assigned: "",
     priority: "",
     deadline: "",
@@ -1450,7 +1452,7 @@ class TaskTable extends React.Component {
       .ref("Tasks")
       .on("child_added", project => {
         let currentpost = this.state.projects;
-
+        // console.log(project.val().lastUpdated.formatDate());
         let obj = {
           all_projects: project.val(),
           key: project.key
@@ -1470,6 +1472,8 @@ class TaskTable extends React.Component {
           (role == "Developer" && project.val().assigned == email) ||
           isExist
         ) {
+          console.log(typeof obj.all_projects.lastUpdated);
+          console.log(obj.all_projects.lastUpdated);
           currentpost.push(obj);
           this.setState({
             projects: currentpost,
@@ -1591,7 +1595,8 @@ class TaskTable extends React.Component {
     this.setState({ number: event.target.value });
   };
   handlelastUpdatedChange = e => {
-    this.setState({ lastUpdated: e.target.value });
+    console.log(e);
+    this.setState({ lastUpdated: e });
   };
   handleChangeProductOwner = e => {
     this.setState({ ProductOwner: e.target.value });
@@ -1683,7 +1688,8 @@ class TaskTable extends React.Component {
   };
   projecthandleClickOpen = () => {
     this.setState({
-      projectopen: true
+      projectopen: true,
+      lastUpdated: new Date()
     });
   };
 
@@ -1794,29 +1800,29 @@ class TaskTable extends React.Component {
     console.log('jiye mutahida', _param)
     this.setState({ editing: _param.key });
     // this.projecthandleClickOpen();
-    _param =  _param.all_projects
+    _param = _param.all_projects
     if (_param !== "") {
       this.setState({
         UProjectCode: _param.ProjectCode,
-      UTicketSummary: _param.ticketSummary,
-      UDev_Support: _param.category,
-      UStatus: _param.status,
-      UNumber: _param.number,
-      ULastUpdated: Date.now(),
-      UDev: _param.assigned,
-      UPriority: _param.priority,
-      UDeadline: _param.deadline,
-      UCustomer: _param.customer,
-      UEDEfforts: _param.est_dev_efforts,
-      UADEfforts: _param.act_dev_efforts,
-      URUDEV: _param.rate_unit_dev,
-      UDEAmount: _param.est_dev_efforts,
-      UDPaidOn: _param.dev_paid_on,
-      UECEfforts: _param.est_cus_efforts,
-      UACEfforts: _param.act_cus_efforts,
-      URUCustomer: _param.rate_unit_cus,
-      UCEAmount: _param.cus_efforts_amt,
-      UCPaidO: _param.cus_paid_on
+        UTicketSummary: _param.ticketSummary,
+        UDev_Support: _param.category,
+        UStatus: _param.status,
+        UNumber: _param.number,
+        ULastUpdated: Date.now(),
+        UDev: _param.assigned,
+        UPriority: _param.priority,
+        UDeadline: _param.deadline,
+        UCustomer: _param.customer,
+        UEDEfforts: _param.est_dev_efforts,
+        UADEfforts: _param.act_dev_efforts,
+        URUDEV: _param.rate_unit_dev,
+        UDEAmount: _param.est_dev_efforts,
+        UDPaidOn: _param.dev_paid_on,
+        UECEfforts: _param.est_cus_efforts,
+        UACEfforts: _param.act_cus_efforts,
+        URUCustomer: _param.rate_unit_cus,
+        UCEAmount: _param.cus_efforts_amt,
+        UCPaidO: _param.cus_paid_on
       });
     }
   };
@@ -1905,6 +1911,22 @@ class TaskTable extends React.Component {
       });
   };
 
+  dateIntoString = (date) => {
+    debugger;
+    var dd = date.getDate();
+    var mm = date.getMonth() + 1; //January is 0!
+
+    var yyyy = date.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    var today = dd + '/' + mm + '/' + yyyy;
+    return today;
+  }
+
   addNewTask = e => {
     e.preventDefault();
     const {
@@ -1945,7 +1967,7 @@ class TaskTable extends React.Component {
         number: number,
         assigned: assignedDev,
         deadline: deadline,
-        lastUpdated: Date.now(),
+        lastUpdated: this.dateIntoString(lastUpdated),
         est_dev_efforts: est_dev_efforts,
         act_dev_efforts: act_dev_efforts,
         rate_unit_dev: rate_unit_dev,
@@ -1961,7 +1983,7 @@ class TaskTable extends React.Component {
       .catch(error => {
         console.log("Error during user creating on firebase", error);
       });
-    alert("Task Add Successfully");
+    alert("Task Add Successfully" );
     this.setState({
       ticketSummary: "",
       status: "",
@@ -2671,24 +2693,22 @@ class TaskTable extends React.Component {
                 }}
               />
             </FormControl>
-            {/* <FormControl
+            <FormControl
               style={{ marginTop: 10 }}
               className={[classes.formControl, "form-control"]}
               variant="outlined"
             >
-              <CustomInput
-                id="required"
+              Last Updated
+            <DateTimePicker
+                onChange={this.handlelastUpdatedChange}
+                value={lastUpdated}
                 labelText="Last Updated"
+                id="required"
                 formControlProps={{
                   fullWidth: true
                 }}
-                onChange={this.handlelastUpdatedChange}
-                value={lastUpdated}
-                inputProps={{
-                  type: "text"
-                }}
               />
-            </FormControl> */}
+            </FormControl>
             <FormControl
               style={{ marginTop: 10 }}
               className={[classes.formControl, "form-control"]}
