@@ -618,7 +618,7 @@ let CustomTable = ({ ...props }) => {
               let date = new Date(prop.all_projects.lastUpdated).getDate()
               let month = new Date(prop.all_projects.lastUpdated).getMonth() + 1
               let year = new Date(prop.all_projects.lastUpdated).getFullYear()
-              let lastUpdatedDate = `${date}/${month}/${year}`
+              let lastUpdatedDate = `${date}-${month}-${year}`
 
               // console.log('props_data', prop.key)
               return (
@@ -793,7 +793,7 @@ let CustomTable = ({ ...props }) => {
                       // />
                       // ) : (
                       // prop.all_projects.lastUpdated
-                      prop.all_projects.lastUpdated
+                      lastUpdatedDate
                       // )
                     }
                   </TableCell>
@@ -1822,7 +1822,7 @@ class TaskTable extends React.Component {
         UACEfforts: _param.act_cus_efforts,
         URUCustomer: _param.rate_unit_cus,
         UCEAmount: _param.cus_efforts_amt,
-        UCPaidO: _param.cus_paid_on
+        UCPaidOn: _param.cus_paid_on
       });
     }
   };
@@ -1866,7 +1866,7 @@ class TaskTable extends React.Component {
         number: UNumber,
         assigned: UDev,
         deadline: UDeadline,
-        lastUpdated: ULastUpdated,
+        lastUpdated: Date.now(),
         est_dev_efforts: UEDEfforts,
         act_dev_efforts: UADEfforts,
         rate_unit_dev: URUDEV,
@@ -1967,7 +1967,7 @@ class TaskTable extends React.Component {
         number: number,
         assigned: assignedDev,
         deadline: deadline,
-        lastUpdated: this.dateIntoString(lastUpdated),
+        lastUpdated: Date.now(),
         est_dev_efforts: est_dev_efforts,
         act_dev_efforts: act_dev_efforts,
         rate_unit_dev: rate_unit_dev,
@@ -2695,7 +2695,7 @@ class TaskTable extends React.Component {
                 }}
               />
             </FormControl>
-            <FormControl
+            {/* <FormControl
               style={{ marginTop: 10 }}
               className={[classes.formControl, "form-control"]}
               variant="outlined"
@@ -2710,7 +2710,7 @@ class TaskTable extends React.Component {
                   fullWidth: true
                 }}
               />
-            </FormControl>
+            </FormControl> */}
             <FormControl
               style={{ marginTop: 10 }}
               className={[classes.formControl, "form-control"]}

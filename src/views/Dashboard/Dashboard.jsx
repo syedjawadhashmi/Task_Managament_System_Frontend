@@ -21,7 +21,7 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import { Link } from "react-router-dom";
 import firebase from "../../constant/api/firebase";
 import axios from "axios";
-const rooturl = "https://taskmanagment-1.herokuapp.com/developers";
+const rooturl = "https://task-managment-a210.herokuapp.com/developers";
 
 class DeveloperLis extends React.Component {
   constructor() {
@@ -43,10 +43,14 @@ class DeveloperLis extends React.Component {
     let arrdata = [];
     let dataabase = firebase.database().ref("/Developer/");
     dataabase.on("value", object => {
+      debugger
       let data = object.val();
       for (var x in data) arrdata.push(data[x]);
+      debugger
+      let devs = this.getUnique(arrdata, 'email')
+      console.log('devs after remove', devs)
       this.setState({
-        developers: arrdata
+        developers: devs
       });
       console.log("fetched data", arrdata);
     });
@@ -60,6 +64,7 @@ class DeveloperLis extends React.Component {
     axios
       .post(`${rooturl}/delete-user`, { uid: key })
       .then(res => {
+        debugger
         console.log("response of delete req", res);
         console.log("select of delete req", key);
         fetchpost.splice(index, 1);
@@ -74,6 +79,20 @@ class DeveloperLis extends React.Component {
       });
     // )
   };
+
+  getUnique(arr, comp) {
+
+    const unique = arr
+         .map(e => e[comp])
+  
+       // store the keys of the unique objects
+      .map((e, i, final) => final.indexOf(e) === i && i)
+  
+      // eliminate the dead keys & store unique objects
+      .filter(e => arr[e]).map(e => arr[e]);
+  
+     return unique;
+  }
 
   render() {
     const { developers } = this.state;
