@@ -2497,7 +2497,7 @@ class TaskTable extends React.Component {
                         </div>
                       ) : c.comment.type.split("/")[0] == "image" ? (
                         <div style={{ margin: 10 }}>
-                          <img src={c.comment.url} width={100} height={100} />
+                         <a href={c.comment.url} target="_blank" > <img src={c.comment.url} width={100} height={100} /></a>
                         </div>
                       ) : (
                             <Typography style={{ margin: 10 }} component="p">
