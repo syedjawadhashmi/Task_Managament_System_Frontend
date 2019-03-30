@@ -1951,7 +1951,8 @@ class TaskTable extends React.Component {
       cus_efforts_amt,
       cus_paid_on
     } = this.state;
-    const assignedDev = assigned.email;
+    const assignedDev = assigned.name;
+    console.log(assigned);
     var userId = firebase.auth().currentUser.uid;
     const email = firebase.auth().currentUser.email;
     const ref = firebase.database().ref("Tasks/");
@@ -1962,7 +1963,7 @@ class TaskTable extends React.Component {
         ProjectCode: ProjectCode.ProjectCode,
         status: status,
         category: category,
-        customer: customer.email,
+        customer: customer.customer,
         priority: priority,
         number: number,
         assigned: assignedDev,

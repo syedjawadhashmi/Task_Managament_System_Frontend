@@ -140,7 +140,7 @@ class HeaderLinks extends React.Component {
                 }}
               >
                 <Paper>
-                  <ClickAwayListener onClickAway={this.handleClose}>
+                  <ClickAwayListener >
                     <MenuList role="menu">
                       <MenuItem
                         onClick={this.handleClose}

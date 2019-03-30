@@ -70,7 +70,8 @@ class CustomerForm extends React.Component {
 			customercode: '',
 			edit: false,
 			allcustomers: [],
-			users:[]
+			users:[],
+			onEditCustomer: false
 		};
 		// firebase.database().ref('Users').on('child_added', (customer) => {
 		// 	let currentpost = this.state.allcustomers;
@@ -90,9 +91,7 @@ class CustomerForm extends React.Component {
 		// Binding functions here...!
 		// this.deleteCustomer = this.deleteCustomer.bind(this);
 	}
-	componentWillReceiveProps() {
-
-		
+	componentWillReceiveProps() {		
 	}
 	componentDidUpdate() {
 	}
@@ -123,6 +122,18 @@ class CustomerForm extends React.Component {
 				rate: _param.all_customers.rate,
 			});
 		}
+		firebase.database().ref(`Customer/${_param.key}/users`).on('child_added', (customer) => {
+			// debugger;
+			let currentpost = [];
+			let obj = {
+				all_customers: customer.val()
+				// key: customer.key
+			};
+			currentpost.push(obj);
+			this.setState({
+				users: currentpost,
+			});
+		});
 	}
 
 	handleCustomerChange = (e) => {
@@ -249,27 +260,28 @@ class CustomerForm extends React.Component {
 	// };
 
 	updateCustomer = e => {
+		debugger;
 		e.preventDefault();
-		const {
-			customercode,
-			rate,
-			rate_unit,
-			email,
-			customer,
-			phone,
-			contact,
-			address,
-			city,
-			zip_code,
-			// USD,
-			Country,
-			type,
-			status,
-			users
-		} = this.state;
-		const { _param } = this.props.location.state;
-
-		firebase
+		if(this.state.onEditCustomer) {
+			const {
+				customercode,
+				rate,
+				rate_unit,
+				email,
+				customer,
+				phone,
+				contact,
+				address,
+				city,
+				zip_code,
+				// USD,
+				Country,
+				type,
+				status,
+				users
+			} = this.state;
+			const { _param } = this.props.location.state;
+			firebase
 			.database()
 			.ref('Customer/' + _param.key)
 			.update({
@@ -298,6 +310,58 @@ class CustomerForm extends React.Component {
 			.catch((error) => {
 				alert(error);
 			});
+		} else {
+			const {
+				customercode,
+				rate,
+				rate_unit,
+				email,
+				customer,
+				phone,
+				contact,
+				address,
+				city,
+				zip_code,
+				// USD,
+				Country,
+				type,
+				status,
+				
+			} = this.state;
+			const { _param } = this.props.location.state;
+			firebase
+			.database()
+			.ref('Customer/' + _param.key)
+			.update({
+				customercode: customercode,
+				email: email,
+				customer: customer,
+				phone: phone,
+				contact: contact,
+				address: address,
+				city: city,
+				zip_code: zip_code,
+				rate: rate,
+				rate_unit: rate_unit,
+				// USD: USD,
+				Country: Country,
+				type: type,
+				status: status,
+				// users:users,
+				// Consultant: Consultant,
+				// ProductOwner: ProductOwner,
+				// role: 'Customer'
+			})
+			.then(() => {
+				alert('user updated successfully');
+			})
+			.catch((error) => {
+				alert(error);
+			});
+		}
+		
+
+		
 	};
 
 	addCustomer = (e) => {
@@ -381,7 +445,8 @@ class CustomerForm extends React.Component {
 	onAdduser = (users) => {
 		debugger;
 		this.setState({
-			users: users
+			users: users,
+			onEditCustomer: true
 		});
 	};
 
@@ -389,6 +454,7 @@ class CustomerForm extends React.Component {
 		const { classes } = this.props;
 		const { _param } = this.props.location.state;
 
+	
 
 		const {
 			customer,

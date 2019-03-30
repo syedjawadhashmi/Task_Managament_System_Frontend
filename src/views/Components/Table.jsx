@@ -462,9 +462,9 @@ let CustomTable = ({ ...props }) => {
                     className={classes.tableCell}
                     colSpan={project.colspan}
                   >
-                    {project.assignedMembers.map(p => {
+                    {/* {project.assignedMembers.map(p => {
                       return `${p.name},`;
-                    })}
+                    })} */}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}
@@ -874,8 +874,9 @@ class Tables extends React.Component {
       projectActualEndDate,
       assigneename
     } = this.state;
+    debugger;
     var userId = firebase.auth().currentUser.uid;
-    let email = firebase.auth().currentUser.email;
+    let email = JSON.parse(localStorage.getItem('currentUser')).email;
     const ref = firebase.database().ref("Projects/");
     ref
       .push({

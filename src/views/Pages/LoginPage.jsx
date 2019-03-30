@@ -71,26 +71,33 @@ class LoginPage extends React.Component {
                 .on("child_added", function (snapshot) {
                   let currentUser = snapshot.val();
                   let role = snapshot.val().type;
-                  localStorage.setItem("currentUser", JSON.stringify(currentUser));
-                  localStorage.setItem("role", JSON.stringify(role));
-                  switch (role) {
-                    case 'Developer':
-                      self.props.history.push("/admin/task-page");
-                      break;
-
-                    case 'Product Owner':
-                      self.props.history.push("/admin/project-page");
-                      break;
-
-                    case 'Consultant':
-                      self.props.history.push("/admin/project-page");
-                      break;
-
-                    default:
-                      self.props.history.push("/admin/customer-page");
-                      break;
+                  let status = snapshot.val().status;
+                  if(status == 'Suspended') {
+                    alert('You are no longer to login');
+                  } else {
+                    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+                    localStorage.setItem("role", JSON.stringify(role));
+                    switch (role) {
+                      case 'Developer':
+                        self.props.history.push("/admin/task-page");
+                        break;
+  
+                      case 'Product Owner':
+                        self.props.history.push("/admin/project-page");
+                        break;
+  
+                      case 'Consultant':
+                        self.props.history.push("/admin/project-page");
+                        break;
+  
+                      default:
+                        self.props.history.push("/admin/customer-page");
+                        break;
+                    }
+                    alert("login success");
                   }
-                  alert("login success");
+                  
+                  
                 });
               console.log("idToken", token);
             });
