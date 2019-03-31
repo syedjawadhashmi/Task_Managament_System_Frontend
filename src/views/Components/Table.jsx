@@ -462,9 +462,9 @@ let CustomTable = ({ ...props }) => {
                     className={classes.tableCell}
                     colSpan={project.colspan}
                   >
-                    {/* {project.assignedMembers.map(p => {
+                    {project.assignedMembers.map(p => {
                       return `${p.name},`;
-                    })} */}
+                    })}
                   </TableCell>
                   <TableCell
                     className={classes.tableCell}

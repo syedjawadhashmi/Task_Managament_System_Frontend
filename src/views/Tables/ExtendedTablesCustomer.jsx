@@ -53,18 +53,28 @@ class ExtendedTablesCustomer extends React.Component {
 		this.updateUser = this.updateUser.bind(this);
 	}
 	componentDidMount() {
-		firebase.database().ref(`Customer/${this.props.customerKey}/users`).on('child_added', (customer) => {
+		firebase.database().ref(`Customer/${this.props.customerKey}/users`).once('value', (customer) => {
 			debugger;
-			let currentpost = this.state.allcustomers;
-			let obj = {
-				all_customers: customer.val()
-				// key: customer.key
-			};
-			currentpost.push(obj);
+			let currentpost = [];
+			this.setState({
+				allcustomers: [],
+				posts: ''
+			});
+			var data = customer.val();
+		     data.map(function(res){
+				let obj = {
+					all_customers:res
+					// key: customer.key
+				};
+				currentpost.push(obj);
+
+		      })
+			
 			this.setState({
 				allcustomers: currentpost,
 				posts: ''
 			});
+
 		});
 	}
 	handleNameChange = (e) => {
@@ -109,15 +119,20 @@ class ExtendedTablesCustomer extends React.Component {
 		});
 	};
 	editUser = (userObj) => {
-		console.log('update keyy', userObj);
-
+		debugger;
 		this.setState({
-			editing: userObj.email
+			editing: userObj.email,
+			editname: userObj.name,
+			edittype: userObj.type,
+			editstatus: userObj.status
 		});
 	};
 	updateUser = (UserObj, key) => {
-		var that = this;
 		debugger;
+		var that = this;
+		// that.setState({
+		//   allcustomers:[]
+		// })
 		// that.setState({
 		//   allcustomers:[]
 		// })
@@ -141,12 +156,10 @@ class ExtendedTablesCustomer extends React.Component {
 								allcustomers: []
 							});
 							alert('user updated successfully');
-							debugger;
 							firebase
 								.database()
 								.ref(`Customer/${that.props.customerKey}/users`)
 								.on('child_added', (customer) => {
-									debugger;
 
 									let currentpost = that.state.allcustomers;
 									let obj = {
@@ -173,13 +186,10 @@ class ExtendedTablesCustomer extends React.Component {
 		});
 	};
 	deleteCustomer = (email, index) => {
-		debugger;
 		var that = this;
-		console.log('key', email, index);
 		let fetchpost = that.state.allcustomers;
 		var ref = firebase.database().ref();
 		ref.child(`Customer/${that.props.customerKey}/users`).once('value', function(snap) {
-			debugger;
 			snap.forEach(function(item) {
 				var itemVal = item.val();
 				if (itemVal.email == email) {
@@ -195,8 +205,6 @@ class ExtendedTablesCustomer extends React.Component {
 							.database()
 							.ref(`Customer/${that.props.customerKey}/users`)
 							.on('child_added', (customer) => {
-								debugger;
-
 								let currentpost = that.state.allcustomers;
 								let obj = {
 									all_customers: customer.val()
@@ -222,7 +230,6 @@ class ExtendedTablesCustomer extends React.Component {
 			.then(() => {
 				var userId = firebase.auth().currentUser.uid;
 				var user = firebase.auth().currentUser;
-				console.log('user', user);
 				const ref = firebase.database().ref(`Users/`).push();
 				ref
 					.set({
@@ -233,10 +240,8 @@ class ExtendedTablesCustomer extends React.Component {
 						status: status
 					})
 					.then((res) => {
-						// debugger;
 					})
 					.catch((error) => {
-						// debugger;
 						console.log('Error during user creating on firebase', error);
 					});
 				alert('Add Registered Successfully');
@@ -293,7 +298,6 @@ class ExtendedTablesCustomer extends React.Component {
 			customHeadClassesForCells,
 			customerKey
 		} = this.props;
-		debugger;
 
 		const { name, email, password, type, status, editrow, allcustomers } = this.state;
 		let userObj = {
@@ -303,8 +307,6 @@ class ExtendedTablesCustomer extends React.Component {
 			type: type,
 			status: status
 		};
-		console.log('ddd', allcustomers);
-		// editrow = tableData;
 
 		return (
 			<GridContainer>
@@ -468,8 +470,7 @@ class ExtendedTablesCustomer extends React.Component {
 									<TableBody>
 										{allcustomers &&
 											allcustomers.map((prop, key) => {
-												debugger;
-												// debugger
+												
 												var rowColor = '';
 												var rowColored = false;
 												if (prop.color !== undefined) {
@@ -478,8 +479,7 @@ class ExtendedTablesCustomer extends React.Component {
 													prop = prop.data;
 												}
 												prop = prop.all_customers;
-												// const row = prop.all_customers[key];
-												// console.log("Keyy", row);
+												
 												const tableRowClasses = cx({
 													[classes.tableRowHover]: hover,
 													[classes[rowColor + 'Row']]: rowColored,
@@ -608,7 +608,6 @@ class ExtendedTablesCustomer extends React.Component {
 class EditButton extends React.Component {
 	render() {
 		const { _param, _route } = this.props;
-		console.log('parm', _param);
 		return (
 			<Link
 				to={{
@@ -628,9 +627,7 @@ class EditButton extends React.Component {
 
 class DeleteButton extends React.Component {
 	render() {
-		// debugger
 		const { asd, v } = this.props;
-		console.log('key', asd);
 		return (
 			<Button color="danger" simple onClick={() => this.props.deleteUser(asd, v)}>
 				<Close color="danger" />
@@ -641,9 +638,7 @@ class DeleteButton extends React.Component {
 
 class AddButton extends React.Component {
 	render() {
-		// debugger
 		const { user } = this.props;
-		console.log('user', user);
 		return (
 			<Button color="danger" simple onClick={() => this.props.addUser(user)}>
 				<Add color="success" />

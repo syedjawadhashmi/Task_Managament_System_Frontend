@@ -260,7 +260,7 @@ class CustomerForm extends React.Component {
 	// };
 
 	updateCustomer = e => {
-		debugger;
+		console.log('User State ', this.state.users);
 		e.preventDefault();
 		if(this.state.onEditCustomer) {
 			const {
@@ -448,6 +448,7 @@ class CustomerForm extends React.Component {
 			users: users,
 			onEditCustomer: true
 		});
+		console.log('User ', this.state.users);
 	};
 
 	render() {

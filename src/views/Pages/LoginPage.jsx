@@ -83,11 +83,11 @@ class LoginPage extends React.Component {
                         break;
   
                       case 'Product Owner':
-                        self.props.history.push("/admin/project-page");
+                        self.props.history.push("/admin/task-page");
                         break;
   
                       case 'Consultant':
-                        self.props.history.push("/admin/project-page");
+                        self.props.history.push("/admin/task-page");
                         break;
   
                       default:

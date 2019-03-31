@@ -1167,9 +1167,7 @@ let CustomTable = ({ ...props }) => {
                     >
                       <Comments color="success" />
                     </Button>
-                    {role == "Admin" ||
-                      prop.all_projects.createdBy ==
-                      firebase.auth().currentUser.email ? (
+                    {role == "Admin" ? (
                         editing == prop.key ? (
                           <EditButton
                             updateTask={updateTask}
