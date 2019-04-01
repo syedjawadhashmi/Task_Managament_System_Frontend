@@ -1395,6 +1395,7 @@ class TaskTable extends React.Component {
     filterTxt: ''
   };
   componentDidMount() {
+    this.getProjects();
     this.showTasks();
     this.all_customer();
     this.getDevelopers();
@@ -1469,10 +1470,17 @@ class TaskTable extends React.Component {
           x => x.email == project.val().customer
         );
         let isExist = customer && customer.users.find(x => x.email == email);
+        let allProjects = this.state.allProjects
+        let Project = allProjects.find(x => x.ProjectCode == project.val().ProjectCode)
+        let isOnwerOrConsultant = Project && Project.assignedMembers.find(x => x.email == email)
+        console.log('fuck', Project , allProjects, isOnwerOrConsultant)
+
         if (
           project.val().createdBy == email ||
           role == "Admin" ||
           (role == "Developer" && project.val().assigned == email) ||
+          (role == "Product Owner" && isOnwerOrConsultant) ||
+          (role == "Consultant" && isOnwerOrConsultant) ||
           isExist
         ) {
           console.log(typeof obj.all_projects.lastUpdated);
