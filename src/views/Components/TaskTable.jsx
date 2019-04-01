@@ -472,7 +472,7 @@ let CustomTable = ({ ...props }) => {
       "Developer Paid on",
       "Action"
     ];
-  } else if(role == "Consultant") {
+  } else if (role == "Consultant") {
     var tableHead = [
       "Select",
       "#",
@@ -488,7 +488,7 @@ let CustomTable = ({ ...props }) => {
       "Customer",
       "Action"
     ];
-  }  else {
+  } else {
     var tableHead = [
       "Select",
       "#",
@@ -510,6 +510,7 @@ let CustomTable = ({ ...props }) => {
       "Action"
     ];
   }
+
   // if(AsyncStorage.getItem('user'))
   console.log(tableData);
   return (
@@ -619,6 +620,10 @@ let CustomTable = ({ ...props }) => {
               let month = new Date(prop.all_projects.lastUpdated).getMonth() + 1
               let year = new Date(prop.all_projects.lastUpdated).getFullYear()
               let lastUpdatedDate = `${date}-${month}-${year}`
+
+              let dev = allDevs.find(x => x.email == prop.all_projects.assigned )
+              debugger
+              let devName = dev && dev.name
 
               // console.log('props_data', prop.key)
               return (
@@ -810,13 +815,13 @@ let CustomTable = ({ ...props }) => {
                         <Select onChange={handleUDevCodeChange} value={UDev1}>
                           {allDevs.map((prop, key) => {
                             return (
-                              <MenuItem value={prop.name}>{prop.name}</MenuItem>
+                              <MenuItem value={prop.email}>{prop.name}</MenuItem>
                             );
                           })}
                         </Select>
                       </FormControl>
                     ) : (
-                        prop.all_projects.assigned
+                        devName
                       )}
                   </TableCell>
                   <TableCell
@@ -1168,23 +1173,23 @@ let CustomTable = ({ ...props }) => {
                       <Comments color="success" />
                     </Button>
                     {role == "Admin" ? (
-                        editing == prop.key ? (
+                      editing == prop.key ? (
+                        <EditButton
+                          updateTask={updateTask}
+                          edit={true}
+                          _param={prop}
+                          v={prop.key}
+                          asd={key}
+                        />
+                      ) : (
                           <EditButton
-                            updateTask={updateTask}
-                            edit={true}
+                            openUpdateProject={openUpdateProject}
                             _param={prop}
                             v={prop.key}
                             asd={key}
                           />
-                        ) : (
-                            <EditButton
-                              openUpdateProject={openUpdateProject}
-                              _param={prop}
-                              v={prop.key}
-                              asd={key}
-                            />
-                          )
-                      ) : null}
+                        )
+                    ) : null}
                     {role === "Consultant" &&
                       prop.all_projects.createdBy ==
                       firebase.auth().currentUser.email ? (
@@ -1517,7 +1522,7 @@ class TaskTable extends React.Component {
     let companyEmail = e.target.value.customer
     let selectedCustomer = this.state.allCustomers.find(cust => cust.email == companyEmail)
     this.setState({ ProjectCode: e.target.value, customer: selectedCustomer, rate_unit_cus: 'Hourly' });
-    if(this.state.category && e.target.value) {
+    if (this.state.category && e.target.value) {
       this.setState({
         number: `${e.target.value.ProjectCode}-${this.state.category}- ${Math.floor(Math.random() * 1000)}`
       });
@@ -1529,7 +1534,7 @@ class TaskTable extends React.Component {
   handlecategoryChange = e => {
     this.setState({ category: e.target.value });
     console.log(this.state.ProjectCode);
-    if(this.state.ProjectCode && e.target.value) {
+    if (this.state.ProjectCode && e.target.value) {
       this.setState({
         number: `${this.state.ProjectCode.ProjectCode}-${e.target.value}- ${Math.floor(Math.random() * 1000)}`
       });
@@ -1949,7 +1954,7 @@ class TaskTable extends React.Component {
       cus_efforts_amt,
       cus_paid_on
     } = this.state;
-    const assignedDev = assigned.name;
+    const assignedDev = assigned.email;
     console.log(assigned);
     var userId = firebase.auth().currentUser.uid;
     const email = firebase.auth().currentUser.email;
@@ -1982,7 +1987,7 @@ class TaskTable extends React.Component {
       .catch(error => {
         console.log("Error during user creating on firebase", error);
       });
-    alert("Task Add Successfully" );
+    alert("Task Add Successfully");
     this.setState({
       ticketSummary: "",
       status: "",
@@ -2209,9 +2214,9 @@ class TaskTable extends React.Component {
     this.setState({
       projects: this.state.projects.filter(x => x.all_projects.category == search || x.all_projects.ProjectCode == search ||
         x.all_projects.ticketSummary == search || x.all_projects.status == search || x.all_projects.number == search ||
-        x.all_projects.lastUpdated == search || x.all_projects.priority == search || x.all_projects.deadline == search || 
+        x.all_projects.lastUpdated == search || x.all_projects.priority == search || x.all_projects.deadline == search ||
         x.all_projects.customer == search || x.all_projects.dev_paid_on == search || x.all_projects.cus_paid_on == search ||
-        x.all_projects.assigned == search) 
+        x.all_projects.assigned == search)
     });
   }
   setInitialState = () => {
@@ -2285,32 +2290,32 @@ class TaskTable extends React.Component {
           </Button>
         ) : null}
         <CustomInput
-                id="required"
-                labelText="Search"
-                formControlProps={{
-                  // fullWidth: true
-                }}
-                onChange={this.handleFilterTxt}
-                value={this.state.filterTxt}
-                inputProps={{
-                  type: "text"
-                }}
-              />
-              <Button
-            onClick={() => this.searchData(this.state.filterTxt)}
-            variant="contained"
-            color="primary"
-            style={{ fontSize: 10, margin: 10 }}
-          >
-            Search
+          id="required"
+          labelText="Search"
+          formControlProps={{
+            // fullWidth: true
+          }}
+          onChange={this.handleFilterTxt}
+          value={this.state.filterTxt}
+          inputProps={{
+            type: "text"
+          }}
+        />
+        <Button
+          onClick={() => this.searchData(this.state.filterTxt)}
+          variant="contained"
+          color="primary"
+          style={{ fontSize: 10, margin: 10 }}
+        >
+          Search
           </Button>
-          <Button
-            onClick={() => this.setInitialState()}
-            variant="contained"
-            color="primary"
-            style={{ fontSize: 10, margin: 10 }}
-          >
-            Remove
+        <Button
+          onClick={() => this.setInitialState()}
+          variant="contained"
+          color="primary"
+          style={{ fontSize: 10, margin: 10 }}
+        >
+          Remove
           </Button>
         <CustomTable
           onSelectBox={this.handleSelectCheckBox}
@@ -2496,7 +2501,7 @@ class TaskTable extends React.Component {
                         </div>
                       ) : c.comment.type.split("/")[0] == "image" ? (
                         <div style={{ margin: 10 }}>
-                         <a href={c.comment.url} target="_blank" > <img src={c.comment.url} width={100} height={100} /></a>
+                          <a href={c.comment.url} target="_blank" > <img src={c.comment.url} width={100} height={100} /></a>
                         </div>
                       ) : (
                             <Typography style={{ margin: 10 }} component="p">
