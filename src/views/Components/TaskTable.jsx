@@ -1173,24 +1173,24 @@ let CustomTable = ({ ...props }) => {
                       <Comments color="success" />
                     </Button>
                     {role == "Admin" ? (
-                      editing == prop.key ? (
-                        <EditButton
-                          updateTask={updateTask}
-                          edit={true}
-                          _param={prop}
-                          v={prop.key}
-                          asd={key}
-                        />
-                      ) : (
+                        editing == prop.key ? (
                           <EditButton
-                            openUpdateProject={openUpdateProject}
+                            updateTask={updateTask}
+                            edit={true}
                             _param={prop}
                             v={prop.key}
                             asd={key}
                           />
-                        )
-                    ) : null}
-                    {role === "Consultant" &&
+                        ) : (
+                            <EditButton
+                              openUpdateProject={openUpdateProject}
+                              _param={prop}
+                              v={prop.key}
+                              asd={key}
+                            />
+                          )
+                      ) : null}
+                    {(role === "Consultant" || role === "Product Owner")  &&
                       prop.all_projects.createdBy ==
                       firebase.auth().currentUser.email ? (
                         editing == prop.key ? (
