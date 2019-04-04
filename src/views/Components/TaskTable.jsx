@@ -1473,7 +1473,6 @@ class TaskTable extends React.Component {
         let allProjects = this.state.allProjects
         let Project = allProjects.find(x => x.ProjectCode == project.val().ProjectCode)
         let isOnwerOrConsultant = Project && Project.assignedMembers.find(x => x.email == email)
-        console.log('fuck', Project , allProjects, isOnwerOrConsultant)
 
         if (
           project.val().createdBy == email ||
@@ -1963,6 +1962,7 @@ class TaskTable extends React.Component {
       cus_paid_on
     } = this.state;
     const assignedDev = assigned.email;
+    const devName = assigned.name;
     console.log(assigned);
     var userId = firebase.auth().currentUser.uid;
     const email = firebase.auth().currentUser.email;
@@ -1978,6 +1978,7 @@ class TaskTable extends React.Component {
         priority: priority,
         number: number,
         assigned: assignedDev,
+        devName: devName,
         deadline: deadline,
         lastUpdated: Date.now(),
         est_dev_efforts: est_dev_efforts,

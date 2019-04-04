@@ -53,11 +53,19 @@ const styles = theme => ({
     },
 });
 
+const priorities = ['High', 'Medium', 'Low'];
+const categories = ['Dev', 'Support'];
+const status = ['Open', 'Close'];
+const rateUnits = ['Hourly', 'Daily', 'Weekly', 'Monthly'];
+
+const role = localStorage.getItem("role") && localStorage.getItem("role").replace(/['"]+/g, "");
+
+
 const AddButton = ({ onExecute }) => (
     <div style={{ textAlign: 'center' }}>
         <Button
             color="primary"
-            onClick={onExecute}
+            // onClick={onExecute}
             title="Create new row"
         >
             New
@@ -102,7 +110,7 @@ const commandComponents = {
     edit: EditButton,
     delete: DeleteButton,
     commit: CommitButton,
-    cancel: CancelButton,
+    cancel: CancelButton
 };
 
 const Command = ({ id, onExecute }) => {
@@ -114,10 +122,12 @@ const Command = ({ id, onExecute }) => {
     );
 };
 
-const availableValues = {
-    product: globalSalesValues.product,
-    region: globalSalesValues.region,
-    customer: globalSalesValues.customer,
+let availableValues = {
+    priority: priorities,
+    category: categories,
+    status: status,
+    rate_unit_cus: rateUnits,
+    rate_unit_dev: rateUnits
 };
 
 const LookupEditCellBase = ({
@@ -146,6 +156,7 @@ const LookupEditCellBase = ({
 export const LookupEditCell = withStyles(styles, { name: 'ControlledModeDemo' })(LookupEditCellBase);
 
 const Cell = (props) => {
+    debugger
     const { column } = props;
     if (column.name === 'discount') {
         // return <ProgressBarCell {...props} />;
@@ -162,7 +173,14 @@ const EditCell = (props) => {
     if (availableColumnValues) {
         return <LookupEditCell {...props} availableColumnValues={availableColumnValues} />;
     }
-    return <TableEditRow.Cell {...props} />;
+    return <TableEditRow.Cell
+        {...props}
+        editingEnabled={
+            column.name == 'ProjectCode' ||
+                column.name == 'number' ||
+                column.name == 'customer'
+                ? false : true}
+    />;
 };
 
 const getRowId = row => row.id;
@@ -179,9 +197,10 @@ class DemoBase extends React.PureComponent {
                 { name: 'ticketSummary', title: 'Summary' },
                 { name: 'status', title: 'Status' },
                 { name: 'number', title: 'Task Code' },
-                { name: 'assigned', title: 'Assigned' },
+                { name: 'devName', title: 'Assigned' },
                 { name: 'priority', title: 'Priority' },
                 { name: 'deadline', title: 'Deadline' },
+                { name: 'customer', title: 'Company' },
                 { name: 'est_dev_efforts', title: 'Est. Dev Effort' },
                 { name: 'act_dev_efforts', title: 'Act. Dev Effort' },
                 { name: 'rate_unit_dev', title: 'Dev. Rate Unit' },
@@ -218,6 +237,9 @@ class DemoBase extends React.PureComponent {
                 { columnName: 'amount', type: 'sum' },
             ],
             tasks: [],
+            projects: [],
+            developers: [],
+            roles: ['Admin', 'Developer', 'Consultant', "Product Owner"],
             loading: true
         };
         const getStateRows = () => {
@@ -253,6 +275,18 @@ class DemoBase extends React.PureComponent {
                 ];
             }
             if (changed) {
+                const { developers } = this.state
+                const key = Object.keys(changed)[0]
+                let value = Object.values(changed)[0]
+                if (value.devName) {
+                    let developer = developers.find(x => x.name == value.devName)
+                    const { email } = developer
+                    value.assigned = email
+                }
+                firebase
+                    .database()
+                    .ref("Tasks/" + key)
+                    .update(value)
                 rows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
             }
             if (deleted) {
@@ -268,14 +302,14 @@ class DemoBase extends React.PureComponent {
                 .remove()
                 .then(() => {
                 })
-                const rows = getStateRows().slice();
-                    deletedIds.forEach((rowId) => {
-                        const index = rows.findIndex(row => row.id === rowId);
-                        if (index > -1) {
-                            rows.splice(index, 1);
-                        }
-                    });
-                    return rows;
+            const rows = getStateRows().slice();
+            deletedIds.forEach((rowId) => {
+                const index = rows.findIndex(row => row.id === rowId);
+                if (index > -1) {
+                    rows.splice(index, 1);
+                }
+            });
+            return rows;
         };
         this.changeColumnOrder = (order) => {
             this.setState({ columnOrder: order });
@@ -283,7 +317,9 @@ class DemoBase extends React.PureComponent {
     }
 
     componentDidMount() {
+        this.getProjects()
         this.getTasks()
+        this.getDevelopers()
     }
 
     // componentDidUpdate() {
@@ -297,12 +333,83 @@ class DemoBase extends React.PureComponent {
             .on("value", data => {
                 if (data.val()) {
                     let tasks = this.snapshotToArray(data.val())
-                    this.setState({ rows: tasks, loading: false })
+                    this.showTasks(tasks)
                 }
-                else{
+                else {
                     this.setState({ loading: false })
                 }
             })
+    }
+
+    getProjects() {
+        firebase
+            .database()
+            .ref("Projects")
+            .on("value", data => {
+                if (data.val()) {
+                    let projects = this.snapshotToArray(data.val())
+                    this.setState({ projects })
+                }
+            })
+
+    }
+
+    showTasks(tasks) {
+        const { projects } = this.state
+        let email = firebase.auth().currentUser.email;
+        const role = localStorage.getItem("role") && localStorage.getItem("role").replace(/['"]+/g, "");
+
+        let filterTasks = []
+
+        tasks.map(task => {
+            // ROLES FOR ADMIN
+            if (role == 'Admin') {
+                filterTasks.push(task)
+                this.setState({ rows: tasks, loading: false })
+            }
+
+            // ROLES FOR DEVELOPER
+            else if (role == 'Developer') {
+                if (task.assigned == email) {
+                    filterTasks.push(task)
+                    this.setState({ rows: filterTasks, loading: false })
+                }
+                else {
+                    this.setState({ rows: [], loading: false })
+                }
+            }
+
+            // ROLES FOR CONSULTANT
+            else if (role == 'Consultant' || role == 'Product Owner') {
+                debugger
+                const project = projects.find(x => x.ProjectCode == task.ProjectCode)
+                let isOnwerOrConsultant = project && project.assignedMembers.find(x => x.email == email)
+                if (isOnwerOrConsultant) {
+                    filterTasks.push(task)
+                    this.setState({ rows: filterTasks, loading: false })
+                }
+                else {
+                    this.setState({ rows: [], loading: false })
+                }
+            }
+        })
+
+    }
+
+    getDevelopers() {
+        firebase
+            .database()
+            .ref("Developer")
+            .on("value", data => {
+                if (data.val()) {
+                    let names = []
+                    let developers = this.snapshotToArray(data.val())
+                    developers.map(dev => names.push(dev.name))
+                    availableValues.devName = names
+                    // availableValues.assigned = developers
+                    this.setState({ developers: developers })
+                }
+            });
     }
 
     snapshotToArray = snapshot => Object.entries(snapshot).map(e => Object.assign(e[1], { id: e[0] }));
@@ -326,22 +433,8 @@ class DemoBase extends React.PureComponent {
             percentColumns,
             leftFixedColumns,
             totalSummaryItems,
-            loading
+            loading,
         } = this.state;
-
-        // const rows = [{
-        //     amount: 10294,
-        //     channel: "VARs",
-        //     customer: "Beacon Systems",
-        //     discount: 0.279,
-        //     id: 0,
-        //     product: "EnviroCare Max",
-        //     region: "South America",
-        //     saleDate: "2016-02-29",
-        //     sector: "Banking",
-        //     shipped: false,
-        //     units: 4
-        // }]
 
         return (
             <Paper>
@@ -355,6 +448,9 @@ class DemoBase extends React.PureComponent {
                         sorting={sorting}
                         onSortingChange={this.changeSorting}
                     />
+
+                    <SelectionState />
+
                     <PagingState
                         currentPage={currentPage}
                         onCurrentPageChange={this.changeCurrentPage}
@@ -362,7 +458,6 @@ class DemoBase extends React.PureComponent {
                         onPageSizeChange={this.changePageSize}
                     />
 
-                    {/* <IntegratedGrouping /> */}
                     <IntegratedFiltering />
 
                     <EditingState
@@ -371,6 +466,7 @@ class DemoBase extends React.PureComponent {
                         rowChanges={rowChanges}
                         onRowChangesChange={this.changeRowChanges}
                         addedRows={addedRows}
+                        // columnEditingEnabled={}
                         onAddedRowsChange={this.changeAddedRows}
                         onCommitChanges={this.commitChanges}
                     />
@@ -380,6 +476,7 @@ class DemoBase extends React.PureComponent {
 
                     <IntegratedSorting />
                     <IntegratedPaging />
+                    <IntegratedSelection />
                     <IntegratedSummary />
 
                     {/* <CurrencyTypeProvider for={currencyColumns} />
@@ -391,6 +488,7 @@ class DemoBase extends React.PureComponent {
                         columnExtensions={tableColumnExtensions}
                         cellComponent={Cell}
                     />
+                    <TableSelection showSelectAll={false} />
                     {/* <TableColumnReordering
                         order={columnOrder}
                         onOrderChange={this.changeColumnOrder}
@@ -406,14 +504,15 @@ class DemoBase extends React.PureComponent {
                         showEditCommand
                         showDeleteCommand
                         commandComponent={Command}
+                        // cellComponent={abc}
                     />
                     <TableSummaryRow />
                     <TableFixedColumns
                         leftColumns={leftFixedColumns}
                     />
-                    <PagingPanel
+                    {/* <PagingPanel
                         pageSizes={pageSizes}
-                    />
+                    /> */}
                 </Grid>
                 {loading && 'loading...'}
             </Paper>
