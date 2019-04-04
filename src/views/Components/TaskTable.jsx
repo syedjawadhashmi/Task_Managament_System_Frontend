@@ -1190,7 +1190,7 @@ let CustomTable = ({ ...props }) => {
                             />
                           )
                       ) : null}
-                    {(role === "Consultant" || role === "Product Owner")  &&
+                    {(role === "Consultant" || role === "Product Owner" || role === "Admin" )  &&
                       prop.all_projects.createdBy ==
                       firebase.auth().currentUser.email ? (
                         editing == prop.key ? (
