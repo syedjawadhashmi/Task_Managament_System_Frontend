@@ -24,6 +24,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
+import Comment from "@material-ui/icons/Comment";
 import { withStyles } from '@material-ui/core/styles';
 
 import firebase from "../../constant/api/firebase";
@@ -271,7 +272,7 @@ class DemoBase extends React.PureComponent {
         this.changeSorting = sorting => this.setState({ sorting });
         this.changeEditingRowIds = editingRowIds => this.setState({ editingRowIds });
         this.changeAddedRows = (addedRows) => {
-            this.setState({open: true})
+            this.setState({ open: true })
         }
         this.changeRowChanges = rowChanges => this.setState({ rowChanges });
         this.changeCurrentPage = currentPage => this.setState({ currentPage });
@@ -430,7 +431,7 @@ class DemoBase extends React.PureComponent {
             });
     }
 
-    onClose = () => {this.setState({open: false})}
+    onClose = () => { this.setState({ open: false }) }
 
     snapshotToArray = snapshot => Object.entries(snapshot).map(e => Object.assign(e[1], { id: e[0] }));
 
@@ -457,7 +458,7 @@ class DemoBase extends React.PureComponent {
         } = this.state;
 
         const cellComponent = ({ children, ...restProps }) => {
-            debugger
+            const currentRow = { ...restProps.row };
             const { selection } = this.state;
             const rowId = restProps.tableRow.rowId;
             const selected = selection.indexOf(rowId) === -1;
@@ -482,6 +483,10 @@ class DemoBase extends React.PureComponent {
                             }
                         })
                     }
+                    <IconButton
+                        title="Edit row">
+                        <Comment />
+                    </IconButton>
                 </TableEditColumn.Cell>
             );
         };
@@ -566,9 +571,9 @@ class DemoBase extends React.PureComponent {
                     /> */}
                 </Grid>
                 {loading && <CircularProgress style={{ position: 'absolute', bottom: 360, left: 590, zIndex: 1000 }} />}
-            <AddTask 
-            open={open}
-            handleClose={this.onClose}/>
+                <AddTask
+                    open={open}
+                    handleClose={this.onClose} />
             </Paper>
         );
     }
