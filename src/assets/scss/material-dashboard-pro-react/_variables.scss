@@ -67,29 +67,10 @@ $body-bg: #eeeeee !default;
 .Sidebar-collapseItemLink-800.Sidebar-blue-812.active{
   display: none !important;
 }
-#commentDiv{
-  overflow-y: scroll;
-  scrollbar-width: 1px;
-  max-height: 400px;
-  padding-top: 10px;
-  // margin: 10px;
-  scrollbar-width: 0px !important;
-
-  // width: 250px
+.commentDiv{
+  padding: 10px !important
 }
-// .commentDiv{
-  // overflow-y: scroll;
-  // overflow-x: hidden;
-  // /* max-height: 132px; */
-  // }
-  #commentDiv ::-webkit-scrollbar{
-  width: 5px;
-  color: #00adef
-  }
-  #commentDiv ::-webkit-scrollbar-thumb {
-  -webkit-box-shadow:inset 6px 6px 6px #18d9f3; 
-  /* / border-radius: 10px; / */
-  }
+
   .fixed-plugin .dropdown-menu:before, .fixed-plugin .dropdown-menu:after{
     display: contents !important;
   }

@@ -31,6 +31,7 @@ import firebase from "../../constant/api/firebase";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AddTask from './AddTask'
+import Comments from './Comment'
 
 // import { ProgressBarCell } from '../../../theme-sources/material-ui/components/progress-bar-cell';
 // import { HighlightedCell } from '../../theme-sources/material-ui/components/highlighted-cell';
@@ -262,7 +263,13 @@ class DemoBase extends React.PureComponent {
             roles: ['Admin', 'Developer', 'Consultant', "Product Owner"],
             loading: true,
             selection: [],
-            open: false
+            open: false,
+			draweropen: false,
+			comments: [],
+			text:"",
+			editComment:false,
+			childKey: "",
+			completed: 0,
         };
         const getStateRows = () => {
             const { rows } = this.state;
@@ -273,6 +280,27 @@ class DemoBase extends React.PureComponent {
         this.changeEditingRowIds = editingRowIds => this.setState({ editingRowIds });
         this.changeAddedRows = (addedRows) => {
             this.setState({ open: true })
+        }
+        this.onCommentsChange = (key) => {
+			this.setState({ comments: [] })
+			debugger
+			let comments = [];
+			var ref = firebase.database().ref("Comments");
+			let self = this;
+			ref
+			.orderByChild("taskId")
+			.equalTo(key)
+			.on("child_added", function (snapshot) {
+				console.log("ABID SHAKA", snapshot.val());
+				let CommentObj = {
+				comment: snapshot.val(),
+				key: snapshot.key
+				}
+				comments.push(CommentObj);
+				self.setState({ comments: comments });
+				console.log("JAWAD", self.state.comments);
+			});
+			self.setState({draweropen: true,childKey: key})
         }
         this.changeRowChanges = rowChanges => this.setState({ rowChanges });
         this.changeCurrentPage = currentPage => this.setState({ currentPage });
@@ -334,7 +362,72 @@ class DemoBase extends React.PureComponent {
         this.changeSelection = selection => this.setState({ selection });
 
     }
-
+	handleInputChange = e => {
+		this.setState({
+			text: e.target.value
+		});
+	};
+	
+	
+	handleMessaging = e => {
+		if (!this.state.text) {
+		  alert("Please enter a comment first!");
+		  return false;
+		}
+	
+		const email = firebase.auth().currentUser.email;
+	
+		const ref = firebase.database().ref(`Comments`);
+		// .child(this.state.childKey);
+	
+		if (!this.state.editComment) {
+		  debugger
+		  ref
+			.push({
+			  from: email,
+			  text: this.state.text,
+			  type: "text",
+			  createdAt: Date.now(),
+			  taskId: this.state.childKey
+			})
+			.catch(error => {
+			  alert("Something went wrong");
+			});
+	
+		  // alert("Successfully post comment");
+		  this.setState({
+			text: ""
+		  });
+		}
+	
+		else {
+		  let key = this.state.editKey;
+		  let text = this.state.text;
+		  let self = this
+		  firebase
+			.database()
+			.ref("Comments/" + key).update({
+			  text: text
+			})
+			.then(res => {
+			  self.state.comments.map((comment, index) => {
+				if (comment.key == key) {
+				  let editedComment = this.state.comments
+				  editedComment[index].comment.text = text
+				  this.setState({ comments: editedComment })
+				}
+	
+			  })
+			  this.setState({
+				text: ""
+			  });
+			})
+			.catch(err => {
+			  alert('Something went wrong')
+			})
+		}
+	
+	  };
     componentDidMount() {
         this.getProjects()
         this.getTasks()
@@ -343,8 +436,118 @@ class DemoBase extends React.PureComponent {
 
     // componentDidUpdate() {
     //     this.getTasks();
-    // }
-
+	// }
+	updateComment=(comment)=> {
+		this.setState({ text: comment.comment.text, editComment: true, editKey: comment.key })
+	  }
+	  progress = progress => {
+		const { completed } = this.state;
+		this.setState({ completed: completed >= 100 ? 0 : completed + progress });
+	  };
+	  deleteComment=(comment, index)=> {
+		debugger;
+		let key = comment.key;
+		let self = this;
+		firebase
+		  .database()
+		  .ref("Comments")
+		  .child(key)
+		  .remove()
+		  .then(() => {
+			self.state.comments.map((comment, index) => {
+			  if (comment.key == key) {
+				let comments = self.state.comments;
+				comments.splice(index, 1);
+				self.setState({comments: comments});
+				debugger;
+			  }
+			});
+			// self.setState({ comments: [] })
+			debugger
+			let comments = [];
+			var ref = firebase.database().ref("Comments");
+			ref
+			.orderByChild("taskId")
+			.equalTo(key)
+			.on("child_added", function (snapshot) {
+				console.log("ABID SHAKA", snapshot.val());
+				let CommentObj = {
+				comment: snapshot.val(),
+				key: snapshot.key
+				}
+				comments.push(CommentObj);
+				self.setState({ comments: comments });
+				console.log("JAWAD", self.state.comments);
+			});
+			self.setState({childKey: key})
+		  });
+	  }
+	handleFileChange=(event)=> {
+		this.setState({ loading: true });
+		const { target } = event;
+		const { files } = target;
+		let self = this;
+	
+		if (files && files[0]) {
+		  var reader = new FileReader();
+		  reader.onload = event => {
+			console.log("mime type", files[0].type);
+			let mimeType = files[0].type;
+	
+			var metadata = {
+			  contentType: mimeType
+			};
+	
+			var storageRef = firebase.storage().ref();
+	
+			let folder = mimeType.split("/")[0] == "image" ? "image/" : "docs/";
+	
+			var uploadTask = storageRef
+			  .child(`${folder}` + files[0].name)
+			  .put(files[0], metadata);
+	
+			uploadTask.on(
+			  "state_changed",
+			  function (snapshot) {
+				var progress =
+				  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+				  debugger
+				self.progress(progress);
+				console.log("Upload is " + progress + "% done");
+			  },
+			  function (error) { },
+			  function () {
+				uploadTask.snapshot.ref
+				  .getDownloadURL()
+				  .then(function (downloadURL) {
+					const email = firebase.auth().currentUser.email;
+					let taskId = self.state.childKey;
+	
+					const ref = firebase.database().ref(`Comments`);
+					ref
+					  .push({
+						from: email,
+						type: mimeType,
+						url: downloadURL,
+						createdAt: new Date(),
+						taskId: taskId
+					  })
+					  .then(res => {
+						self.setState({ loading: false });
+						console.log("Comment Added !!");
+					  })
+					  .catch(err => {
+						console.log("ERROR !!!");
+					  });
+					console.log("File available at", downloadURL);
+				  });
+			  }
+			);
+		  };
+		}
+		reader.readAsDataURL(files[0]);
+	  }
+	
     getTasks() {
         firebase
             .database()
@@ -432,6 +635,7 @@ class DemoBase extends React.PureComponent {
     }
 
     onClose = () => { this.setState({ open: false }) }
+    onCommentsClose = () => { this.setState({ draweropen: false }) }
 
     snapshotToArray = snapshot => Object.entries(snapshot).map(e => Object.assign(e[1], { id: e[0] }));
 
@@ -454,7 +658,8 @@ class DemoBase extends React.PureComponent {
             totalSummaryItems,
             loading,
             selection,
-            open
+			open,
+			draweropen
         } = this.state;
 
         const cellComponent = ({ children, ...restProps }) => {
@@ -484,6 +689,7 @@ class DemoBase extends React.PureComponent {
                         })
                     }
                     <IconButton
+					onClick={()=>this.onCommentsChange(restProps.row.id)}
                         title="Edit row">
                         <Comment />
                     </IconButton>
@@ -524,6 +730,7 @@ class DemoBase extends React.PureComponent {
                         onRowChangesChange={this.changeRowChanges}
                         addedRows={addedRows}
                         onAddedRowsChange={this.changeAddedRows}
+                        onCommentsChange={this.onCommentsChange}
                         onCommitChanges={this.commitChanges}
                     />
                     <SummaryState
@@ -574,6 +781,19 @@ class DemoBase extends React.PureComponent {
                 <AddTask
                     open={open}
                     handleClose={this.onClose} />
+                <Comments
+					loading={this.state.loading}
+					handleFileChange={this.handleFileChange}
+					// completed={this.props.completed}
+					comments={this.state.comments}
+					updateComment={this.updateComment}
+					handleMessaging={this.handleMessaging}
+					handleInputChange={this.handleInputChange}
+					deleteComment={this.deleteComment}
+					editComment={this.state.editComment}
+					text={this.state.text}
+                    draweropen={draweropen}
+                    handleClose={this.onCommentsClose} />
             </Paper>
         );
     }
