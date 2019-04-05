@@ -45,6 +45,12 @@ class AddTask extends React.Component {
         this.props.handleClose()
     };
 
+    handleChange = name => event => {
+        this.setState({
+            [name]: event.target.value,
+        });
+    };
+
     render() {
         const { classes, open } = this.props
         return (
@@ -72,7 +78,7 @@ class AddTask extends React.Component {
                             </InputLabel>
                                 <Select
                                     value={this.state.age}
-                                    onChange={this.handleChange}
+                                    onChange={this.handleChange('age')}
                                     input={
                                         <OutlinedInput
                                             labelWidth={25}
