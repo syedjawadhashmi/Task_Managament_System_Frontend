@@ -39,6 +39,7 @@ class AddTask extends React.Component {
         open: false,
         projects: [],
         developers: [],
+        customers: [],
         lastUpdated: Date.now(),
         assigned: 'developer@gmail.com',
         customer: 'customer@hotmain.com',
@@ -129,6 +130,18 @@ class AddTask extends React.Component {
                 if (data.val()) {
                     let developers = this.snapshotToArray(data.val())
                     this.setState({ developers })
+                }
+            });
+    }
+
+    getCustomers() {
+        firebase
+            .database()
+            .ref("Customer")
+            .on("value", data => {
+                if (data.val()) {
+                    let customers = this.snapshotToArray(data.val())
+                    this.setState({ customers })
                 }
             });
     }
