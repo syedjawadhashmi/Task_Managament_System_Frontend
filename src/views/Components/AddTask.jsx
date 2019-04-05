@@ -98,16 +98,22 @@ class AddTask extends React.Component {
             cus_paid_on
         }
 
-        const ref = firebase.database().ref("Tasks/");
-        ref.push(taskPayload)
-            .then(res => {
-                this.setState({ open: false });
-                alert('Task added successfuly')
-            })
-            .catch(error => {
-                this.setState({ open: false });
-                alert("Error during user creating on firebase", error);
-            });
+        let isValid = Object.values(taskPayload).every(o => o !== undefined);
+        if (isValid) {
+            const ref = firebase.database().ref("Tasks/");
+            ref.push(taskPayload)
+                .then(res => {
+                    this.setState({ open: false });
+                    alert('Task added successfuly')
+                })
+                .catch(error => {
+                    this.setState({ open: false });
+                    alert("Error during user creating on firebase", error);
+                });
+        }
+        else {
+            alert('Please fill all the fields')
+        }
     };
 
     getProjects() {
