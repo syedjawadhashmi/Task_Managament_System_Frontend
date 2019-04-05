@@ -29,6 +29,8 @@ import { withStyles } from '@material-ui/core/styles';
 import firebase from "../../constant/api/firebase";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import AddTask from './AddTask'
+
 // import { ProgressBarCell } from '../../../theme-sources/material-ui/components/progress-bar-cell';
 // import { HighlightedCell } from '../../theme-sources/material-ui/components/highlighted-cell';
 // import { Loading } from '../../theme-sources/material-ui/components/loading';
@@ -76,12 +78,12 @@ const AddButton = ({ onExecute }) => (
 );
 
 const EditButton = ({ onExecute, row }) => {
-    const seflCreated = role !== "Developer" && row.createdBy == currentUser.email ? true : false 
+    const seflCreated = role !== "Developer" && row.createdBy == currentUser.email ? true : false
     return (
-        <IconButton 
-        disabled={!seflCreated}
-        onClick={onExecute} 
-        title="Edit row">
+        <IconButton
+            disabled={!seflCreated}
+            onClick={onExecute}
+            title="Edit row">
             <EditIcon />
         </IconButton>
     )
@@ -185,7 +187,7 @@ const EditCell = (props) => {
     return <TableEditRow.Cell
         {...props}
         editingEnabled={
-                column.name == 'ProjectCode' ||
+            column.name == 'ProjectCode' ||
                 column.name == 'number' ||
                 column.name == 'customer' ||
                 (column.name == 'est_dev_efforts' && (role == 'Product Owner' || role == 'Product Owner')) ||
@@ -258,7 +260,8 @@ class DemoBase extends React.PureComponent {
             developers: [],
             roles: ['Admin', 'Developer', 'Consultant', "Product Owner"],
             loading: true,
-            selection: []
+            selection: [],
+            open: false
         };
         const getStateRows = () => {
             const { rows } = this.state;
@@ -268,7 +271,7 @@ class DemoBase extends React.PureComponent {
         this.changeSorting = sorting => this.setState({ sorting });
         this.changeEditingRowIds = editingRowIds => this.setState({ editingRowIds });
         this.changeAddedRows = (addedRows) => {
-            debugger
+            this.setState({open: true})
         }
         this.changeRowChanges = rowChanges => this.setState({ rowChanges });
         this.changeCurrentPage = currentPage => this.setState({ currentPage });
@@ -427,11 +430,11 @@ class DemoBase extends React.PureComponent {
             });
     }
 
+    onClose = () => {this.setState({open: false})}
+
     snapshotToArray = snapshot => Object.entries(snapshot).map(e => Object.assign(e[1], { id: e[0] }));
 
     render() {
-        console.log('rowssss', this.state.rows)
-        console.log('tasks', this.state.tasks)
         const {
             rows,
             columns,
@@ -449,7 +452,8 @@ class DemoBase extends React.PureComponent {
             leftFixedColumns,
             totalSummaryItems,
             loading,
-            selection
+            selection,
+            open
         } = this.state;
 
         const cellComponent = ({ children, ...restProps }) => {
@@ -495,9 +499,9 @@ class DemoBase extends React.PureComponent {
                         onSortingChange={this.changeSorting}
                     />
 
-                    <SelectionState
+                    {/* <SelectionState
                         selection={selection}
-                        onSelectionChange={this.changeSelection} />
+                        onSelectionChange={this.changeSelection} /> */}
 
                     <PagingState
                         currentPage={currentPage}
@@ -523,7 +527,7 @@ class DemoBase extends React.PureComponent {
 
                     <IntegratedSorting />
                     <IntegratedPaging />
-                    <IntegratedSelection />
+                    {/* <IntegratedSelection /> */}
                     <IntegratedSummary />
 
                     {/* <CurrencyTypeProvider for={currencyColumns} />
@@ -535,7 +539,7 @@ class DemoBase extends React.PureComponent {
                         columnExtensions={tableColumnExtensions}
                         cellComponent={Cell}
                     />
-                    <TableSelection showSelectAll={false} />
+                    {/* <TableSelection showSelectAll={false} /> */}
                     {/* <TableColumnReordering
                         order={columnOrder}
                         onOrderChange={this.changeColumnOrder}
@@ -561,7 +565,10 @@ class DemoBase extends React.PureComponent {
                         pageSizes={pageSizes}
                     /> */}
                 </Grid>
-                {loading && <CircularProgress style={{position: 'absolute', bottom: 360, left: 590, zIndex: 1000}}/>}
+                {loading && <CircularProgress style={{ position: 'absolute', bottom: 360, left: 590, zIndex: 1000 }} />}
+            <AddTask 
+            open={open}
+            handleClose={this.onClose}/>
             </Paper>
         );
     }
