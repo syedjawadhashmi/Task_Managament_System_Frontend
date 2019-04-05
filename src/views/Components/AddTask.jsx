@@ -17,6 +17,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { withStyles } from '@material-ui/core/styles';
 
+import firebase from "../../constant/api/firebase";
+
+
 const styles = theme => ({
     root: {
         display: 'flex',
@@ -34,7 +37,21 @@ const styles = theme => ({
 class AddTask extends React.Component {
     state = {
         open: false,
+        projects: [],
+        developers: [],
+        lastUpdated: Date.now(),
+        assigned: 'developer@gmail.com',
+        customer: 'customer@hotmain.com',
+        number: 'ABC123'
     };
+
+    componentDidMount() {
+        this.getProjects()
+        this.getDevelopers()
+    }
+
+    snapshotToArray = snapshot => Object.entries(snapshot).map(e => Object.assign(e[1], { id: e[0] }));
+
 
     handleClickOpen = () => {
         this.setState({ open: true });
@@ -45,14 +62,82 @@ class AddTask extends React.Component {
         this.props.handleClose()
     };
 
-    handleChange = name => event => {
-        this.setState({
-            [name]: event.target.value,
-        });
+    handleChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
     };
+
+    handleAddTask = () => {
+        console.log('payload', this.state);
+        const { ticketSummary, status, number, lastUpdated, assigned, devName, priority, deadline, customer,
+            ProjectCode, category, est_dev_efforts, act_dev_efforts, rate_unit_dev, dev_efforts_amt, dev_paid_on,
+            est_cus_efforts, act_cus_efforts, rate_unit_cus, cus_efforts_amt, cus_paid_on
+        } = this.state;
+
+        const taskPayload = {
+            ticketSummary,
+            status,
+            number,
+            lastUpdated,
+            assigned,
+            devName,
+            priority,
+            deadline,
+            customer,
+            ProjectCode,
+            category,
+            est_dev_efforts,
+            act_dev_efforts,
+            rate_unit_dev,
+            dev_efforts_amt,
+            dev_paid_on,
+            est_cus_efforts,
+            act_cus_efforts,
+            rate_unit_cus,
+            cus_efforts_amt,
+            cus_paid_on
+        }
+
+        const ref = firebase.database().ref("Tasks/");
+        ref.push(taskPayload)
+            .then(res => {
+                this.setState({ open: false });
+                alert('Task added successfuly')
+            })
+            .catch(error => {
+                this.setState({ open: false });
+                alert("Error during user creating on firebase", error);
+            });
+    };
+
+    getProjects() {
+        firebase
+            .database()
+            .ref("Projects")
+            .on("value", data => {
+                if (data.val()) {
+                    let projects = this.snapshotToArray(data.val())
+                    this.setState({ projects })
+                }
+            });
+    }
+
+    getDevelopers() {
+        firebase
+            .database()
+            .ref("Developer")
+            .on("value", data => {
+                if (data.val()) {
+                    let developers = this.snapshotToArray(data.val())
+                    this.setState({ developers })
+                }
+            });
+    }
 
     render() {
         const { classes, open } = this.props
+        const { projects, developers } = this.state
+        debugger
+
         return (
             <div>
                 <Dialog
@@ -60,7 +145,7 @@ class AddTask extends React.Component {
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                 >
-                    <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Add Task</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
                             Pleas fill the below field to create a task
@@ -74,25 +159,26 @@ class AddTask extends React.Component {
                                     }}
                                     htmlFor="outlined-age-simple"
                                 >
-                                    Age
+                                    Project Code
                             </InputLabel>
                                 <Select
-                                    value={this.state.age}
-                                    onChange={this.handleChange('age')}
+                                    value={this.state.ProjectCode}
+                                    onChange={this.handleChange}
                                     input={
                                         <OutlinedInput
-                                            labelWidth={25}
-                                            name="age"
+                                            labelWidth={100}
+                                            name="ProjectCode"
                                             id="outlined-age-simple"
                                         />
                                     }
                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    {
+                                        projects.map(x => {
+                                            return (
+                                                <MenuItem value={x.ProjectCode}>{x.ProjectCode}</MenuItem>
+                                            )
+                                        })
+                                    }
                                 </Select>
                             </FormControl>
                         </div>
@@ -105,25 +191,21 @@ class AddTask extends React.Component {
                                     }}
                                     htmlFor="outlined-age-simple"
                                 >
-                                    Age
+                                    Category
                             </InputLabel>
                                 <Select
-                                    value={this.state.age}
+                                    value={this.state.category}
                                     onChange={this.handleChange}
                                     input={
                                         <OutlinedInput
-                                            labelWidth={25}
-                                            name="age"
+                                            labelWidth={50}
+                                            name="category"
                                             id="outlined-age-simple"
                                         />
                                     }
                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    <MenuItem value={'Dev'}>Dev</MenuItem>
+                                    <MenuItem value={'Support'}>Support</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -133,7 +215,9 @@ class AddTask extends React.Component {
                                 id="outlined-full-width"
                                 label="Label"
                                 style={{ margin: 8, minWidth: 350 }}
-                                placeholder="Placeholder"
+                                name="ticketSummary"
+                                onChange={this.handleChange}
+                                placeholder="TicketSummary"
                                 margin="normal"
                                 variant="outlined"
                                 InputLabelProps={{
@@ -150,25 +234,21 @@ class AddTask extends React.Component {
                                     }}
                                     htmlFor="outlined-age-simple"
                                 >
-                                    Age
+                                    Status
                             </InputLabel>
                                 <Select
-                                    value={this.state.age}
+                                    value={this.state.status}
                                     onChange={this.handleChange}
                                     input={
                                         <OutlinedInput
                                             labelWidth={25}
-                                            name="age"
+                                            name="status"
                                             id="outlined-age-simple"
                                         />
                                     }
                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    <MenuItem value={'Open'}>Open</MenuItem>
+                                    <MenuItem value={'Close'}>Close</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -178,8 +258,10 @@ class AddTask extends React.Component {
                                 disabled
                                 style={{ margin: 8, minWidth: 350 }}
                                 id="outlined-disabled"
+                                name="number"
+                                onChange={this.handleChange}
                                 label="Disabled"
-                                defaultValue="Hello World"
+                                defaultValue={this.state.number}
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
@@ -194,25 +276,26 @@ class AddTask extends React.Component {
                                     }}
                                     htmlFor="outlined-age-simple"
                                 >
-                                    Age
+                                    Assigned
                             </InputLabel>
                                 <Select
-                                    value={this.state.age}
+                                    value={this.state.devName}
                                     onChange={this.handleChange}
                                     input={
                                         <OutlinedInput
                                             labelWidth={25}
-                                            name="age"
+                                            name="devName"
                                             id="outlined-age-simple"
                                         />
                                     }
                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    {
+                                        developers.map(x => {
+                                            return (
+                                                <MenuItem value={x.name}>{x.name}</MenuItem>
+                                            )
+                                        })
+                                    }
                                 </Select>
                             </FormControl>
                         </div>
@@ -225,25 +308,22 @@ class AddTask extends React.Component {
                                     }}
                                     htmlFor="outlined-age-simple"
                                 >
-                                    Age
+                                    Priority
                             </InputLabel>
                                 <Select
-                                    value={this.state.age}
+                                    value={this.state.priority}
                                     onChange={this.handleChange}
                                     input={
                                         <OutlinedInput
                                             labelWidth={25}
-                                            name="age"
+                                            name="priority"
                                             id="outlined-age-simple"
                                         />
                                     }
                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    <MenuItem value={'High'}>High</MenuItem>
+                                    <MenuItem value={'Medium'}>Medium</MenuItem>
+                                    <MenuItem value={'Low'}>Low</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -251,6 +331,8 @@ class AddTask extends React.Component {
                         <div>
                             <TextField
                                 style={{ margin: 8, minWidth: 350 }}
+                                onChange={this.handleChange}
+                                name="deadline"
                                 id="outlined-disabled"
                                 type="date"
                                 label="Deadline"
@@ -266,8 +348,8 @@ class AddTask extends React.Component {
                                 disabled
                                 style={{ margin: 8, minWidth: 350 }}
                                 id="outlined-disabled"
-                                label="Disabled"
-                                defaultValue="Hello World"
+                                label="Customer"
+                                defaultValue="Customer"
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
@@ -279,7 +361,9 @@ class AddTask extends React.Component {
                                 style={{ margin: 8, minWidth: 350 }}
                                 id="outlined-disabled"
                                 type="number"
-                                label="Deadline"
+                                name="est_dev_efforts"
+                                onChange={this.handleChange}
+                                label="Estimated Developer Effort"
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
@@ -291,7 +375,9 @@ class AddTask extends React.Component {
                                 style={{ margin: 8, minWidth: 350 }}
                                 id="outlined-disabled"
                                 type="number"
-                                label="Deadline"
+                                name="act_dev_efforts"
+                                onChange={this.handleChange}
+                                label="Actual Developer Effort"
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
@@ -306,25 +392,23 @@ class AddTask extends React.Component {
                                     }}
                                     htmlFor="outlined-age-simple"
                                 >
-                                    Age
+                                    Rate Unit
                             </InputLabel>
                                 <Select
-                                    value={this.state.age}
+                                    value={this.state.rate_unit_dev}
                                     onChange={this.handleChange}
                                     input={
                                         <OutlinedInput
                                             labelWidth={25}
-                                            name="age"
+                                            name="rate_unit_dev"
                                             id="outlined-age-simple"
                                         />
                                     }
                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    <MenuItem value={'Hourly'}>Hourly</MenuItem>
+                                    <MenuItem value={'Daily'}>Daily</MenuItem>
+                                    <MenuItem value={'Weekly'}>Weekly</MenuItem>
+                                    <MenuItem value={'Monthly'}>Monthly</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -334,7 +418,9 @@ class AddTask extends React.Component {
                                 style={{ margin: 8, minWidth: 350 }}
                                 id="outlined-disabled"
                                 type="number"
-                                label="Deadline"
+                                name="dev_efforts_amt"
+                                onChange={this.handleChange}
+                                label="Developer Effort Amount"
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
@@ -346,7 +432,9 @@ class AddTask extends React.Component {
                                 style={{ margin: 8, minWidth: 350 }}
                                 id="outlined-disabled"
                                 type="date"
-                                label="Deadline"
+                                name="dev_paid_on"
+                                onChange={this.handleChange}
+                                label="Developer Paid On"
                                 defaultValue="2017-05-24"
                                 className={classes.textField}
                                 margin="normal"
@@ -359,7 +447,9 @@ class AddTask extends React.Component {
                                 style={{ margin: 8, minWidth: 350 }}
                                 id="outlined-disabled"
                                 type="number"
-                                label="Deadline"
+                                name="est_cus_efforts"
+                                onChange={this.handleChange}
+                                label="Efforts Estimated to Customer"
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
@@ -371,7 +461,9 @@ class AddTask extends React.Component {
                                 style={{ margin: 8, minWidth: 350 }}
                                 id="outlined-disabled"
                                 type="number"
-                                label="Deadline"
+                                name="act_cus_efforts"
+                                onChange={this.handleChange}
+                                label="Efforts Adjusted to Customer"
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
@@ -386,25 +478,23 @@ class AddTask extends React.Component {
                                     }}
                                     htmlFor="outlined-age-simple"
                                 >
-                                    Age
+                                    Rate Unit
                             </InputLabel>
                                 <Select
-                                    value={this.state.age}
+                                    value={this.state.rate_unit_cus}
                                     onChange={this.handleChange}
                                     input={
                                         <OutlinedInput
                                             labelWidth={25}
-                                            name="age"
+                                            name="rate_unit_cus"
                                             id="outlined-age-simple"
                                         />
                                     }
                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    <MenuItem value={'Hourly'}>Hourly</MenuItem>
+                                    <MenuItem value={'Daily'}>Daily</MenuItem>
+                                    <MenuItem value={'Weekly'}>Weekly</MenuItem>
+                                    <MenuItem value={'Monthly'}>Monthly</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -414,7 +504,9 @@ class AddTask extends React.Component {
                                 style={{ margin: 8, minWidth: 350 }}
                                 id="outlined-disabled"
                                 type="number"
-                                label="Deadline"
+                                name="cus_efforts_amt"
+                                onChange={this.handleChange}
+                                label="To Invoice Amount"
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
@@ -426,7 +518,9 @@ class AddTask extends React.Component {
                                 style={{ margin: 8, minWidth: 350 }}
                                 id="outlined-disabled"
                                 type="date"
-                                label="Deadline"
+                                name="cus_paid_on"
+                                onChange={this.handleChange}
+                                label="Paid by Customer On"
                                 defaultValue="2017-05-24"
                                 className={classes.textField}
                                 margin="normal"
@@ -438,10 +532,10 @@ class AddTask extends React.Component {
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
                             Cancel
-            </Button>
-                        <Button onClick={this.handleClose} color="primary">
-                            Subscribe
-            </Button>
+                        </Button>
+                        <Button onClick={this.handleAddTask} color="primary">
+                            Add
+                        </Button>
                     </DialogActions>
                 </Dialog>
             </div>
