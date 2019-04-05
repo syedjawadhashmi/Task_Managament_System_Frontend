@@ -3,11 +3,11 @@ import firebase from "firebase";
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyDvRUOXGGNHVkPDQCdxZjleBtd5fEsWmiI",
-    authDomain: "task-management-3134d.firebaseapp.com",
-    databaseURL: "https://task-management-3134d.firebaseio.com",
-    projectId: "task-management-3134d",
-    storageBucket: "task-management-3134d.appspot.com",
-    messagingSenderId: "62087885009"
+  authDomain: "task-management-3134d.firebaseapp.com",
+  databaseURL: "https://task-management-3134d.firebaseio.com",
+  projectId: "task-management-3134d",
+  storageBucket: "task-management-3134d.appspot.com",
+  messagingSenderId: "62087885009"
 };
 
 // Initialize Firebase

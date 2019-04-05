@@ -6,13 +6,22 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Switch from "@material-ui/core/Switch";
 
 import styles from "assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch.jsx";
+import FormControl from "@material-ui/core/FormControl";
+import MessageIcon from "@material-ui/icons/MessageRounded";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import classNames from "classnames";
+import profile from "../../assets/img/default-avatar.png";
+import Edit from "@material-ui/icons/Edit";
+import Close from "@material-ui/icons/Close";
 
-import imagine1 from "assets/img/sidebar-1.jpg";
-import imagine2 from "assets/img/sidebar-2.jpg";
-import imagine3 from "assets/img/sidebar-3.jpg";
-import imagine4 from "assets/img/sidebar-4.jpg";
-
+import InputAdornment from "@material-ui/core/InputAdornment";
+import EditIcon from "@material-ui/icons/Edit";
+import TextField from "@material-ui/core/TextField";
 import Button from "components/CustomButtons/Button.jsx";
+import Avatar from "@material-ui/core/Avatar";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import firebase from "../../constant/api/firebase";
 
 class FixedPlugin extends Component {
   constructor(props) {
@@ -23,273 +32,198 @@ class FixedPlugin extends Component {
       bgImage: this.props.bgImage,
       showImage: true
     };
-    this.handleClick = this.handleClick.bind(this);
+    // this.handleClick = this.handleClick.bind(this);
   }
-  handleClick() {
-    this.props.handleFixedClick();
-  }
-  handleChange = name => event => {
-    switch (name) {
-      case "miniActive":
-        this.props.sidebarMinimize();
-        break;
-      case "image":
-        if (event.target.checked) {
-          this.props.handleImageClick(this.state.bgImage);
-        } else {
-          this.props.handleImageClick();
-        }
-        this.setState({ showImage: event.target.checked });
-        break;
-      default:
-        break;
-    }
-  };
+  // handleClick() {
+  //   this.props.handleFixedClick();
+  // }
+  // handleChange = name => event => {
+  //   switch (name) {
+  //     case "miniActive":
+  //       this.props.sidebarMinimize();
+  //       break;
+  //     case "image":
+  //       if (event.target.checked) {
+  //         this.props.handleImageClick(this.state.bgImage);
+  //       } else {
+  //         this.props.handleImageClick();
+  //       }
+  //       this.setState({ showImage: event.target.checked });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
   render() {
-    const { classes } = this.props;
+    const { classes,loading } = this.props;
     return (
       <div
         className={
           "fixed-plugin" + (this.props.rtlActive ? " fixed-plugin-rtl" : "")
         }
       >
-        <div id="fixedPluginClasses" className={this.props.fixedClasses}>
-          <div onClick={this.handleClick}>
+        <div id="fixedPluginClasses"  className={this.props.fixedClasses}>
+          {/* <div onClick={this.handleClick}>
             <i className="fa fa-cog fa-2x" />
-          </div>
+          </div> */}
           <ul className="dropdown-menu">
-            <li className="header-title">SIDEBAR FILTERS</li>
-            <li className="adjustments-line">
-              <a className="switch-trigger active-color">
-                <div className="badge-colors text-center">
-                  <span
-                    className={
-                      this.props.color === "purple"
-                        ? "badge filter badge-purple active"
-                        : "badge filter badge-purple"
-                    }
-                    data-color="purple"
-                    onClick={() => {
-                      this.props.handleColorClick("purple");
-                    }}
-                  />
-                  <span
-                    className={
-                      this.props.color === "blue"
-                        ? "badge filter badge-blue active"
-                        : "badge filter badge-blue"
-                    }
-                    data-color="blue"
-                    onClick={() => {
-                      this.props.handleColorClick("blue");
-                    }}
-                  />
-                  <span
-                    className={
-                      this.props.color === "green"
-                        ? "badge filter badge-green active"
-                        : "badge filter badge-green"
-                    }
-                    data-color="green"
-                    onClick={() => {
-                      this.props.handleColorClick("green");
-                    }}
-                  />
-                  <span
-                    className={
-                      this.props.color === "red"
-                        ? "badge filter badge-red active"
-                        : "badge filter badge-red"
-                    }
-                    data-color="red"
-                    onClick={() => {
-                      this.props.handleColorClick("red");
-                    }}
-                  />
-                  <span
-                    className={
-                      this.props.color === "orange"
-                        ? "badge filter badge-orange active"
-                        : "badge filter badge-orange"
-                    }
-                    data-color="orange"
-                    onClick={() => {
-                      this.props.handleColorClick("orange");
-                    }}
-                  />
-                  <span
-                    className={
-                      this.props.color === "white"
-                        ? "badge filter badge-white active"
-                        : "badge filter badge-white"
-                    }
-                    data-color="orange"
-                    onClick={() => {
-                      this.props.handleColorClick("white");
-                    }}
-                  />
-                  <span
-                    className={
-                      this.props.color === "rose"
-                        ? "badge filter badge-rose active"
-                        : "badge filter badge-rose"
-                    }
-                    data-color="orange"
-                    onClick={() => {
-                      this.props.handleColorClick("rose");
-                    }}
-                  />
+            <li className="header-title">Comments</li>
+            <FormControl id="commentDiv" className={[classes.margin,"commentDiv"]}>
+              {/* <InputBase
+                id="bootstrap-input"
+                placeholder={
+                  "Write a comment"
+                }
+                value={this.state.text}
+                classes={{
+                  root: classes.bootstrapRoot,
+                  input: classes.bootstrapInput
+                }}
+                onChange={this.handleInputChange}
+              /> */}
+
+              <TextField
+                id="outlined-simple-start-adornment"
+                className={classNames(classes.margin, classes.textField)}
+                variant="outlined"
+                label="Write a comment"
+                value={this.props.text}
+                onChange={this.props.handleInputChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <EditIcon />
+                    </InputAdornment>
+                  )
+                }}
+              />
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  margin: 20,
+                  float: "right"
+                }}
+              >
+                <div>
+                  <label id="#bb" style={{ color: "black" }}>
+                    <i className="material-icons">attach_file</i>
+                    <input
+                      type="file"
+                      name="myFile"
+                      style={{ display: "none" }}
+                      disabled={loading ? true : false}
+                      onChange={this.props.handleFileChange}
+                    />
+                  </label>
                 </div>
-                <div className="clearfix" />
-              </a>
-            </li>
-            <li className="header-title">SIDEBAR BACKGROUND</li>
-            <li className="adjustments-line">
-              <a className="switch-trigger active-color">
-                <div className="badge-colors text-center">
-                  <span
-                    className={
-                      this.props.bgColor === "blue"
-                        ? "badge filter badge-blue active"
-                        : "badge filter badge-blue"
+
+                <div>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.props.handleMessaging}
+                  >
+                    {!this.props.editComment ? 'Send' : 'Update'}
+
+                    {
+                      !this.props.editComment ?
+                        <MessageIcon /> : <EditIcon />
                     }
-                    data-color="orange"
-                    onClick={() => {
-                      this.props.handleBgColorClick("blue");
-                    }}
-                  />
-                  <span
-                    className={
-                      this.props.bgColor === "white"
-                        ? "badge filter badge-white active"
-                        : "badge filter badge-white"
-                    }
-                    data-color="orange"
-                    onClick={() => {
-                      this.props.handleBgColorClick("white");
-                    }}
-                  />
-                  <span
-                    className={
-                      this.props.bgColor === "black"
-                        ? "badge filter badge-black active"
-                        : "badge filter badge-black"
-                    }
-                    data-color="orange"
-                    onClick={() => {
-                      this.props.handleBgColorClick("black");
-                    }}
-                  />
-                </div>
-                <div className="clearfix" />
-              </a>
-            </li>
-            <li className="adjustments-line">
-              <a className="switch-trigger">
-                <p className="switch-label">Sidebar Mini</p>
-                <Switch
-                  checked={this.props.miniActive}
-                  onChange={this.handleChange("miniActive")}
-                  value="sidebarMini"
-                  classes={{
-                    switchBase: classes.switchBase,
-                    checked: classes.switchChecked,
-                    icon: classes.switchIcon,
-                    iconChecked: classes.switchIconChecked,
-                    bar: classes.switchBar
-                  }}
-                />
-                <div className="clearfix" />
-              </a>
-            </li>
-            <li className="adjustments-line">
-              <a className="switch-trigger">
-                <p className="switch-label">Sidebar Image</p>
-                <Switch
-                  checked={this.state.showImage}
-                  onChange={this.handleChange("image")}
-                  value="sidebarMini"
-                  classes={{
-                    switchBase: classes.switchBase,
-                    checked: classes.switchChecked,
-                    icon: classes.switchIcon,
-                    iconChecked: classes.switchIconChecked,
-                    bar: classes.switchBar
-                  }}
-                />
-                <div className="clearfix" />
-              </a>
-            </li>
-            <li className="header-title">Images</li>
-            <li className={this.state["bgImage"] === imagine1 ? "active" : ""}>
-              <a
-                className="img-holder switch-trigger"
-                onClick={() => {
-                  this.setState({ showImage: true, bgImage: imagine1 });
-                  this.props.handleImageClick(imagine1);
-                }}
-              >
-                <img src={imagine1} alt="..." />
-              </a>
-            </li>
-            <li className={this.state["bgImage"] === imagine2 ? "active" : ""}>
-              <a
-                className="img-holder switch-trigger"
-                onClick={() => {
-                  this.setState({ showImage: true, bgImage: imagine2 });
-                  this.props.handleImageClick(imagine2);
-                }}
-              >
-                <img src={imagine2} alt="..." />
-              </a>
-            </li>
-            <li className={this.state["bgImage"] === imagine3 ? "active" : ""}>
-              <a
-                className="img-holder switch-trigger"
-                onClick={() => {
-                  this.setState({ showImage: true, bgImage: imagine3 });
-                  this.props.handleImageClick(imagine3);
-                }}
-              >
-                <img src={imagine3} alt="..." />
-              </a>
-            </li>
-            <li className={this.state["bgImage"] === imagine4 ? "active" : ""}>
-              <a
-                className="img-holder switch-trigger"
-                onClick={() => {
-                  this.setState({ showImage: true, bgImage: imagine4 });
-                  this.props.handleImageClick(imagine4);
-                }}
-              >
-                <img src={imagine4} alt="..." />
-              </a>
-            </li>
-            <li className="button-container">
-              <div>
-                <Button
-                  color="warning"
-                  href="https://www.creative-tim.com/product/material-dashboard-pro-react"
-                  target="_blank"
-                  fullWidth
-                >
-                  Buy now
-                </Button>
-              </div>
-            </li>
-            <li className="button-container">
-              <div>
-                <NavLink to={"/documentation"} activeClassName="active">
-                  <Button color="info" fullWidth>
-                    Documentation
                   </Button>
-                </NavLink>
+                </div>
+
+                {this.props.completed < 100 ? (
+                  <div>
+                    <CircularProgress
+                      className={classes.progress}
+                      variant="static"
+                      value={this.state.completed}
+                      style={{ marginLeft: 10 }}
+                      size={30}
+                    />
+                  </div>
+                ) : null}
               </div>
-            </li>
-            <li className="header-title" id="sharrreTitle">
-              Thank you for sharing!
-              <br />
-            </li>
+
+              {this.props.comments
+                .slice(0)
+                .reverse()
+                .map((c, index) => (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                     
+                    }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={profile}
+                      className={classes.avatar}
+                      style={{margin:5}}
+                    />
+                    <Paper style={{margin:5}} className={classes.root} elevation={1}>
+                      <Typography
+                        style={{
+                          margin: 10,
+                          fontSize: 13
+                        }}
+                        variant="h6"
+                        component="h4"
+                      >
+                        {c.comment.from}
+                      </Typography>
+                      {c.comment.type.split("/")[0] == "application" ? (
+                        <div style={{ margin: 10 }}>
+                          <a target="blank" href={c.url}>
+                            <img src={PDFIcon} width={100} height={100} />
+                          </a>
+                        </div>
+                      ) : c.comment.type.split("/")[0] == "image" ? (
+                        <div style={{ margin: 10 }}>
+                          <a href={c.comment.url} target="_blank" > <img src={c.comment.url} width={100} height={100} /></a>
+                        </div>
+                      ) : (
+                            <Typography style={{ margin: 10 }} component="p">
+                              {c.comment.text}
+                            </Typography>
+                          )}
+                      <Typography
+                        style={{ margin: 10, fontSize: 9 }}
+                        component="p"
+                      >
+                        {Date(c.comment.createdAt)}
+                      </Typography>
+
+                      {
+                        c.comment.type == 'text' ?
+                          <Button
+                            edit={true}
+                            color="success"
+                            // onClick={() => this.props.updateComment(c)}
+                            simple
+                          >
+                            <Edit color="success" />
+                          </Button>
+                          :
+                          null
+                      }
+
+                      <Button
+                        color="danger"
+                        simple
+                        // onClick={() => this.props.deleteComment(c, index)}
+                      >
+                        <Close color="danger" />
+                      </Button>
+                    </Paper>
+                  </div>
+                ))}
+            </FormControl>
           </ul>
         </div>
       </div>

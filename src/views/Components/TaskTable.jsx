@@ -43,6 +43,7 @@ import firebase from "../../constant/api/firebase";
 import Datetime from "react-datetime";
 import tableStyle from "assets/jss/material-dashboard-pro-react/components/tableStyle";
 import TextField from "@material-ui/core/TextField";
+import FixedPlugin from "../../components/FixedPlugin/FixedPlugin.jsx";
 import Edit from "@material-ui/icons/Edit";
 import Check from "@material-ui/icons/Check";
 import Comments from "@material-ui/icons/Comment";
@@ -546,7 +547,6 @@ let CustomTable = ({ ...props }) => {
         >
           {tableData &&
             tableData.map((prop, key) => {
-              debugger
               var rowColor = "";
               var rowColored = false;
               if (prop.color !== undefined) {
@@ -1392,7 +1392,8 @@ class TaskTable extends React.Component {
     UCEAmount: "",
     UCPaidOn: "",
     editComment: false,
-    filterTxt: ''
+    filterTxt: '',
+    fixedClasses: "dropdown",
   };
   componentDidMount() {
     this.getProjects();
@@ -1673,6 +1674,7 @@ class TaskTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   handleClickOpen = key => {
+    
     this.setState({ comments: [] });
     let comments = [];
     var ref = firebase.database().ref("Comments");
@@ -1692,9 +1694,14 @@ class TaskTable extends React.Component {
       });
 
     this.setState({
-      open: true,
+      // open: true,
       childKey: key
     });
+    if (this.state.fixedClasses === "dropdown") {
+      this.setState({ fixedClasses: "dropdown show" });
+    } else {
+      this.setState({ fixedClasses: "dropdown" });
+    }
   };
   projecthandleClickOpen = () => {
     this.setState({
@@ -2095,7 +2102,7 @@ class TaskTable extends React.Component {
 
   };
 
-  handleFileChange(event) {
+  handleFileChange=(event)=> {
     this.setState({ loading: true });
     const { target } = event;
     const { files } = target;
@@ -2166,9 +2173,9 @@ class TaskTable extends React.Component {
   };
 
   deleteComment(comment, index) {
-    debugger
-    let key = comment.key
-    let self = this
+    debugger;
+    let key = comment.key;
+    let self = this;
     firebase
       .database()
       .ref("Comments")
@@ -2177,13 +2184,12 @@ class TaskTable extends React.Component {
       .then(() => {
         self.state.comments.map((comment, index) => {
           if (comment.key == key) {
-            let comments = self.state.comments
-            comments.splice(index, 1)
-            self.setState({ comments: comments })
-            debugger
+            let comments = self.state.comments;
+            comments.splice(index, 1);
+            self.setState({ comments: comments });
+            debugger;
           }
-
-        })
+        });
         // let comments = this.state.comments.slice(0).reverse()
         // comments.splice(index, 1);
         // this.setState({
@@ -2382,6 +2388,19 @@ class TaskTable extends React.Component {
           handleUCPaidOnCodeChange={this.handleUCPaidOnCodeChange}
           UCPaidOn={this.state.UCPaidOn}
         />
+        <FixedPlugin
+          loading={this.state.loading}
+          handleFileChange={this.handleFileChange}
+          completed={this.props.completed}
+          comments={this.state.comments}
+          updateComment={this.updateComment}
+          handleMessaging={this.handleMessaging}
+          handleInputChange={this.handleInputChange}
+          deleteComment={this.deleteComment}
+          editComment={this.state.editComment}
+          text={this.state.text}
+          fixedClasses={this.state.fixedClasses}
+        />
         <Dialog
           onClose={this.handleClose}
           aria-labelledby="customized-dialog-title"
@@ -2440,7 +2459,7 @@ class TaskTable extends React.Component {
                       name="myFile"
                       style={{ display: "none" }}
                       disabled={loading ? true : false}
-                      onChange={this.handleFileChange.bind(this)}
+                      // onChange={this.handleFileChange.bind(this)}
                     />
                   </label>
                 </div>
