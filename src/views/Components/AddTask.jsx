@@ -42,8 +42,8 @@ class AddTask extends React.Component {
         customers: [],
         lastUpdated: Date.now(),
         assigned: 'developer@gmail.com',
-        customer: 'customer@hotmain.com',
-        number: 'ABC123'
+        customer: '',
+        number: ''
     };
 
     componentDidMount() {
@@ -64,40 +64,60 @@ class AddTask extends React.Component {
     };
 
     handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
+        if (event.target.name == 'ProjectCode') {
+            const email = event.target.value.customer
+            this.getCustomersByEmail(email)
+        }
+
+        this.setState({ [event.target.name]: event.target.value }, () => {
+            if (this.state.category && this.state.ProjectCode) {
+                const { ProjectCode, category } = this.state
+                const code = ProjectCode.ProjectCode
+                this.setState({
+                    number: `${code}-${category}- ${Math.floor(Math.random() * 1000)}`
+                });
+            }
+        })
     };
 
     handleAddTask = () => {
         console.log('payload', this.state);
-        const { ticketSummary, status, number, lastUpdated, assigned, devName, priority, deadline, customer,
+        const role = localStorage.getItem("role") && localStorage.getItem("role").replace(/['"]+/g, "");
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const { ticketSummary, status, number, lastUpdated, assigned, priority, deadline, customer,
             ProjectCode, category, est_dev_efforts, act_dev_efforts, rate_unit_dev, dev_efforts_amt, dev_paid_on,
             est_cus_efforts, act_cus_efforts, rate_unit_cus, cus_efforts_amt, cus_paid_on
         } = this.state;
+
+        const code = ProjectCode ? ProjectCode.ProjectCode : ''
+        const devName = assigned ? assigned.name : ''
+        let assignedDev = assigned ? assigned.email : '';
+        const createdBy = currentUser.email
 
         const taskPayload = {
             ticketSummary,
             status,
             number,
             lastUpdated,
-            assigned,
+            createdBy,
+            assigned: assignedDev,
             devName,
             priority,
             deadline,
             customer,
-            ProjectCode,
+            ProjectCode: code,
             category,
-            est_dev_efforts,
-            act_dev_efforts,
-            rate_unit_dev,
-            dev_efforts_amt,
-            dev_paid_on,
-            est_cus_efforts,
-            act_cus_efforts,
-            rate_unit_cus,
-            cus_efforts_amt,
-            cus_paid_on
+            est_dev_efforts: role == "Admin" ? est_dev_efforts : '',
+            act_dev_efforts: role == "Admin" ? act_dev_efforts : '',
+            rate_unit_dev: role == "Admin" ? rate_unit_dev : '',
+            dev_efforts_amt: role == "Admin" ? dev_efforts_amt : '',
+            dev_paid_on: role == "Admin" ? dev_paid_on : '',
+            est_cus_efforts: role == "Admin" ? est_cus_efforts : '',
+            act_cus_efforts: role == "Admin" ? act_cus_efforts : '',
+            rate_unit_cus: role == "Admin" ? rate_unit_cus : '',
+            cus_efforts_amt: role == "Admin" ? cus_efforts_amt : '',
+            cus_paid_on: role == "Admin" ? cus_paid_on : ''
         }
-
         let isValid = Object.values(taskPayload).every(o => o !== undefined);
         if (isValid) {
             const ref = firebase.database().ref("Tasks/");
@@ -114,6 +134,7 @@ class AddTask extends React.Component {
         else {
             alert('Please fill all the fields')
         }
+
     };
 
     getProjects() {
@@ -140,22 +161,24 @@ class AddTask extends React.Component {
             });
     }
 
-    getCustomers() {
+    getCustomersByEmail(email) {
+        const that = this
         firebase
             .database()
             .ref("Customer")
-            .on("value", data => {
-                if (data.val()) {
-                    let customers = this.snapshotToArray(data.val())
-                    this.setState({ customers })
-                }
+            .orderByChild("email")
+            .equalTo(email)
+            .on("child_added", function (snapshot) {
+                const customer = snapshot.val().customer
+                that.setState({ customer })
+                console.log("ABID SHAKA", snapshot.val());
             });
     }
 
     render() {
         const { classes, open } = this.props
         const { projects, developers } = this.state
-        debugger
+        const role = localStorage.getItem("role") && localStorage.getItem("role").replace(/['"]+/g, "");
 
         return (
             <div>
@@ -194,7 +217,7 @@ class AddTask extends React.Component {
                                     {
                                         projects.map(x => {
                                             return (
-                                                <MenuItem value={x.ProjectCode}>{x.ProjectCode}</MenuItem>
+                                                <MenuItem value={x}>{x.ProjectCode}</MenuItem>
                                             )
                                         })
                                     }
@@ -278,9 +301,9 @@ class AddTask extends React.Component {
                                 style={{ margin: 8, minWidth: 350 }}
                                 id="outlined-disabled"
                                 name="number"
-                                onChange={this.handleChange}
-                                label="Disabled"
-                                defaultValue={this.state.number}
+                                // onChange={this.handleChange}
+                                label="Task Code"
+                                value={this.state.number}
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
@@ -298,12 +321,12 @@ class AddTask extends React.Component {
                                     Assigned
                             </InputLabel>
                                 <Select
-                                    value={this.state.devName}
+                                    value={this.state.assigned}
                                     onChange={this.handleChange}
                                     input={
                                         <OutlinedInput
                                             labelWidth={25}
-                                            name="devName"
+                                            name="assigned"
                                             id="outlined-age-simple"
                                         />
                                     }
@@ -311,7 +334,7 @@ class AddTask extends React.Component {
                                     {
                                         developers.map(x => {
                                             return (
-                                                <MenuItem value={x.name}>{x.name}</MenuItem>
+                                                <MenuItem value={x}>{x.name}</MenuItem>
                                             )
                                         })
                                     }
@@ -368,184 +391,215 @@ class AddTask extends React.Component {
                                 style={{ margin: 8, minWidth: 350 }}
                                 id="outlined-disabled"
                                 label="Customer"
-                                defaultValue="Customer"
+                                value={this.state.customer ? this.state.customer : 'Customer'}
                                 className={classes.textField}
                                 margin="normal"
                                 variant="outlined"
                             />
                         </div>
 
-                        <div>
-                            <TextField
-                                style={{ margin: 8, minWidth: 350 }}
-                                id="outlined-disabled"
-                                type="number"
-                                name="est_dev_efforts"
-                                onChange={this.handleChange}
-                                label="Estimated Developer Effort"
-                                className={classes.textField}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                        </div>
+                        {
 
-                        <div>
-                            <TextField
-                                style={{ margin: 8, minWidth: 350 }}
-                                id="outlined-disabled"
-                                type="number"
-                                name="act_dev_efforts"
-                                onChange={this.handleChange}
-                                label="Actual Developer Effort"
-                                className={classes.textField}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                        </div>
-
-                        <div>
-                            <FormControl variant="outlined" className={classes.formControl}>
-                                <InputLabel
-                                    ref={ref => {
-                                        this.InputLabelRef = ref;
-                                    }}
-                                    htmlFor="outlined-age-simple"
-                                >
-                                    Rate Unit
-                            </InputLabel>
-                                <Select
-                                    value={this.state.rate_unit_dev}
+                            role == "Admin" &&
+                            <div>
+                                <TextField
+                                    style={{ margin: 8, minWidth: 350 }}
+                                    id="outlined-disabled"
+                                    type="number"
+                                    name="est_dev_efforts"
                                     onChange={this.handleChange}
-                                    input={
-                                        <OutlinedInput
-                                            labelWidth={25}
-                                            name="rate_unit_dev"
-                                            id="outlined-age-simple"
-                                        />
-                                    }
-                                >
-                                    <MenuItem value={'Hourly'}>Hourly</MenuItem>
-                                    <MenuItem value={'Daily'}>Daily</MenuItem>
-                                    <MenuItem value={'Weekly'}>Weekly</MenuItem>
-                                    <MenuItem value={'Monthly'}>Monthly</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
+                                    label="Estimated Developer Effort"
+                                    className={classes.textField}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </div>
+                        }
 
-                        <div>
-                            <TextField
-                                style={{ margin: 8, minWidth: 350 }}
-                                id="outlined-disabled"
-                                type="number"
-                                name="dev_efforts_amt"
-                                onChange={this.handleChange}
-                                label="Developer Effort Amount"
-                                className={classes.textField}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                        </div>
-
-                        <div>
-                            <TextField
-                                style={{ margin: 8, minWidth: 350 }}
-                                id="outlined-disabled"
-                                type="date"
-                                name="dev_paid_on"
-                                onChange={this.handleChange}
-                                label="Developer Paid On"
-                                defaultValue="2017-05-24"
-                                className={classes.textField}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                        </div>
-
-                        <div>
-                            <TextField
-                                style={{ margin: 8, minWidth: 350 }}
-                                id="outlined-disabled"
-                                type="number"
-                                name="est_cus_efforts"
-                                onChange={this.handleChange}
-                                label="Efforts Estimated to Customer"
-                                className={classes.textField}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                        </div>
-
-                        <div>
-                            <TextField
-                                style={{ margin: 8, minWidth: 350 }}
-                                id="outlined-disabled"
-                                type="number"
-                                name="act_cus_efforts"
-                                onChange={this.handleChange}
-                                label="Efforts Adjusted to Customer"
-                                className={classes.textField}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                        </div>
-
-                        <div>
-                            <FormControl variant="outlined" className={classes.formControl}>
-                                <InputLabel
-                                    ref={ref => {
-                                        this.InputLabelRef = ref;
-                                    }}
-                                    htmlFor="outlined-age-simple"
-                                >
-                                    Rate Unit
-                            </InputLabel>
-                                <Select
-                                    value={this.state.rate_unit_cus}
+                        {
+                            role == "Admin" &&
+                            <div>
+                                <TextField
+                                    style={{ margin: 8, minWidth: 350 }}
+                                    id="outlined-disabled"
+                                    type="number"
+                                    name="act_dev_efforts"
                                     onChange={this.handleChange}
-                                    input={
-                                        <OutlinedInput
-                                            labelWidth={25}
-                                            name="rate_unit_cus"
-                                            id="outlined-age-simple"
-                                        />
-                                    }
-                                >
-                                    <MenuItem value={'Hourly'}>Hourly</MenuItem>
-                                    <MenuItem value={'Daily'}>Daily</MenuItem>
-                                    <MenuItem value={'Weekly'}>Weekly</MenuItem>
-                                    <MenuItem value={'Monthly'}>Monthly</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
+                                    label="Actual Developer Effort"
+                                    className={classes.textField}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </div>
+                        }
 
-                        <div>
-                            <TextField
-                                style={{ margin: 8, minWidth: 350 }}
-                                id="outlined-disabled"
-                                type="number"
-                                name="cus_efforts_amt"
-                                onChange={this.handleChange}
-                                label="To Invoice Amount"
-                                className={classes.textField}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                        </div>
+                        {
+                            role == "Admin" &&
+                            <div>
+                                <FormControl variant="outlined" className={classes.formControl}>
+                                    <InputLabel
+                                        ref={ref => {
+                                            this.InputLabelRef = ref;
+                                        }}
+                                        htmlFor="outlined-age-simple"
+                                    >
+                                        Rate Unit
+                            </InputLabel>
+                                    <Select
+                                        value={this.state.rate_unit_dev}
+                                        onChange={this.handleChange}
+                                        input={
+                                            <OutlinedInput
+                                                labelWidth={25}
+                                                name="rate_unit_dev"
+                                                id="outlined-age-simple"
+                                            />
+                                        }
+                                    >
+                                        <MenuItem value={'Hourly'}>Hourly</MenuItem>
+                                        <MenuItem value={'Daily'}>Daily</MenuItem>
+                                        <MenuItem value={'Weekly'}>Weekly</MenuItem>
+                                        <MenuItem value={'Monthly'}>Monthly</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        }
 
-                        <div>
-                            <TextField
-                                style={{ margin: 8, minWidth: 350 }}
-                                id="outlined-disabled"
-                                type="date"
-                                name="cus_paid_on"
-                                onChange={this.handleChange}
-                                label="Paid by Customer On"
-                                defaultValue="2017-05-24"
-                                className={classes.textField}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                        </div>
+                        {
+                            role == "Admin" &&
+                            < div >
+                                <TextField
+                                    style={{ margin: 8, minWidth: 350 }}
+                                    id="outlined-disabled"
+                                    type="number"
+                                    name="dev_efforts_amt"
+                                    onChange={this.handleChange}
+                                    label="Developer Effort Amount"
+                                    className={classes.textField}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </div>
+                        }
+
+                        {
+                            role == "Admin" &&
+                            <div>
+                                <TextField
+                                    style={{ margin: 8, minWidth: 350 }}
+                                    id="outlined-disabled"
+                                    type="date"
+                                    name="dev_paid_on"
+                                    onChange={this.handleChange}
+                                    label="Developer Paid On"
+                                    defaultValue="2017-05-24"
+                                    className={classes.textField}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </div>
+                        }
+
+                        {
+                            role == "Admin" &&
+                            <div>
+                                <TextField
+                                    style={{ margin: 8, minWidth: 350 }}
+                                    id="outlined-disabled"
+                                    type="number"
+                                    name="est_cus_efforts"
+                                    onChange={this.handleChange}
+                                    label="Efforts Estimated to Customer"
+                                    className={classes.textField}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </div>
+                        }
+
+                        {
+                            role == "Admin" &&
+                            <div>
+                                <TextField
+                                    style={{ margin: 8, minWidth: 350 }}
+                                    id="outlined-disabled"
+                                    type="number"
+                                    name="act_cus_efforts"
+                                    onChange={this.handleChange}
+                                    label="Efforts Adjusted to Customer"
+                                    className={classes.textField}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </div>
+                        }
+
+                        {
+                            role == "Admin" &&
+                            <div>
+                                <FormControl variant="outlined" className={classes.formControl}>
+                                    <InputLabel
+                                        ref={ref => {
+                                            this.InputLabelRef = ref;
+                                        }}
+                                        htmlFor="outlined-age-simple"
+                                    >
+                                        Rate Unit
+                            </InputLabel>
+                                    <Select
+                                        value={this.state.rate_unit_cus}
+                                        onChange={this.handleChange}
+                                        input={
+                                            <OutlinedInput
+                                                labelWidth={25}
+                                                name="rate_unit_cus"
+                                                id="outlined-age-simple"
+                                            />
+                                        }
+                                    >
+                                        <MenuItem value={'Hourly'}>Hourly</MenuItem>
+                                        <MenuItem value={'Daily'}>Daily</MenuItem>
+                                        <MenuItem value={'Weekly'}>Weekly</MenuItem>
+                                        <MenuItem value={'Monthly'}>Monthly</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        }
+
+                        {
+                            role == "Admin" &&
+                            <div>
+                                <TextField
+                                    style={{ margin: 8, minWidth: 350 }}
+                                    id="outlined-disabled"
+                                    type="number"
+                                    name="cus_efforts_amt"
+                                    onChange={this.handleChange}
+                                    label="To Invoice Amount"
+                                    className={classes.textField}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </div>
+                        }
+
+                        {
+                            role == "Admin" &&
+                            <div>
+                                <TextField
+                                    style={{ margin: 8, minWidth: 350 }}
+                                    id="outlined-disabled"
+                                    type="date"
+                                    name="cus_paid_on"
+                                    onChange={this.handleChange}
+                                    label="Paid by Customer On"
+                                    defaultValue="2017-05-24"
+                                    className={classes.textField}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </div>
+                        }
 
                     </DialogContent>
                     <DialogActions>
