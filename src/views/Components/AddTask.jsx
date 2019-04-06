@@ -41,9 +41,25 @@ class AddTask extends React.Component {
         developers: [],
         customers: [],
         lastUpdated: Date.now(),
-        assigned: 'developer@gmail.com',
+        status: '',
+        number: '',
+        assigned: '',
+        devName: '',
+        priority: '',
+        deadline: '',
         customer: '',
-        number: ''
+        ProjectCode: '',
+        category: '',
+        est_dev_efforts: '',
+        act_dev_efforts: '',
+        rate_unit_dev: '',
+        dev_efforts_amt: '',
+        dev_paid_on: '',
+        est_cus_efforts: '',
+        act_cus_efforts: '',
+        rate_unit_cus: '',
+        cus_efforts_amt: '',
+        cus_paid_on: ''
     };
 
     componentDidMount() {
@@ -69,6 +85,24 @@ class AddTask extends React.Component {
             this.getCustomersByEmail(email)
         }
 
+        if (event.target.name == 'assigned') {
+            this.setState({ rate_unit_dev: 'Hourly' })
+        }
+
+        if (event.target.name == 'act_cus_efforts') {
+            const { rate_unit_cus } = this.state
+            let rate = this.getRate(rate_unit_cus)
+            let cus_efforts_amt = parseInt(event.target.value) * rate;
+            this.setState({ cus_efforts_amt })
+        }
+
+        if (event.target.name == 'act_dev_efforts') {
+            const { rate_unit_dev } = this.state
+            let rate = this.getRate(rate_unit_dev)
+            let dev_efforts_amt = parseInt(event.target.value) * rate;
+            this.setState({ dev_efforts_amt })
+        }
+
         this.setState({ [event.target.name]: event.target.value }, () => {
             if (this.state.category && this.state.ProjectCode) {
                 const { ProjectCode, category } = this.state
@@ -79,6 +113,21 @@ class AddTask extends React.Component {
             }
         })
     };
+
+    getRate(rate) {
+        if (rate == 'Hourly') {
+            return 1
+        }
+        else if (rate == 'Daily') {
+            return 8
+        }
+        else if (rate == 'Weekly') {
+            return 40
+        }
+        else {
+            return 160
+        }
+    }
 
     handleAddTask = () => {
         console.log('payload', this.state);
@@ -125,6 +174,7 @@ class AddTask extends React.Component {
                 .then(res => {
                     this.setState({ open: false });
                     alert('Task added successfuly')
+                    this.setState({open: false})
                 })
                 .catch(error => {
                     this.setState({ open: false });
@@ -170,7 +220,7 @@ class AddTask extends React.Component {
             .equalTo(email)
             .on("child_added", function (snapshot) {
                 const customer = snapshot.val().customer
-                that.setState({ customer })
+                that.setState({ customer, rate_unit_cus: 'Hourly' })
                 console.log("ABID SHAKA", snapshot.val());
             });
     }
@@ -472,6 +522,8 @@ class AddTask extends React.Component {
                                     style={{ margin: 8, minWidth: 350 }}
                                     id="outlined-disabled"
                                     type="number"
+                                    disabled
+                                    value={this.state.dev_efforts_amt}
                                     name="dev_efforts_amt"
                                     onChange={this.handleChange}
                                     label="Developer Effort Amount"
@@ -573,7 +625,9 @@ class AddTask extends React.Component {
                                     style={{ margin: 8, minWidth: 350 }}
                                     id="outlined-disabled"
                                     type="number"
+                                    disabled
                                     name="cus_efforts_amt"
+                                    value={this.state.cus_efforts_amt}
                                     onChange={this.handleChange}
                                     label="To Invoice Amount"
                                     className={classes.textField}
