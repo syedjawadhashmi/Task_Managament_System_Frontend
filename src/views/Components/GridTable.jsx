@@ -588,14 +588,13 @@ class DemoBase extends React.PureComponent {
             // ROLES FOR ADMIN
             if (role == 'Admin') {
                 filterTasks.push(task)
-                this.setState({ rows: tasks, loading: false })
             }
 
             // ROLES FOR DEVELOPER
             else if (role == 'Developer') {
                 if (task.assigned == email) {
                     filterTasks.push(task)
-                    this.setState({ rows: filterTasks, loading: false })
+                   // this.setState({ rows: filterTasks, loading: false })
                 }
                 // else {
                 //     this.setState({ rows: [], loading: false })
@@ -609,13 +608,15 @@ class DemoBase extends React.PureComponent {
                 isOnwerOrConsultant = project && project.assignedMembers.find(x => x.email == currentUser.email)
                 if (isOnwerOrConsultant || currentUser.email == task.createdBy) {
                     filterTasks.push(task)
-                    this.setState({ rows: filterTasks, loading: false })
+                   // this.setState({ rows: filterTasks, loading: false })
                 }
-                else {
-                    this.setState({ rows: [], loading: false })
-                }
+                // else {
+                //     this.setState({ rows: [], loading: false })
+                // }
             }
         })
+        this.setState({ rows: filterTasks, loading: false })
+
 
     }
 
