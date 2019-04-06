@@ -172,12 +172,11 @@ class AddTask extends React.Component {
             const ref = firebase.database().ref("Tasks/");
             ref.push(taskPayload)
                 .then(res => {
-                    this.setState({ open: false });
+                    this.props.handleClose()
                     alert('Task added successfuly')
-                    this.setState({open: false})
                 })
                 .catch(error => {
-                    this.setState({ open: false });
+                    this.props.handleClose()
                     alert("Error during user creating on firebase", error);
                 });
         }

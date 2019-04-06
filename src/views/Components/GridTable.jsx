@@ -281,7 +281,6 @@ class DemoBase extends React.PureComponent {
         }
         this.onCommentsChange = (key) => {
             this.setState({ comments: [] })
-            debugger
             let comments = [];
             var ref = firebase.database().ref("Comments");
             let self = this;
@@ -289,14 +288,12 @@ class DemoBase extends React.PureComponent {
                 .orderByChild("taskId")
                 .equalTo(key)
                 .on("child_added", function (snapshot) {
-                    console.log("ABID SHAKA", snapshot.val());
                     let CommentObj = {
                         comment: snapshot.val(),
                         key: snapshot.key
                     }
                     comments.push(CommentObj);
                     self.setState({ comments: comments });
-                    console.log("JAWAD", self.state.comments);
                 });
             self.setState({ draweropen: true, childKey: key })
         }
@@ -380,7 +377,6 @@ class DemoBase extends React.PureComponent {
         // .child(this.state.childKey);
 
         if (!this.state.editComment) {
-            debugger
             ref
                 .push({
                     from: email,
@@ -444,7 +440,6 @@ class DemoBase extends React.PureComponent {
         this.setState({ completed: completed >= 100 ? 0 : completed + progress });
     };
     deleteComment = (comment, index) => {
-        debugger;
         let key = comment.key;
         let self = this;
         firebase
@@ -458,11 +453,9 @@ class DemoBase extends React.PureComponent {
                         let comments = self.state.comments;
                         comments.splice(index, 1);
                         self.setState({ comments: comments });
-                        debugger;
                     }
                 });
                 // self.setState({ comments: [] })
-                debugger
                 let comments = [];
                 var ref = firebase.database().ref("Comments");
                 ref
@@ -510,7 +503,6 @@ class DemoBase extends React.PureComponent {
                     function (snapshot) {
                         var progress =
                             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        debugger
                         self.progress(progress);
                         console.log("Upload is " + progress + "% done");
                     },
